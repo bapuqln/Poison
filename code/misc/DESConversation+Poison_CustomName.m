@@ -85,4 +85,15 @@
     }
     return p;
 }
+
+#pragma mark - Avatars
+
+- (NSImage *)userImage {
+    if (self.type == DESConversationTypeFriend) {
+        return [NSImage imageNamed:@"user-icon-default"];
+    } else {
+        return [NSImage imageNamed:@"group-icon-default"];
+    }
+}
+
 @end

@@ -2,8 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>defaultPublishingDomains</key>
+	<array>
+		<string>id.kirara.ca</string>
+		<string>toxme.se</string>
+	</array>
 	<key>defaultRegistrationDomain</key>
-	<string>id.kirara.ca</string>
+	<string>toxme.se</string>
 	<key>autologinUsername</key>
 	<string></string>
 	<key>forcedMultiWindowUI</key>

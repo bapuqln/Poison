@@ -144,7 +144,9 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     _txd_kill_memory(buf, size);
     free(buf);
     NSData *contents = [[NSData alloc] initWithBytesNoCopy:enc length:encsize freeWhenDone:YES];
-    [contents writeToFile:[datadir.path stringByAppendingPathComponent:@"data.txd"] atomically:YES];
+    @synchronized (self) {
+        [contents writeToFile:[datadir.path stringByAppendingPathComponent:@"data.txd"] atomically:YES];
+    }
     return YES;
 }
 
@@ -155,10 +157,14 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     return (NSString *)self.manifest[name];
 }
 
-+ (NSMutableDictionary *)_privateSettings {
++ (NSMutableDictionary *)_privateSettings:(BOOL)purge {
+    static NSMutableDictionary *ps = nil;
     if (![self currentProfileIdentifier])
         return nil;
-    static NSMutableDictionary *ps = nil;
+    if (purge) {
+        ps = nil;
+        return nil;
+    }
     if (!ps) {
         NSURL *profileHome = [self.profileDirectory URLByAppendingPathComponent:self.currentProfileIdentifier isDirectory:YES];
         NSURL *psFile = [profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO];
@@ -181,22 +187,35 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
             ps = [NSMutableDictionary dictionary];
             return ps;
         }
-        NSData *hopefullyJSONData = [[NSData alloc] initWithBytesNoCopy:buf length:size freeWhenDone:YES];
-        ps = [NSJSONSerialization JSONObjectWithData:hopefullyJSONData options:NSJSONReadingMutableContainers error:nil];
-        if (![ps isKindOfClass:[NSMutableDictionary class]])
+        NSData *rawPS = [[NSData alloc] initWithBytesNoCopy:buf length:size freeWhenDone:NO];
+        //ps = [NSJSONSerialization JSONObjectWithData:hopefullyJSONData options:NSJSONReadingMutableContainers error:nil];
+        //ps = [NSPropertyListSerialization propertyListFromData:rawPS mutabilityOption:NSPropertyListMutableContainers format:NULL errorDescription:&loadError];
+        @try {
+            ps = [NSKeyedUnarchiver unarchiveObjectWithData:rawPS];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"bad private store: %@; continuing with a blank one", exception);
+            ps = nil;
+        }
+        if (![ps isKindOfClass:[NSMutableDictionary class]]) {
             ps = [NSMutableDictionary dictionary];
+        }
+        rawPS = nil;
+        _txd_kill_memory(buf, size);
+        free(buf);
     }
 
     return ps;
 }
 
 + (NSDictionary *)privateSettings {
-    return self._privateSettings;
+    return [self _privateSettings:NO];
 }
 
 + (void)commitPrivateSettings {
     if (!SCPrivateSettingsNeedCommit)
         return;
+    NSLog(@"notice: commitPrivateSettings");
     static NSRecursiveLock *lock = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -205,11 +224,14 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
 
     [lock lock];
 
-    NSData *buf = [NSJSONSerialization dataWithJSONObject:self.privateSettings options:NSJSONWritingPrettyPrinted error:nil];
+    NSData *buf = [NSKeyedArchiver archivedDataWithRootObject:self.privateSettings];
     if (!buf) {
         NSLog(@"eeeeeh");
         return;
     }
+
+    //[buf writeToFile:@"/Volumes/stal/pstore.shadow" atomically:YES];
+
     NSString *pass = ((SCAppDelegate *)[NSApp delegate]).profilePass;
     uint64_t pl = [pass lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 
@@ -224,16 +246,20 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     NSURL *profileHome = [self.profileDirectory URLByAppendingPathComponent:self.currentProfileIdentifier isDirectory:YES];
     [[NSFileManager defaultManager] createDirectoryAtURL:profileHome withIntermediateDirectories:YES attributes:nil error:nil];
     [[NSData dataWithBytesNoCopy:e length:es freeWhenDone:YES] writeToURL:[profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO] atomically:YES];
-    SCPrivateSettingsNeedCommit = YES;
+    SCPrivateSettingsNeedCommit = NO;
     [lock unlock];
 }
 
++ (void)purgePrivateSettingsFromMemory {
+    [self _privateSettings:YES];
+}
+
 + (id)privateSettingForKey:(id<NSCopying>)k {
-    return self._privateSettings[k];
+    return self.privateSettings[k];
 }
 
 + (void)setPrivateSetting:(id)val forKey:(id<NSCopying>)k {
-    self._privateSettings[k] = val;
+    [self _privateSettings:NO][k] = val;
     SCPrivateSettingsNeedCommit = YES;
 }
 

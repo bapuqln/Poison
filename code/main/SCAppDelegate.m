@@ -11,6 +11,8 @@
 #import "SCWidgetedWindow.h"
 #import "SCResourceBundle.h"
 #import "SCMenuStatusView.h"
+#import "SCFriendRequest.h"
+#import "SCStandaloneWindowController.h"
 
 /* note: this is hard-coded to make tampering harder. */
 #define SCApplicationDownloadPage (@"http://download.tox.im/")
@@ -21,7 +23,6 @@
 @property (strong) NSString *profilePass;
 @property (weak) IBOutlet NSMenuItem *akiUserInfoMenuItemPlaceholder;
 @property (weak) IBOutlet SCMenuStatusView *userInfoMenuItem;
-@property (strong) NSArray *activeRequests;
 #pragma mark - Tox menu
 @property (weak) IBOutlet NSMenuItem *changeNameMenuItem;
 @property (weak) IBOutlet NSMenuItem *changeStatusMenuItem;
@@ -47,9 +48,9 @@
 @property (strong) NSURL *waitingToxURL;
 @end
 
-@implementation SCAppDelegate
 @implementation SCAppDelegate {
     NSMutableDictionary *_requests;
+    NSMutableDictionary *_auxiliaryChatWindows;
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -109,16 +110,13 @@
     return YES;
 }
 
-- (void)setMainWindowController:(NSWindowController *)mainWindowController {
-    _mainWindowController = mainWindowController;
-}
-
 - (void)makeApplicationReadyForToxing:(txd_intermediate_t)userProfile name:(NSString *)profileName password:(NSString *)pass {
     self.profileName = profileName;
     self.profilePass = pass;
     self.toxConnection = [[DESToxConnection alloc] init];
     self.toxConnection.delegate = self;
     self.akiUserInfoMenuItemPlaceholder.view = self.userInfoMenuItem;
+    _auxiliaryChatWindows = [[NSMutableDictionary alloc] initWithCapacity:5];
 
     [self.dockMenu removeItemAtIndex:0];
     if (!self.dockStatusMenuItem)
@@ -261,9 +259,11 @@
         return;
     [[NSProcessInfo processInfo] disableSuddenTermination];
     txd_intermediate_t data = [self.toxConnection createTXDIntermediate];
-    [SCProfileManager saveProfile:data name:self.profileName password:self.profilePass];
-    txd_intermediate_free(data);
-    [[NSProcessInfo processInfo] enableSuddenTermination];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [SCProfileManager saveProfile:data name:self.profileName password:self.profilePass];
+        txd_intermediate_free(data);
+        [[NSProcessInfo processInfo] enableSuddenTermination];
+    });
 }
 
 - (void)didReceiveFriendRequest:(DESRequest *)request onConnection:(DESToxConnection *)connection {
@@ -287,6 +287,8 @@
     [[NSProcessInfo processInfo] endActivity:self.activityToken];
     self.activityToken = nil;
     [self saveProfile];
+    [SCProfileManager commitPrivateSettings];
+    [SCProfileManager purgePrivateSettingsFromMemory];
     [connection removeObserver:self forKeyPath:@"name"];
     [connection removeObserver:self forKeyPath:@"statusMessage"];
     
@@ -303,6 +305,7 @@
     self.toxConnection = nil;
     self.profileName = nil;
     self.profilePass = nil;
+    self.mainWindowController = nil;
     if (self.userIsWaitingOnApplicationExit) {
         [NSApp replyToApplicationShouldTerminate:YES];
     } else {
@@ -367,8 +370,13 @@
 - (IBAction)logOutFromUI:(id)sender {
     [self.mainWindowController.window performClose:self];
     self.userIsWaitingOnApplicationExit = NO;
-    if (!self.mainWindowController.window.isVisible)
+    if (!self.mainWindowController.window.isVisible) {
+        for (NSWindowController *owner in _auxiliaryChatWindows.allValues) {
+            [owner close];
+        }
+        _auxiliaryChatWindows = nil;
         [self logOut];
+    }
 }
 
 #pragma mark - Auxiliary Windows
@@ -388,6 +396,22 @@
 
 - (IBAction)showPreferencesWindow:(id)sender {
     
+}
+
+- (void)focusWindowForConversation:(DESConversation *)conv {
+    NSString *mark = conv.type == DESConversationTypeFriend? @"F:" : @"G:";
+    NSString *key = [mark stringByAppendingString:conv.publicKey];
+    SCStandaloneWindowController *ctl = _auxiliaryChatWindows[key];
+    if (!ctl) {
+        ctl = [[SCStandaloneWindowController alloc] initWithConversation:conv];
+        _auxiliaryChatWindows[key] = ctl;
+    }
+    [ctl showWindow:self];
+}
+
+- (void)removeAuxWindowFromService:(SCStandaloneWindowController *)w {
+    [_auxiliaryChatWindows removeObjectForKey:w.conversationIdentifier];
+    [w close];
 }
 
 #pragma mark - AboutWindow click-throughs

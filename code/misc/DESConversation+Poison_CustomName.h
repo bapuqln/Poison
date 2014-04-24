@@ -7,4 +7,6 @@
 - (NSString *)preferredUIName;
 - (NSAttributedString *)preferredUIAttributedNameWithColour:(NSColor *)fg
                                            backgroundColour:(NSColor *)bg;
+
+- (NSImage *)userImage;
 @end

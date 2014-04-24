@@ -3,6 +3,10 @@
 #import "SCWidgetedWindow.h"
 
 @implementation SCWidgetedWindow
+- (NSInteger)titlebarHeight {
+    return 22;
+}
+
 - (void)setWidgetView:(NSView *)widgetView {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewFrameDidChangeNotification object:_widgetView];
     [self.widgetView removeFromSuperview];
@@ -17,7 +21,7 @@
     }
 }
 - (void)updatePositionOfWidgetView:(NSNotification *)unused {
-    CGFloat y = floor(self.frame.size.height - self.widgetView.bounds.size.height - ((22 - self.widgetView.bounds.size.height) / 2));
+    CGFloat y = floor(self.frame.size.height - self.widgetView.bounds.size.height - ((self.titlebarHeight - self.widgetView.bounds.size.height) / 2));
     if ([self.screen respondsToSelector:@selector(backingScaleFactor)] && self.screen.backingScaleFactor > 1.0)
         y -= 0.5; /* Small alignment fix for HiDPI to match the fullscreen widget */
     CGFloat fullScreenOffset = [self collectionBehavior] == NSWindowCollectionBehaviorFullScreenPrimary ? 20 : 0;

@@ -20,4 +20,5 @@
 + (id)privateSettingForKey:(id<NSCopying>)k;
 + (void)setPrivateSetting:(id)val forKey:(id<NSCopying>)k;
 + (void)commitPrivateSettings;
++ (void)purgePrivateSettingsFromMemory;
 @end

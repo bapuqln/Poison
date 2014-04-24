@@ -80,10 +80,22 @@
     return self.friendsListCont;
 }
 
+- (void)removeKVOHandlers {
+    if (!_watchingConversation)
+        return;
+    [_watchingConversation removeObserver:self forKeyPath:@"presentableTitle"];
+    if ([_watchingConversation conformsToProtocol:@protocol(DESFriend)]) {
+        [_watchingConversation removeObserver:self forKeyPath:@"status"];
+        [_watchingConversation removeObserver:self forKeyPath:@"address"];
+        [_watchingConversation removeObserver:self forKeyPath:@"port"];
+    }
+}
+
 - (void)conversationDidBecomeFocused:(DESConversation *)conversation {
-    [_watchingConversation removeObserver:self forKeyPath:@"status"];
+    [self removeKVOHandlers];
     _watchingConversation = conversation;
     [self updateWindowTitle];
+    [_watchingConversation addObserver:self forKeyPath:@"presentableTitle" options:NSKeyValueObservingOptionNew context:NULL];
     if ([_watchingConversation conformsToProtocol:@protocol(DESFriend)]) {
         self.window.representedURL = [NSBundle.mainBundle bundleURL];
         NSButton *b = [self.window standardWindowButton:NSWindowDocumentIconButton];
@@ -91,6 +103,11 @@
         b.toolTip = SCStringForFriendStatus(s);
         b.image = SCImageForFriendStatus(s);
         [_watchingConversation addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
+        _dhtCount.attributedStringValue = [self styledIndicatorText];
+        _dhtCount.toolTip = [self toolTipTextForNodeCount:self.tox.closeNodesCount];
+        [_dhtCount sizeToFit];
+        [_watchingConversation addObserver:self forKeyPath:@"address" options:NSKeyValueObservingOptionNew context:NULL];
+        [_watchingConversation addObserver:self forKeyPath:@"port" options:NSKeyValueObservingOptionNew context:NULL];
     } else {
         self.window.representedURL = nil;
     }
@@ -100,9 +117,17 @@
 
 - (NSAttributedString *)styledIndicatorText {
     NSMutableAttributedString *base;
-    base = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"DHT:", nil)
+    base = [[NSMutableAttributedString alloc] initWithString:@""
                                                   attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]}];
-    NSString *nodes = [NSString stringWithFormat:@" %lu", (unsigned long)self.tox.closeNodesCount];
+    if ([_watchingConversation conformsToProtocol:@protocol(DESFriend)]
+        && ((DESFriend *)_watchingConversation).port != 0) {
+        DESFriend *f = (DESFriend *)_watchingConversation;
+        NSString *inf = [NSString stringWithFormat:@"%@:%hu • ", f.address,
+                         f.port];
+        NSAttributedString *a = [[NSAttributedString alloc] initWithString:inf];
+        [base appendAttributedString:a];
+    }
+    NSString *nodes = [NSString stringWithFormat:NSLocalizedString(@"DHT: %lu", nil), (unsigned long)self.tox.closeNodesCount];
     [base appendAttributedString:[[NSAttributedString alloc] initWithString:nodes]];
     return base;
 }
@@ -120,9 +145,13 @@
 }
 
 - (void)updateWindowTitle {
-    self.window.title = [NSString stringWithFormat:@"%@ \u2014 %@",
-                         _watchingConversation.preferredUIName,
-                         SCApplicationInfoDictKey(@"CFBundleName")];
+    if (!_watchingConversation) {
+        self.window.title = SCApplicationInfoDictKey(@"CFBundleName");
+    } else {
+        self.window.title = [NSString stringWithFormat:@"%@ \u2014 %@",
+                             _watchingConversation.preferredUIName,
+                             SCApplicationInfoDictKey(@"CFBundleName")];
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -179,7 +208,7 @@
 }*/
 
 - (void)dealloc {
-    [_watchingConversation removeObserver:self forKeyPath:@"status"];
+    [self removeKVOHandlers];
     [self.tox removeObserver:self forKeyPath:@"closeNodesCount"];
 }
 
