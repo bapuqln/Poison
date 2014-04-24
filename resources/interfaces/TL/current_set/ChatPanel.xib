@@ -68,7 +68,7 @@
         </customView>
         <customView id="vhE-4Q-mdl">
             <rect key="frame" x="0.0" y="0.0" width="163" height="96"/>
-            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
         </customView>
         <splitView autosaveName="" dividerStyle="thin" id="Ibd-qz-eRd" customClass="SCNonGarbageSplitView">
             <rect key="frame" x="0.0" y="0.0" width="480" height="435"/>
