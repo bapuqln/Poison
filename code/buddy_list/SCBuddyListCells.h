@@ -23,3 +23,13 @@
 @property (weak) SCBuddyListController *manager;
 - (void)applyMaskIfRequired;
 @end
+
+@interface SCRequestCellView : NSTableCellView
+@property (strong) IBOutlet NSTextField *mainLabel;
+@property (strong) IBOutlet NSTextField *auxLabel;
+@property (strong) IBOutlet NSImageView *avatarView;
+@property (strong) IBOutlet NSView *accessoryView;
+
+@property (weak) SCBuddyListController *manager;
+- (void)applyMaskIfRequired;
+@end

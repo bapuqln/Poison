@@ -17,4 +17,5 @@
 
 /* by popular demand */
 - (NSString *)profileName;
+- (NSSet *)requests;
 @end

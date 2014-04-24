@@ -10,6 +10,7 @@
 #import "SCAppDelegate.h"
 #import "SCBuddyListManager.h"
 #import "DESConversation+Poison_CustomName.h"
+#import "SCRequestDialogController.h"
 #import <Quartz/Quartz.h>
 
 #define SC_MAX_CACHED_ROW_COUNT (50)
@@ -102,6 +103,8 @@
     DESToxConnection *_watchingConnection;
     NSDateFormatter *_formatter;
     SCBuddyListManager *_dataSource;
+    SCRequestDialogController *_requestSheet;
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -184,7 +187,7 @@
 - (DESConversation *)conversationSelectedInView {
     if (self.friendListView.selectedRow == -1)
         return nil;
-    return [_dataSource conversationAtRowIndex:self.friendListView.selectedRow];
+    return [_dataSource objectAtRowIndex:self.friendListView.selectedRow];
 }
 
 #pragma mark - ui crap
@@ -271,7 +274,16 @@
     if ([self tableView:tableView isGroupRow:row]) {
         return [tableView makeViewWithIdentifier:@"GroupMarker" owner:nil];
     } else {
-        SCFriendCellView *dequeued = [tableView makeViewWithIdentifier:@"FriendCell" owner:nil];
+        id objectValue = [_dataSource objectAtRowIndex:row];
+        NSString *cellKind;
+        if ([objectValue isKindOfClass:[DESRequest class]])
+            cellKind = @"RequestCell";
+        else
+            cellKind = @"FriendCell";
+        /* it could be any kind of cell, really
+         * we don't judge */
+        SCFriendCellView *dequeued = [tableView makeViewWithIdentifier:cellKind
+                                                                 owner:nil];
         dequeued.manager = self;
         [dequeued applyMaskIfRequired];
         return dequeued;
@@ -279,45 +291,60 @@
 }
 
 - (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row {
-    return (BOOL)([_dataSource conversationAtRowIndex:row] == nil);
+    return (BOOL)([_dataSource objectAtRowIndex:row] == nil);
 }
 
 - (NSMenu *)tableView:(NSTableView *)tableView menuForRow:(NSInteger)row {
-    if ([self tableView:tableView isGroupRow:row])
-        return nil;
-
-    id<DESConversation> conv = [_dataSource conversationAtRowIndex:row];
-    if (conv.type == DESConversationTypeFriend)
-        return self.friendMenu;
-    else
-        return nil; /* FIXME: implement */
+    id thing = [_dataSource objectAtRowIndex:row];
+    if ([thing conformsToProtocol:@protocol(DESConversation)]) {
+        id<DESConversation> conv = thing;
+        if (conv.type == DESConversationTypeFriend)
+            return self.friendMenu;
+        else
+            return nil; /* FIXME: implement */
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-    if ([self tableView:tableView isGroupRow:row])
+    if (![_dataSource objectAtRowIndex:row])
         return 17;
     else
         return 40;
 }
 
 - (void)openAuxiliaryWindowForSelectedRow:(NSTableView *)sender {
-    
+    id model = [_dataSource objectAtRowIndex:sender.selectedRow];
+    if (![model conformsToProtocol:@protocol(DESConversation)])
+        return;
+    else
+        [(SCAppDelegate *)[NSApp delegate] focusWindowForConversation:model];
 }
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row {
-    return ![self tableView:tableView isGroupRow:row];
+    id model = [_dataSource objectAtRowIndex:row];
+    if ([model conformsToProtocol:@protocol(DESConversation)]) {
+        return YES;
+    } else if ([model isKindOfClass:[DESRequest class]]) {
+        if (!_requestSheet)
+            _requestSheet = [[SCRequestDialogController alloc] initWithWindowNibName:@"RequestDialog"];
+        [_requestSheet loadWindow];
+        _requestSheet.request = model;
+        [NSApp beginSheet:_requestSheet.window modalForWindow:self.view.window modalDelegate:self didEndSelector:@selector(requestSheet:didEndWithReturnCode:contextInfo:) contextInfo:NULL];
+    }
+    return NO;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     if ([self.view.window.windowController respondsToSelector:@selector(conversationDidBecomeFocused:)]) {
-        DESConversation *cv = [_dataSource conversationAtRowIndex:self.friendListView.selectedRow];
+        DESConversation *cv = [_dataSource objectAtRowIndex:self.friendListView.selectedRow];
         [self.view.window.windowController conversationDidBecomeFocused:cv];
     }
 }
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
     NSUInteger ci = self.friendListView.clickedRow;
-    DESConversation *conv = [_dataSource conversationAtRowIndex:ci];
+    DESConversation *conv = [_dataSource objectAtRowIndex:ci];
     [menu itemAtIndex:0].title = conv.preferredUIName;
 }
 
@@ -351,8 +378,8 @@
 }
 
 - (IBAction)removeFriendConfirm:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource conversationAtRowIndex:self.friendListView.clickedRow];
-    if (!f)
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:self.friendListView.clickedRow];
+    if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFriendsImmediately"]) {
         [(SCAppDelegate *)[NSApp delegate] removeFriend:f];
@@ -377,7 +404,9 @@
 }
 
 - (IBAction)presentNicknameEditor:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource conversationAtRowIndex:self.friendListView.clickedRow];
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:self.friendListView.clickedRow];
+    if (![f conformsToProtocol:@protocol(DESFriend)])
+        return;
 
     NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSString *displayName = f.name;
@@ -464,6 +493,17 @@
         self.avatarView.image = sheet.outputImage;
         // commit avatar change...
     }
+}
+
+#pragma mark - the friend request sheet
+
+- (void)requestSheet:(NSWindow *)sheet didEndWithReturnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+    if (returnCode) {
+        /* FIXME: this should go somewhere else */
+        [_requestSheet.request accept];
+    }
+    [sheet orderOut:self];
+    _requestSheet = nil;
 }
 
 @end

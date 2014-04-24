@@ -171,3 +171,50 @@
 }
 
 @end
+
+@implementation SCRequestCellView {
+    NSTrackingArea *_tracking;
+}
+
+- (void)applyMaskIfRequired {
+    if (self.avatarView.wantsLayer)
+        return;
+    self.avatarView.wantsLayer = YES;
+    NSImage *mask = [NSImage imageNamed:@"avatar_mask"];
+    CALayer *maskLayer = [CALayer layer];
+    [CATransaction begin];
+    maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
+    maskLayer.contents = (id)mask;
+    self.avatarView.layer.mask = maskLayer;
+    [CATransaction commit];
+}
+
+- (void)updateTrackingAreas {
+    if (_tracking)
+        [self removeTrackingArea:_tracking];
+
+    _tracking = [[NSTrackingArea alloc] initWithRect:self.accessoryView.frame
+                                             options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
+                                               owner:self
+                                            userInfo:nil];
+    [self addTrackingArea:_tracking];
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent {
+    self.accessoryView.hidden = NO;
+}
+
+- (void)mouseExited:(NSEvent *)theEvent {
+    self.accessoryView.hidden = YES;
+}
+
+- (void)setObjectValue:(id)objectValue {
+    [super setObjectValue:objectValue];
+    if (self.objectValue) {
+        DESRequest *r = objectValue;
+        self.mainLabel.stringValue = [r.senderName substringToIndex:8];
+        self.auxLabel.stringValue = r.message;
+    }
+}
+
+@end

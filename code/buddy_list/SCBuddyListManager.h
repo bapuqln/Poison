@@ -26,5 +26,5 @@
 @property (nonatomic, readonly) NSArray *orderingList;
 @property (nonatomic, copy) NSString *filterString;
 - (instancetype)initWithConnection:(DESToxConnection *)con;
-- (DESConversation *)conversationAtRowIndex:(NSInteger)r;
+- (id)objectAtRowIndex:(NSInteger)r;
 @end

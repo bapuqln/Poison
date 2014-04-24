@@ -12,6 +12,14 @@
 extern uint8_t SCCodeSigningStatus;
 extern NSString *SCCodeSigningSigner;
 
+NS_INLINE BOOL SCIsMountainLionOrHigher() {
+    return (NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)? YES : NO;
+}
+
+NS_INLINE BOOL SCIsMavericksOrHigher() {
+    return (NSFoundationVersionNumber >= NSFoundationVersionNumber10_8_4)? YES : NO;
+}
+
 NS_INLINE NSURL *SCApplicationSupportDirectory(void) {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *candidates = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];

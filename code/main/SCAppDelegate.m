@@ -48,6 +48,9 @@
 @end
 
 @implementation SCAppDelegate
+@implementation SCAppDelegate {
+    NSMutableDictionary *_requests;
+}
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     NSAppleEventManager *ae = [NSAppleEventManager sharedAppleEventManager];
@@ -129,6 +132,7 @@
     [self.toxConnection addObserver:self forKeyPath:@"statusMessage" options:NSKeyValueObservingOptionNew context:NULL];
     if (userProfile) {
         [self.toxConnection restoreDataFromTXDIntermediate:userProfile];
+        txd_intermediate_free(userProfile);
     } else {
         self.toxConnection.name = profileName;
         NSString *defaultStatus = [NSString stringWithFormat:NSLocalizedString(@"Toxing on %@ %@", @"default status message"),
@@ -137,6 +141,7 @@
         self.toxConnection.statusMessage = defaultStatus;
         [self saveProfile];
     }
+    [self prepareFriendRequests];
     [self.toxConnection start];
     if ([self.mainWindowController isKindOfClass:[SCNewUserWindowController class]])
         [self.mainWindowController close];
@@ -152,6 +157,35 @@
 
 - (void)removeFriend:(DESFriend *)f {
     [self.toxConnection deleteFriend:f];
+}
+
+#pragma mark - friend requests
+
+- (NSSet *)requests {
+    return [NSSet setWithArray:[_requests allValues]];
+}
+
+- (void)prepareFriendRequests {
+    [self willChangeValueForKey:@"requests"];
+    NSArray *presRequests = [SCProfileManager privateSettingForKey:@"friendRequests"];
+    if (!presRequests || ![presRequests isKindOfClass:[NSArray class]]) {
+        _requests = [[NSMutableDictionary alloc] init];
+    } else {
+        _requests = [[NSMutableDictionary alloc] initWithCapacity:presRequests.count];
+        for (SCFriendRequest *fr in presRequests) {
+            if ([self.toxConnection friendWithKey:fr.senderName])
+                continue;
+            _requests[fr.senderName] = fr;
+        }
+    }
+    [self didChangeValueForKey:@"requests"];
+}
+
+- (void)archiveFriendRequests {
+    [SCProfileManager setPrivateSetting:[_requests allValues] forKey:@"friendRequests"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [SCProfileManager commitPrivateSettings];
+    });
 }
 
 #pragma mark - Opening stuff
@@ -233,7 +267,10 @@
 }
 
 - (void)didReceiveFriendRequest:(DESRequest *)request onConnection:(DESToxConnection *)connection {
-
+    [self willChangeValueForKey:@"requests"];
+    _requests[request.senderName] = [[SCFriendRequest alloc] initWithDESRequest:request];
+    [self archiveFriendRequests];
+    [self didChangeValueForKey:@"requests"];
 }
 
 - (void)didReceiveGroupChatInvite:(DESRequest *)request fromFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
@@ -276,11 +313,20 @@
 }
 
 - (void)didAddFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
+    [self willChangeValueForKey:@"requests"];
+    [_requests removeObjectForKey:friend.publicKey];
+    [self didChangeValueForKey:@"requests"];
     [self saveProfile];
+    [self archiveFriendRequests];
 }
 
 - (void)didRemoveFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
-    NSLog(@"rip ;_;");
+    NSMutableDictionary *map = [[SCProfileManager privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
+    [map removeObjectForKey:friend.publicKey];
+    [SCProfileManager setPrivateSetting:map forKey:@"nicknames"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [SCProfileManager commitPrivateSettings];
+    });
     [self saveProfile];
 }
 
@@ -401,6 +447,12 @@
     } else {
         NSBeep();
     }
+}
+
+#pragma mark - Data Export
+
+- (IBAction)showDataExportWindow:(id)sender {
+
 }
 
 @end

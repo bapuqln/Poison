@@ -4,6 +4,7 @@
 #import "SCBuddyListShared.h"
 #import "ObjectiveTox.h"
 #import "DESConversation+Poison_CustomName.h"
+#import "SCAppDelegate.h"
 
 @implementation SCGroupMarker
 - (instancetype)initWithName:(NSString *)name other:(NSString *)other {
@@ -67,7 +68,9 @@
 
 @implementation SCBuddyListManager {
     DESToxConnection *_watchingConnection;
-    NSMutableArray *_orderingList;
+    NSArray *_friendListChunk;
+    NSArray *_groupListChunk;
+    NSArray *_requestListChunk;
 }
 
 - (instancetype)initWithConnection:(DESToxConnection *)con {
@@ -78,14 +81,16 @@
     return self;
 }
 
-- (id)conversationAtRowIndex:(NSInteger)r {
-    id marker = _orderingList[r];
+- (id)objectAtRowIndex:(NSInteger)r {
+    id marker = [self ordinal_objectAtRowIndex:r];
     if ([marker isKindOfClass:[SCObjectMarker class]]) {
         SCObjectMarker *m2 = marker;
         if (m2.type == DESConversationTypeFriend)
             return [_watchingConnection friendWithKey:m2.pk];
         else
             return [_watchingConnection groupChatWithID:m2.sortKey];
+    } else if (![marker isKindOfClass:[SCGroupMarker class]]) {
+        return marker;
     }
     return nil;
 }
@@ -93,32 +98,123 @@
 #pragma mark - kvo
 
 - (NSArray *)orderingList {
-    return _orderingList;
+    return nil;
 }
 
 - (void)detachHandlersFromConnection {
     [_watchingConnection removeObserver:self forKeyPath:@"friends"];
     [_watchingConnection removeObserver:self forKeyPath:@"groups"];
+    [[NSApp delegate] removeObserver:self forKeyPath:@"requests"];
 }
 
 - (void)attachKVOHandlersToConnection:(DESToxConnection *)tox {
-    [self detachHandlersFromConnection];
+    if (_watchingConnection)
+        [self detachHandlersFromConnection];
     _watchingConnection = tox;
     [tox addObserver:self forKeyPath:@"friends" options:NSKeyValueObservingOptionNew context:NULL];
     [tox addObserver:self forKeyPath:@"groups" options:NSKeyValueObservingOptionNew context:NULL];
+    [[NSApp delegate] addObserver:self forKeyPath:@"requests" options:NSKeyValueObservingOptionNew context:NULL];
+    [self willChangeValueForKey:@"orderingList"];
     if (tox.isActive) {
-        [self repopulateOrderingList];
+        _friendListChunk = [self _repopulateOrderingList_Friends];
+        _groupListChunk = [self _repopulateOrderingList_Groups];
     }
+    _requestListChunk = [self _repopulateOrderingList_Requests];
+    [self didChangeValueForKey:@"orderingList"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"friends"] || [keyPath isEqualToString:@"groups"]) {
-        [self repopulateOrderingList];
-    }
+    [self willChangeValueForKey:@"orderingList"];
+    if ([keyPath isEqualToString:@"friends"])
+        _friendListChunk = [self _repopulateOrderingList_Friends];
+    else if ([keyPath isEqualToString:@"groups"])
+        _groupListChunk = [self _repopulateOrderingList_Groups];
+    else if ([keyPath isEqualToString:@"requests"])
+        _requestListChunk = [self _repopulateOrderingList_Requests];
+    [self didChangeValueForKey:@"orderingList"];
 }
 
-- (void)repopulateOrderingList {
+#pragma mark - data crunching
+
+- (NSArray *)_repopulateOrderingList_Friends {
     NSSet *fset = _watchingConnection.friends;
+    if (_filterString) {
+        NSPredicate *f = nil;
+        if ([_filterString isEqualToString:[_filterString lowercaseString]])
+            f = [NSPredicate predicateWithBlock:self.caseInsensitiveFilterBlock];
+        else
+            f = [NSPredicate predicateWithBlock:self.caseSensitiveFilterBlock];
+        fset = [fset filteredSetUsingPredicate:f];
+    }
+    NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"peerNumber"
+                                                         ascending:YES];
+    NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:fset.count + 1];
+    [[fset sortedArrayUsingDescriptors:@[desc]] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [objs addObject:[[SCObjectMarker alloc] initWithConversation:obj]];
+    }];
+    SCGroupMarker *marker = [[SCGroupMarker alloc] initWithName:NSLocalizedString(@"Friends", nil)
+                                                          other:[NSString stringWithFormat:@"(%lu)",
+                                                                 (unsigned long)fset.count]];
+    [objs insertObject:marker atIndex:0];
+    return objs;
+}
+
+- (NSArray *)_repopulateOrderingList_Groups {
+    NSSet *gset = _watchingConnection.groups;
+    if (_filterString) {
+        NSPredicate *f = nil;
+        if ([_filterString isEqualToString:[_filterString lowercaseString]])
+            f = [NSPredicate predicateWithBlock:self.caseInsensitiveFilterBlock];
+        else
+            f = [NSPredicate predicateWithBlock:self.caseSensitiveFilterBlock];
+        gset = [gset filteredSetUsingPredicate:f];
+    }
+    NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"peerNumber"
+                                                         ascending:YES];
+    NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:gset.count + 1];
+    SCGroupMarker *marker = [[SCGroupMarker alloc] initWithName:NSLocalizedString(@"Group Chats", nil)
+                                                          other:[NSString stringWithFormat:@"(%lu)",
+                                                                 (unsigned long)gset.count]];
+    [objs addObject:marker];
+    [[gset sortedArrayUsingDescriptors:@[desc]] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [objs addObject:[[SCObjectMarker alloc] initWithConversation:obj]];
+    }];
+    return objs;
+}
+
+- (NSArray *)_repopulateOrderingList_Requests {
+    if (_filterString) /* Don't search requests */
+        return @[];
+    NSSet *rset = [(SCAppDelegate *)[NSApp delegate] requests];
+    NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"dateReceived"
+                                                         ascending:YES];
+    NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:rset.count + 1];
+    SCGroupMarker *marker = [[SCGroupMarker alloc] initWithName:NSLocalizedString(@"Requests", nil)
+                                                          other:[NSString stringWithFormat:@"(%lu)",
+                                                                 (unsigned long)rset.count]];
+    [objs addObject:marker];
+    [objs addObjectsFromArray:[rset sortedArrayUsingDescriptors:@[desc]]];
+    return objs;
+}
+
+- (NSArray *)_repopulateOrderingList_Invites {
+    return @[];
+}
+
+- (id)ordinal_objectAtRowIndex:(NSUInteger)row {
+    NSArray *iter = @[_friendListChunk, _groupListChunk, _requestListChunk,];
+    //_inviteListChunk];
+    NSUInteger rubberDonkey = 0;
+    for (NSArray *clist in iter) {
+        NSUInteger indexInto = row - rubberDonkey;
+        if (indexInto < clist.count)
+            return clist[indexInto];
+        rubberDonkey += clist.count;
+    }
+    return nil;
+}
+
+/*- (void)repopulateOrderingList {
     NSSet *gset = _watchingConnection.groups;
 
     if (_filterString) {
@@ -170,20 +266,33 @@
         [_orderingList addObjectsFromArray:scratch];
     }
     [self didChangeValueForKey:@"orderingList"];
+}*/
+
+- (void)repopulateOrderingList {
+    [self willChangeValueForKey:@"orderingList"];
+    _friendListChunk = [self _repopulateOrderingList_Friends];
+    _groupListChunk = [self _repopulateOrderingList_Groups];
+    _requestListChunk = [self _repopulateOrderingList_Requests];
+    [self didChangeValueForKey:@"orderingList"];
 }
 
 #pragma mark - table source
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return _orderingList.count;
+    return (_friendListChunk.count + _groupListChunk.count
+            + _requestListChunk.count); //+ _inviteListChunk.count);
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    id peer = _orderingList[row];
-    if ([peer isKindOfClass:[SCObjectMarker class]])
-        return [_watchingConnection friendWithKey:((SCObjectMarker *)peer).pk];
-    else
-        return ((SCGroupMarker *)peer);
+    id peer = [self ordinal_objectAtRowIndex:row];
+    if ([peer isKindOfClass:[SCObjectMarker class]]) {
+        if (((SCObjectMarker *)peer).type == DESConversationTypeFriend)
+            return [_watchingConnection friendWithKey:((SCObjectMarker *)peer).pk];
+        else
+            return [_watchingConnection groupChatWithID:((SCObjectMarker *)peer).sortKey];
+    } else {
+        return peer;
+    }
 }
 
 #pragma mark - search
