@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
@@ -10,7 +10,6 @@
             <connections>
                 <outlet property="DNSDiscoveryMethodView" destination="wPs-CZ-ngm" id="aLc-50-3XW"/>
                 <outlet property="continueButton" destination="Tb5-Ve-42m" id="CIs-7U-yXa"/>
-                <outlet property="findButton" destination="lSV-az-S0f" id="uiD-Qq-1MF"/>
                 <outlet property="idField" destination="3L2-sJ-Ja1" id="2qw-CD-pNl"/>
                 <outlet property="idValidationStatusField" destination="xef-tw-k8C" id="rfb-80-udP"/>
                 <outlet property="keyPreview" destination="dqe-gp-Th3" id="Ims-sE-fbK"/>
@@ -96,8 +95,8 @@ Gw
                         <segmentedCell key="cell" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectOne" id="kWj-ea-iOE">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="Tox ID" width="137" selected="YES"/>
-                                <segment label="DNS Discovery" width="136" tag="1"/>
+                                <segment label="DNS Discovery" width="137" selected="YES" tag="1"/>
+                                <segment label="Tox ID" width="136"/>
                             </segments>
                         </segmentedCell>
                         <connections>
@@ -139,11 +138,11 @@ Gw
             </subviews>
         </customView>
         <customView id="wPs-CZ-ngm">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="hRf-tH-lju">
-                    <rect key="frame" x="20" y="75" width="217" height="22"/>
+                    <rect key="frame" x="20" y="47" width="183" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="sbs-gX-ny0">
                         <font key="font" metaFont="system"/>
@@ -155,30 +154,19 @@ Gw
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="qgw-0e-GYI">
-                    <rect key="frame" x="20" y="103" width="282" height="17"/>
+                    <rect key="frame" x="18" y="75" width="284" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Enter a Tox DNS address, then click Find." id="gdW-jc-1Mm">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Enter a Tox DNS address, then press Return." id="gdW-jc-1Mm">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" id="lSV-az-S0f">
-                    <rect key="frame" x="239" y="69" width="67" height="32"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="push" title="Find" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SrM-yG-DZR">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="startLookup:" target="-2" id="DMd-58-Eqj"/>
-                    </connections>
-                </button>
                 <textField verticalHuggingPriority="750" id="dqe-gp-Th3">
                     <rect key="frame" x="18" y="0.0" width="284" height="39"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" state="on" placeholderString="0000000000000000000000000000000000000000000000000000000000000000000000000000" id="LVt-Ki-fWM">
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="12" name="Menlo-Regular"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <allowedInputSourceLocales>
@@ -187,7 +175,7 @@ Gw
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="wgT-00-wMm">
-                    <rect key="frame" x="106" y="45" width="151" height="22"/>
+                    <rect key="frame" x="211" y="47" width="67" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="PIN" drawsBackground="YES" id="nKv-k6-l1y">
                         <font key="font" metaFont="system"/>
@@ -198,17 +186,8 @@ Gw
                         </allowedInputSourceLocales>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Wmk-q8-3QV">
-                    <rect key="frame" x="18" y="47" width="82" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Friend's PIN:" id="HNX-gF-eVi">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="XPU-ik-IfB">
-                    <rect key="frame" x="263" y="47" width="39" height="17"/>
+                    <rect key="frame" x="279" y="49" width="23" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="✓" id="8O0-aC-ATq">
                         <font key="font" metaFont="system"/>

@@ -59,7 +59,7 @@
 
     self.keyPreview.font = [NSFont fontWithName:@"Menlo-Regular" size:12];
     self.idField.font = [NSFont fontWithName:@"Menlo-Regular" size:12];
-    self.method = SCFriendFindMethodPlain;
+    self.method = SCFriendFindMethodDNSDiscovery;
     [self resetFields:YES];
 }
 
@@ -329,10 +329,6 @@
 #pragma mark - ui binding
 
 - (IBAction)startLookup:(id)sender {
-    if (!self.findButton.isEnabled) {
-        [self.window shakeWindow:NULL]
-        ;
-    }
     NSString *addr = self.mailAddressField.stringValue;
     if ([addr rangeOfString:@"@"].location == NSNotFound)
         addr = [addr stringByAppendingString:[NSString stringWithFormat:@"@%@",
@@ -364,7 +360,7 @@
         if ([result[DESUserDiscoveryVersionKey] isEqual:DESUserDiscoveryRecVersion1]) {
             self.keyPreview.stringValue = result[DESUserDiscoveryIDKey];
             self.pinField.enabled = NO;
-            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"Not required", nil)];
+            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"None", nil)];
             _dnsDiscoveryVersion = 1;
         } else if ([result[DESUserDiscoveryVersionKey] isEqual:DESUserDiscoveryRecVersion2]) {
             uint16_t check = 0;
@@ -378,7 +374,7 @@
 
             self.keyPreview.stringValue = result[DESUserDiscoveryPublicKey];
             self.pinField.enabled = YES;
-            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN (6 characters)", nil)];
+            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN", nil)];
             if (_proposedPIN && [self isPINValid_toxv2:_proposedPIN])
                 self.pinField.stringValue = _proposedPIN;
 

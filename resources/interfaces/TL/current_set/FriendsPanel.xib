@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
@@ -262,10 +262,8 @@
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="WPp-DO-jmP">
                                                         <rect key="frame" x="50" y="20" width="173" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" id="op6-Gs-m26">
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="(placeholder)" id="op6-Gs-m26">
                                                             <font key="font" metaFont="system"/>
-                                                            <string key="title">(placeholder)
-(line 2)</string>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
@@ -553,7 +551,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="M99-C7-nIJ">
-                        <rect key="frame" x="116.99999826938273" y="54" width="272" height="22"/>
+                        <rect key="frame" x="116.99999907885734" y="54" width="272" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(placeholder)" drawsBackground="YES" id="eQL-FZ-ZCt">
                             <font key="font" metaFont="system"/>
@@ -571,7 +569,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="6q8-27-lsa">
-                        <rect key="frame" x="115" y="84" width="275.99999826938273" height="17"/>
+                        <rect key="frame" x="115" y="84" width="275.9999990788574" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="(placeholder)" id="ZZQ-zI-Xtn">
                             <font key="font" metaFont="systemBold"/>

@@ -3,8 +3,8 @@
 #import <Cocoa/Cocoa.h>
 
 typedef NS_ENUM(NSInteger, SCFriendFindMethod) {
-    SCFriendFindMethodPlain = 0,
-    SCFriendFindMethodDNSDiscovery = 1,
+    SCFriendFindMethodDNSDiscovery = 0,
+    SCFriendFindMethodPlain = 1,
     // SCFriendFindMethodBonjour,
 };
 

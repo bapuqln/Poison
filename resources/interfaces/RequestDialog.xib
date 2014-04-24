@@ -144,7 +144,7 @@ Gw
                                     <action selector="endSheet:" target="-2" id="sj2-I1-GDl"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="wHY-nT-7mS">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="wHY-nT-7mS">
                                 <rect key="frame" x="18" y="49" width="243" height="42"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Connecting to friends will disclose your IP address. Only accept friend requests from people you trust." id="QQP-bA-Geu">
