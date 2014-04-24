@@ -59,9 +59,13 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
     while (sz > 0 && buf[sz - 1] == 0) {
         --sz;
     }
-    if (sz == 0)
+    if (sz == 0) {
+        free(buf);
         return @"";
-    return [[NSString alloc] initWithBytesNoCopy:buf length:sz encoding:NSUTF8StringEncoding freeWhenDone:YES];
+    }
+    return [[NSString alloc] initWithBytesNoCopy:buf length:sz
+                                        encoding:NSUTF8StringEncoding
+                                    freeWhenDone:YES];
 }
 
 - (NSString *)statusMessage {
@@ -71,9 +75,13 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
     while (sz > 0 && buf[sz - 1] == 0) {
         --sz;
     }
-    if (sz == 0)
+    if (sz == 0) {
+        free(buf);
         return @"";
-    return [[NSString alloc] initWithBytesNoCopy:buf length:sz encoding:NSUTF8StringEncoding freeWhenDone:YES];
+    }
+    return [[NSString alloc] initWithBytesNoCopy:buf length:sz
+                                        encoding:NSUTF8StringEncoding
+                                    freeWhenDone:YES];
 }
 
 - (DESFriendStatus)status {

@@ -9,13 +9,12 @@
 
 - (void)awakeFromNib {
     if (!self.topColor)
-        self.topColor = [NSColor blackColor];
+        _topColor = [NSColor blackColor];
     if (!self.bottomColor)
-        self.bottomColor = [NSColor blackColor];
+        _bottomColor = [NSColor blackColor];
     if (!self.shadowColor)
-        self.shadowColor = [NSColor blackColor];
+        _shadowColor = [NSColor blackColor];
     [self regenChrome];
-    [self regenShine];
 }
 
 - (void)setTopColor:(NSColor *)topColor {
@@ -35,7 +34,9 @@
 }
 
 - (void)regenChrome {
+    _shine = nil;
     _chrome = [[NSGradient alloc] initWithStartingColor:self.bottomColor endingColor:self.topColor];
+    [self regenShine];
 }
 
 - (void)regenShine {
@@ -51,13 +52,18 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [_chrome drawInRect:(CGRect){{dirtyRect.origin.x, 0}, {dirtyRect.size.width, self.bounds.size.height}} angle:90];
-    if (self.shadowColor) {
+    if (_shine) {
         [_shine drawInRect:NSMakeRect(0, self.frame.size.height - 1, self.frame.size.width, 1) angle:0];
     }
     if (self.borderColor) {
         [self.borderColor set];
         NSRectFill((CGRect){{0, 0}, {self.frame.size.width, 1}});
     }
+}
+
+- (void)dealloc {
+    _chrome = nil;
+    _shine = nil;
 }
 
 @end

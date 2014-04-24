@@ -18,7 +18,7 @@
 
 @implementation DESGroupChat {
     int32_t _groupNum;
-    DESToxConnection *_connection;
+    DESToxConnection *__weak _connection;
     NSMutableSet *_participants;
     NSString *publicKey;
 }

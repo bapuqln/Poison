@@ -30,13 +30,12 @@
 
 @interface DESToxConnection : NSObject <DESFriend>
 @property (readonly, getter = isActive) BOOL active;
-@property (strong) NSString *name;
-@property (strong) NSString *statusMessage;
+@property (readwrite, strong) NSString *name;
+@property (readwrite, strong) NSString *statusMessage;
 @property DESFriendStatus status;
 /**
  * Actually, settable using -setPublicKey:privateKey:
  */
-@property (readonly) NSString *publicKey;
 @property (readonly) NSString *privateKey;
 @property (readonly) NSString *friendAddress;
 @property (nonatomic, readonly) NSUInteger closeNodesCount;

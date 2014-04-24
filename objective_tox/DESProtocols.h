@@ -40,7 +40,7 @@
 /* Not Key-Value-Observable. */
 @property (readonly) NSString *publicKey;
 @property (readonly) DESConversation *conversation;
-@property (readonly) DESToxConnection *connection;
+@property (readonly, weak) DESToxConnection *connection;
 /* Not Key-Value-Observable. */
 @property (readonly) int32_t peerNumber;
 @property (readonly) BOOL isTyping;

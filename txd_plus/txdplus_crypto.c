@@ -156,5 +156,9 @@ int txd_decrypt_buf(const uint8_t *password, uint64_t passlen,
     }
     if (out_size)
         *out_size = actual_bsize;
+    _txd_kill_memory(hashed_pass, HASHED_LEN + SALT_LEN);
+    free(hashed_pass);
+    _txd_kill_memory(out_buf, encb_len);
+    free(out_buf);
     return TXD_ERR_SUCCESS;
 }

@@ -131,6 +131,7 @@ void _DESCallbackFriendConnectionStatus(Tox *tox, int32_t from, uint8_t on_off, 
                 return;
             [f updateAddress:[[NSString alloc] initWithCString:a encoding:NSUTF8StringEncoding] port:port];
             DESInfo(@"(%d) Address did change to %s, %hu", from, a, port);
+            free(a);
         } else {
             [f updateAddress:@"" port:0];
         }
