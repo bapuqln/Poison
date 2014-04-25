@@ -473,13 +473,8 @@ uint32_t txd_intermediate_from_buf(uint8_t *buf, uint64_t size,
     uint8_t *pos = buf + 4;
     uint32_t magic = _txd_read_int_32(buf);
 
-    /* warning! below only works because TXD_FORMAT_BINARY1 has a null at the
-     * end */
-    /* note: above comment is deprecated, ignore */
-    if (magic != TXD_FORMAT_BINARY1) {
-
+    if (magic != TXD_FORMAT_BINARY1)
         return TXD_ERR_BAD_BLOCK;
-    }
 
     uint64_t vsize = _txd_read_int_64(pos);
     pos += 8;
