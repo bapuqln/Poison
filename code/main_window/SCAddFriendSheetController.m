@@ -10,6 +10,8 @@
 
 #define SCFailureUIColour ([NSColor colorWithCalibratedRed:0.6 green:0.0 blue:0.0 alpha:1.0])
 #define SCSuccessUIColour ([NSColor colorWithCalibratedRed:0.0 green:0.8 blue:0.0 alpha:1.0])
+#define SCInternetDiscoverViewNoIDHeight (45)
+#define SCInternetDiscoverViewWithIDHeight (92)
 
 @interface SCAddFriendSheetController ()
 #pragma mark - plain id
@@ -126,10 +128,10 @@
 
     op.frameOrigin = temp.frame.origin;
 
-    [self resetFields:NO];
     [self.window.contentView replaceSubview:temp with:op];
     temp.hidden = NO;
     op.hidden = NO;
+    [self resetFields:NO];
 }
 
 - (SCFriendFindMethod)method {
@@ -139,6 +141,20 @@
 - (void)setMethod:(SCFriendFindMethod)method {
     self.methodChooser.selectedSegment = (NSInteger)method;
     [self methodDidChange:self.methodChooser];
+}
+
+- (void)resizeWindowForPreview {
+    if (self.methodPlaceholder != self.DNSDiscoveryMethodView)
+        return;
+    CGFloat currentHeight = self.window.frame.size.height - self.methodPlaceholder.frame.size.height;
+    CGRect mod = self.window.frame;
+    mod.size.height = currentHeight;
+    if ([self.keyPreview.stringValue isEqualToString:@""]) {
+        mod.size.height += SCInternetDiscoverViewNoIDHeight;
+    } else {
+        mod.size.height += SCInternetDiscoverViewWithIDHeight;
+    }
+    [self.window setFrame:mod display:YES animate:YES];
 }
 
 - (NSString *)defaultFlavourText {
@@ -177,6 +193,9 @@
     if (clearMessage)
         self.messageField.stringValue = NSLocalizedString(@"Please Tox me on Tox.", nil);
     self.continueButton.enabled = NO;
+
+    if (self.methodPlaceholder == self.DNSDiscoveryMethodView)
+        [self resizeWindowForPreview];
 }
 
 - (void)fillWithURL:(NSURL *)toxURL {
@@ -247,6 +266,7 @@
 #pragma mark - validation: dns discover mode
 - (void)clearDNSDiscoveryInfo {
     self.keyPreview.stringValue = @"";
+    [self resizeWindowForPreview];
     self.pinField.stringValue = @"";
     self.pinField.enabled = NO;
     [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN", nil)];
@@ -269,7 +289,7 @@
     } else {
         self.mailAddressField.textColor = [NSColor controlTextColor];
         self.findButton.enabled = YES;
-        self.idValidationStatusField.stringValue = NSLocalizedString(@"Click Find to search for a Tox user at that address.", nil);
+        self.idValidationStatusField.stringValue = NSLocalizedString(@"Press Return to search for a user at that address.", nil);
     }
 }
 
@@ -381,6 +401,7 @@
             _dnsDiscoveryVersion = 2;
             [self.pinField becomeFirstResponder];
         }
+        [self resizeWindowForPreview];
 
         [self validateFieldsPIN_DNSDiscovery];
         NSLog(@"%@ %@", result, error);

@@ -95,8 +95,8 @@ Gw
                         <segmentedCell key="cell" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectOne" id="kWj-ea-iOE">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="DNS Discovery" width="137" selected="YES" tag="1"/>
-                                <segment label="Tox ID" width="136"/>
+                                <segment label="Internet Discovery" width="137" selected="YES" tag="1"/>
+                                <segment label="Using a Tox ID" width="136"/>
                             </segments>
                         </segmentedCell>
                         <connections>
@@ -138,11 +138,11 @@ Gw
             </subviews>
         </customView>
         <customView id="wPs-CZ-ngm">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="hRf-tH-lju">
-                    <rect key="frame" x="20" y="47" width="183" height="22"/>
+                    <rect key="frame" x="20" y="0.0" width="183" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="sbs-gX-ny0">
                         <font key="font" metaFont="system"/>
@@ -154,7 +154,7 @@ Gw
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="qgw-0e-GYI">
-                    <rect key="frame" x="18" y="75" width="284" height="17"/>
+                    <rect key="frame" x="18" y="28" width="284" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Enter a Tox DNS address, then press Return." id="gdW-jc-1Mm">
                         <font key="font" metaFont="system"/>
@@ -163,8 +163,8 @@ Gw
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="dqe-gp-Th3">
-                    <rect key="frame" x="18" y="0.0" width="284" height="39"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <rect key="frame" x="18" y="-47" width="284" height="39"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" state="on" placeholderString="0000000000000000000000000000000000000000000000000000000000000000000000000000" id="LVt-Ki-fWM">
                         <font key="font" size="12" name="Menlo-Regular"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -175,7 +175,7 @@ Gw
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="wgT-00-wMm">
-                    <rect key="frame" x="211" y="47" width="67" height="22"/>
+                    <rect key="frame" x="211" y="0.0" width="67" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="PIN" drawsBackground="YES" id="nKv-k6-l1y">
                         <font key="font" metaFont="system"/>
@@ -187,7 +187,7 @@ Gw
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="XPU-ik-IfB">
-                    <rect key="frame" x="279" y="49" width="23" height="17"/>
+                    <rect key="frame" x="279" y="2" width="23" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="✓" id="8O0-aC-ATq">
                         <font key="font" metaFont="system"/>
