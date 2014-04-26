@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SCRequestDialogController">
             <connections>
+                <outlet property="avatarView" destination="xt5-zo-YXP" id="3QC-YM-Wx5"/>
                 <outlet property="bottomView" destination="e4S-MP-9ac" id="Rfz-1e-j15"/>
                 <outlet property="keyField" destination="8X8-sx-vnV" id="8qN-90-Mnh"/>
                 <outlet property="messageField" destination="cvS-Ck-tBA" id="99a-Cn-D7c"/>

@@ -82,8 +82,8 @@
 		F543BE3718E12994004C70D3 /* SCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F543BE3618E12994004C70D3 /* SCMainWindowController.m */; };
 		F55857A618D649820053DD52 /* libqrencode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F55857A518D649820053DD52 /* libqrencode.a */; };
 		F567A4E018C5530300E04F3A /* SCDraggingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F567A4DF18C5530300E04F3A /* SCDraggingView.m */; };
-		F56956CC18E884AE00E1EB0D /* avatar_mask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CA18E884AE00E1EB0D /* avatar_mask@2x.png */; };
-		F56956CD18E884AE00E1EB0D /* avatar_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CB18E884AE00E1EB0D /* avatar_mask.png */; };
+		F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CA18E884AE00E1EB0D /* avatar-mask-circle@2x.png */; };
+		F56956CD18E884AE00E1EB0D /* avatar-mask-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CB18E884AE00E1EB0D /* avatar-mask-circle.png */; };
 		F56956D618E88C4700E1EB0D /* SCBuddyListCells.m in Sources */ = {isa = PBXBuildFile; fileRef = F56956D518E88C4700E1EB0D /* SCBuddyListCells.m */; };
 		F56956D918E88EE700E1EB0D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56956D818E88EE700E1EB0D /* Quartz.framework */; };
 		F56B873818EE42E1008B5829 /* SCBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = F56B873718EE42E1008B5829 /* SCBase64.m */; };
@@ -98,6 +98,12 @@
 		F5B5421F18B6D23C00226CA8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B5421E18B6D23C00226CA8 /* Cocoa.framework */; };
 		F5B5422B18B6D23C00226CA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5422A18B6D23C00226CA8 /* main.m */; };
 		F5B5423218B6D23C00226CA8 /* SCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5423118B6D23C00226CA8 /* SCAppDelegate.m */; };
+		F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B300190B55EE00081FEA /* avatar-mask-roundrect@2x.png */; };
+		F5C1B307190B55EE00081FEA /* avatar-mask-squircle.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B301190B55EE00081FEA /* avatar-mask-squircle.png */; };
+		F5C1B308190B55EE00081FEA /* avatar-mask-roundrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B302190B55EE00081FEA /* avatar-mask-roundrect.png */; };
+		F5C1B309190B55EE00081FEA /* avatar-mask-squircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B303190B55EE00081FEA /* avatar-mask-squircle@2x.png */; };
+		F5C1B30A190B55EE00081FEA /* avatar-mask-square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B304190B55EE00081FEA /* avatar-mask-square@2x.png */; };
+		F5C1B30B190B55EE00081FEA /* avatar-mask-square.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B305190B55EE00081FEA /* avatar-mask-square.png */; };
 		F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F5CC709B18C2BA1600C41EBF /* friends.rtf */; };
 		F5D1223518F076910075BD10 /* SCSelectiveMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1223418F076910075BD10 /* SCSelectiveMenuTableView.m */; };
 		F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */; };
@@ -265,8 +271,8 @@
 		F567A4DE18C5530300E04F3A /* SCDraggingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDraggingView.h; sourceTree = "<group>"; };
 		F567A4DF18C5530300E04F3A /* SCDraggingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDraggingView.m; sourceTree = "<group>"; };
 		F567A4E218C5745C00E04F3A /* to-do */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "to-do"; sourceTree = "<group>"; };
-		F56956CA18E884AE00E1EB0D /* avatar_mask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar_mask@2x.png"; sourceTree = "<group>"; };
-		F56956CB18E884AE00E1EB0D /* avatar_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar_mask.png; sourceTree = "<group>"; };
+		F56956CA18E884AE00E1EB0D /* avatar-mask-circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-circle@2x.png"; sourceTree = "<group>"; };
+		F56956CB18E884AE00E1EB0D /* avatar-mask-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-circle.png"; sourceTree = "<group>"; };
 		F56956D418E88C4700E1EB0D /* SCBuddyListCells.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBuddyListCells.h; sourceTree = "<group>"; };
 		F56956D518E88C4700E1EB0D /* SCBuddyListCells.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBuddyListCells.m; sourceTree = "<group>"; };
 		F56956D718E88CBB00E1EB0D /* SCBuddyListShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBuddyListShared.h; sourceTree = "<group>"; };
@@ -295,6 +301,12 @@
 		F5B5422C18B6D23C00226CA8 /* Poison-Prefix.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "Poison-Prefix.pch"; sourceTree = "<group>"; };
 		F5B5423018B6D23C00226CA8 /* SCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCAppDelegate.h; sourceTree = "<group>"; };
 		F5B5423118B6D23C00226CA8 /* SCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCAppDelegate.m; sourceTree = "<group>"; };
+		F5C1B300190B55EE00081FEA /* avatar-mask-roundrect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-roundrect@2x.png"; sourceTree = "<group>"; };
+		F5C1B301190B55EE00081FEA /* avatar-mask-squircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-squircle.png"; sourceTree = "<group>"; };
+		F5C1B302190B55EE00081FEA /* avatar-mask-roundrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-roundrect.png"; sourceTree = "<group>"; };
+		F5C1B303190B55EE00081FEA /* avatar-mask-squircle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-squircle@2x.png"; sourceTree = "<group>"; };
+		F5C1B304190B55EE00081FEA /* avatar-mask-square@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-square@2x.png"; sourceTree = "<group>"; };
+		F5C1B305190B55EE00081FEA /* avatar-mask-square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-square.png"; sourceTree = "<group>"; };
 		F5CC709B18C2BA1600C41EBF /* friends.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = friends.rtf; sourceTree = "<group>"; };
 		F5D1223318F076910075BD10 /* SCSelectiveMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSelectiveMenuTableView.h; sourceTree = "<group>"; };
 		F5D1223418F076910075BD10 /* SCSelectiveMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSelectiveMenuTableView.m; sourceTree = "<group>"; };
@@ -422,8 +434,14 @@
 				F5DAB46618C962E90046ED96 /* qr-placeholder.png */,
 				F5FFF46318B8283300CD1E43 /* oi.png */,
 				F5FFF46418B8283300CD1E43 /* oi@2x.png */,
-				F56956CA18E884AE00E1EB0D /* avatar_mask@2x.png */,
-				F56956CB18E884AE00E1EB0D /* avatar_mask.png */,
+				F56956CA18E884AE00E1EB0D /* avatar-mask-circle@2x.png */,
+				F56956CB18E884AE00E1EB0D /* avatar-mask-circle.png */,
+				F5C1B300190B55EE00081FEA /* avatar-mask-roundrect@2x.png */,
+				F5C1B302190B55EE00081FEA /* avatar-mask-roundrect.png */,
+				F5C1B303190B55EE00081FEA /* avatar-mask-squircle@2x.png */,
+				F5C1B301190B55EE00081FEA /* avatar-mask-squircle.png */,
+				F5C1B304190B55EE00081FEA /* avatar-mask-square@2x.png */,
+				F5C1B305190B55EE00081FEA /* avatar-mask-square.png */,
 				F53D4DBA18FA243D0051E2E7 /* ellipsis-overlay@2x.png */,
 				F53D4DB918FA243D0051E2E7 /* ellipsis-overlay.png */,
 				F5882F591900AA1600CA7DC2 /* request-icon@2x.png */,
@@ -737,7 +755,7 @@
 				F52D013918B7CFB70033680F /* icon_plus@2x.png in Resources */,
 				F541811718C4138100AB220E /* Default.psnChatStyle in Resources */,
 				F538754E18C28B4000AED945 /* titlebar_incoming_files.png in Resources */,
-				F56956CD18E884AE00E1EB0D /* avatar_mask.png in Resources */,
+				F56956CD18E884AE00E1EB0D /* avatar-mask-circle.png in Resources */,
 				F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */,
 				F52D013D18B7CFB70033680F /* status-light-away.png in Resources */,
 				F5DAB46718C962E90046ED96 /* qr-placeholder.png in Resources */,
@@ -746,15 +764,18 @@
 				F52D013318B7CFB70033680F /* icon_group_join@2x.png in Resources */,
 				F52D013018B7CFB70033680F /* icon_group_ignore.png in Resources */,
 				F52D014418B7CFB70033680F /* tox_logo@2x.png in Resources */,
+				F5C1B309190B55EE00081FEA /* avatar-mask-squircle@2x.png in Resources */,
 				F52714A818DF823400B7E663 /* AddFriend.xib in Resources */,
 				F52714AD18DF823400B7E663 /* NewUser.xib in Resources */,
 				F52D014118B7CFB70033680F /* status-light-online.png in Resources */,
 				F52714A918DF823400B7E663 /* AVAwayViewExperimental.xib in Resources */,
 				F52D013B18B7CFB70033680F /* icon-frequests.png in Resources */,
 				F5882F5A1900AA1600CA7DC2 /* request-icon.png in Resources */,
+				F5C1B308190B55EE00081FEA /* avatar-mask-roundrect.png in Resources */,
 				F52D013718B7CFB70033680F /* icon_minus@2x.png in Resources */,
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
 				F52D013A18B7CFB70033680F /* icon_smiley.png in Resources */,
+				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
 				F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */,
 				F5FFF46618B8283300CD1E43 /* oi@2x.png in Resources */,
@@ -765,14 +786,16 @@
 				F52D013418B7CFB70033680F /* icon_info.png in Resources */,
 				F52D013618B7CFB70033680F /* icon_minus.png in Resources */,
 				F5882F5B1900AA1600CA7DC2 /* request-icon@2x.png in Resources */,
+				F5C1B30B190B55EE00081FEA /* avatar-mask-square.png in Resources */,
 				F5FFF46118B81F4E00CD1E43 /* Poison.iconset in Resources */,
+				F5C1B30A190B55EE00081FEA /* avatar-mask-square@2x.png in Resources */,
 				F52D014918B7CFB70033680F /* user-icon-default.png in Resources */,
 				F52D013E18B7CFB70033680F /* status-light-away@2x.png in Resources */,
 				F53D4DBC18FA243D0051E2E7 /* ellipsis-overlay@2x.png in Resources */,
 				F52D013C18B7CFB70033680F /* icon-frequests@2x.png in Resources */,
 				F58EE9A918C57A760033F2D4 /* DefaultDefaults.plist in Resources */,
 				F52714AB18DF823400B7E663 /* FriendsPanel.xib in Resources */,
-				F56956CC18E884AE00E1EB0D /* avatar_mask@2x.png in Resources */,
+				F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */,
 				F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */,
 				F52D013818B7CFB70033680F /* icon_plus.png in Resources */,
 				F52D013518B7CFB70033680F /* icon_info@2x.png in Resources */,
@@ -780,6 +803,7 @@
 				F5F6D5F318DE5AB200A14557 /* status-light-missing@2x.png in Resources */,
 				F52714B218DF9DA400B7E663 /* Localizable.strings in Resources */,
 				F52D014018B7CFB70033680F /* status-light-offline@2x.png in Resources */,
+				F5C1B307190B55EE00081FEA /* avatar-mask-squircle.png in Resources */,
 				F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */,
 				F52714AA18DF823400B7E663 /* ChatPanel.xib in Resources */,
 			);

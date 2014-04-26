@@ -2,11 +2,13 @@
 
 #import "SCRequestDialogController.h"
 #import "ObjectiveTox.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCRequestDialogController ()
 @property (strong) IBOutlet NSView *topView;
 @property (strong) IBOutlet NSView *bottomView;
 
+@property (strong) IBOutlet NSImageView *avatarView;
 @property (strong) IBOutlet NSTextField *nameHeader;
 @property (strong) IBOutlet NSTextField *keyField;
 @property (strong) IBOutlet NSScrollView *messageField;
@@ -20,7 +22,21 @@
     [self setupUI];
 }
 
+- (void)applyMaskIfRequired {
+    if (self.avatarView.wantsLayer)
+        return;
+    self.avatarView.wantsLayer = YES;
+    NSImage *mask = SCAvatarMaskImage();
+    CALayer *maskLayer = [CALayer layer];
+    [CATransaction begin];
+    maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
+    maskLayer.contents = (id)mask;
+    self.avatarView.layer.mask = maskLayer;
+    [CATransaction commit];
+}
+
 - (void)setupUI {
+    [self applyMaskIfRequired];
     self.keyField.stringValue = self.request.senderName;
     self.textView.string = self.request.message;
     [self.textView.layoutManager glyphRangeForTextContainer:self.textView.textContainer];

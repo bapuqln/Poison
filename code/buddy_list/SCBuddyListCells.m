@@ -141,7 +141,7 @@
     if (self.avatarView.wantsLayer)
         return;
     self.avatarView.wantsLayer = YES;
-    NSImage *mask = [NSImage imageNamed:@"avatar_mask"];
+    NSImage *mask = SCAvatarMaskImage();
     CALayer *maskLayer = [CALayer layer];
     [CATransaction begin];
     maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
@@ -180,7 +180,7 @@
     if (self.avatarView.wantsLayer)
         return;
     self.avatarView.wantsLayer = YES;
-    NSImage *mask = [NSImage imageNamed:@"avatar_mask"];
+    NSImage *mask = SCAvatarMaskImage();
     CALayer *maskLayer = [CALayer layer];
     [CATransaction begin];
     maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};

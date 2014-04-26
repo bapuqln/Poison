@@ -35,4 +35,28 @@ NS_INLINE NSURL *SCApplicationSupportDirectory(void) {
     return returnURL;
 }
 
+typedef NS_ENUM(NSInteger, SCAvatarMaskShape) {
+    SCAvatarMaskShapeCircle = 1,
+    SCAvatarMaskShapeSquircle,
+    SCAvatarMaskShapeRoundRect,
+    SCAvatarMaskShapeSquare,
+};
+
+NS_INLINE NSImage *SCAvatarMaskImage(void) {
+    NSInteger preferredShape = [[NSUserDefaults standardUserDefaults] integerForKey:@"avatarShape"];
+    switch (preferredShape) {
+        case SCAvatarMaskShapeCircle:
+            return [NSImage imageNamed:@"avatar-mask-circle"];
+
+        case SCAvatarMaskShapeSquircle:
+            return [NSImage imageNamed:@"avatar-mask-squircle"];
+
+        case SCAvatarMaskShapeRoundRect:
+            return [NSImage imageNamed:@"avatar-mask-roundrect"];
+
+        default:
+            return [NSImage imageNamed:@"avatar-mask-square"];
+    }
+}
+
 #endif
