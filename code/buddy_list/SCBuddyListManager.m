@@ -98,7 +98,13 @@
 #pragma mark - kvo
 
 - (NSArray *)orderingList {
-    return nil;
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:(_friendListChunk.count
+                                                             + _groupListChunk.count
+                                                             + _requestListChunk.count)];
+    [arr addObjectsFromArray:_friendListChunk];
+    [arr addObjectsFromArray:_groupListChunk];
+    [arr addObjectsFromArray:_requestListChunk];
+    return arr;
 }
 
 - (void)detachHandlersFromConnection {

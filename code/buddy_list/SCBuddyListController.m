@@ -104,7 +104,6 @@
     NSDateFormatter *_formatter;
     SCBuddyListManager *_dataSource;
     SCRequestDialogController *_requestSheet;
-
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -154,7 +153,7 @@
     [tox addObserver:self forKeyPath:@"statusMessage" options:NSKeyValueObservingOptionNew context:NULL];
     [tox addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
     _dataSource = [[SCBuddyListManager alloc] initWithConnection:tox];
-    [_dataSource addObserver:self forKeyPath:@"orderingList" options:NSKeyValueObservingOptionNew context:NULL];
+    [_dataSource addObserver:self forKeyPath:@"orderingList" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
     self.friendListView.dataSource = _dataSource;
 
     if (tox.isActive) {
@@ -165,14 +164,38 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    change = [change copy];
     if (object == _dataSource) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.friendListView reloadData];
+            if (change[NSKeyValueChangeOldKey] == [NSNull null]) {
+                [self.friendListView reloadData];
+                return;
+            }
+            
+            NSMutableArray *shadowOrder = [change[NSKeyValueChangeOldKey] mutableCopy];
+
+            [self.friendListView beginUpdates];
+            NSArray *newValues = change[NSKeyValueChangeNewKey];
+            NSMutableIndexSet *opList = [NSMutableIndexSet indexSet];
+
+            for (int i = 0; i < shadowOrder.count; ++i) {
+                if (![newValues containsObject:shadowOrder[i]])
+                    [opList addIndex:i];
+            }
+            [shadowOrder removeObjectsAtIndexes:opList];
+            [self.friendListView removeRowsAtIndexes:opList withAnimation:NSTableViewAnimationEffectGap | NSTableViewAnimationSlideUp];
+
+            [opList removeAllIndexes];
+            for (int i = 0; i < newValues.count; ++i) {
+                if (![shadowOrder containsObject:newValues[i]])
+                    [opList addIndex:i];
+            }
+            [self.friendListView insertRowsAtIndexes:opList withAnimation:NSTableViewAnimationEffectGap | NSTableViewAnimationSlideDown];
+            [self.friendListView endUpdates];
         });
         return;
     }
 
-    change = [change copy];
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:@"name"]) {
             self.nameField.stringValue = change[NSKeyValueChangeNewKey];
