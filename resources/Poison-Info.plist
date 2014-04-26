@@ -80,7 +80,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>m87</string>
+	<string>m88</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
@@ -90,7 +90,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSNonHumanReadableCopyright</key>
-	<string>Copyright 2013 - 2014 Tox Development Team. All rights reserved.</string>
+	<string>Copyright 2013 - 2014 the Tox Foundation. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>ProjectHomepage</key>
@@ -98,7 +98,7 @@
 	<key>SCDevelopmentName</key>
 	<string>Poison</string>
 	<key>SCGitRef</key>
-	<string>c195683</string>
+	<string>f0a8e68</string>
 	<key>SCReleaseGroupIdentity</key>
 	<string>You know Sakura Trick is the AOTS of Winter '14, and if you don't think it is, your opinion is invalid, right?</string>
 	<key>ToxHomepage</key>
