@@ -185,7 +185,7 @@ int txd_restore_intermediate(txd_intermediate_t interm, Tox *tox)
         if (server -> txd_flags & TXD_BIT_HAS_INET4) {
             IP the_ip;
             the_ip.family = AF_INET;
-            memset(the_ip.padding, 0, 3);
+            /* memset(the_ip.padding, 0, 3); */
             IP4 ip4;
             memcpy(ip4.uint8, server -> txd_bytes_inet4, 4);
             the_ip.ip4 = ip4;
