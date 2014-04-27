@@ -95,6 +95,14 @@
 		F59C0F4418D3E6F300BB437C /* SCResourceBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = F59C0F4318D3E6F300BB437C /* SCResourceBundle.m */; };
 		F5A2978218D4CB3600595FDF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A2978118D4CB3600595FDF /* Security.framework */; };
 		F5A2978A18D51CAA00595FDF /* SCAddFriendSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A2978918D51CAA00595FDF /* SCAddFriendSheetController.m */; };
+		F5AC0D87190C69BC0020644C /* request-pill-accept-down.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D83190C69BC0020644C /* request-pill-accept-down.png */; };
+		F5AC0D88190C69BC0020644C /* request-pill-accept@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D84190C69BC0020644C /* request-pill-accept@2x.png */; };
+		F5AC0D89190C69BC0020644C /* request-pill-accept.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D85190C69BC0020644C /* request-pill-accept.png */; };
+		F5AC0D8A190C69BC0020644C /* request-pill-accept-down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D86190C69BC0020644C /* request-pill-accept-down@2x.png */; };
+		F5AC0D92190C6BA50020644C /* request-pill-dismiss.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D8E190C6BA50020644C /* request-pill-dismiss.png */; };
+		F5AC0D93190C6BA50020644C /* request-pill-dismiss-down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */; };
+		F5AC0D94190C6BA50020644C /* request-pill-dismiss-down.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */; };
+		F5AC0D95190C6BA50020644C /* request-pill-dismiss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */; };
 		F5B5421F18B6D23C00226CA8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B5421E18B6D23C00226CA8 /* Cocoa.framework */; };
 		F5B5422B18B6D23C00226CA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5422A18B6D23C00226CA8 /* main.m */; };
 		F5B5423218B6D23C00226CA8 /* SCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5423118B6D23C00226CA8 /* SCAppDelegate.m */; };
@@ -292,6 +300,14 @@
 		F5A2978118D4CB3600595FDF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F5A2978818D51CAA00595FDF /* SCAddFriendSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAddFriendSheetController.h; sourceTree = "<group>"; };
 		F5A2978918D51CAA00595FDF /* SCAddFriendSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAddFriendSheetController.m; sourceTree = "<group>"; };
+		F5AC0D83190C69BC0020644C /* request-pill-accept-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept-down.png"; sourceTree = "<group>"; };
+		F5AC0D84190C69BC0020644C /* request-pill-accept@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept@2x.png"; sourceTree = "<group>"; };
+		F5AC0D85190C69BC0020644C /* request-pill-accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept.png"; sourceTree = "<group>"; };
+		F5AC0D86190C69BC0020644C /* request-pill-accept-down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept-down@2x.png"; sourceTree = "<group>"; };
+		F5AC0D8E190C6BA50020644C /* request-pill-dismiss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss.png"; sourceTree = "<group>"; };
+		F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss-down@2x.png"; sourceTree = "<group>"; };
+		F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss-down.png"; sourceTree = "<group>"; };
+		F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss@2x.png"; sourceTree = "<group>"; };
 		F5B5421B18B6D23C00226CA8 /* Poison.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poison.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B5421E18B6D23C00226CA8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F5B5422118B6D23C00226CA8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -446,6 +462,14 @@
 				F53D4DB918FA243D0051E2E7 /* ellipsis-overlay.png */,
 				F5882F591900AA1600CA7DC2 /* request-icon@2x.png */,
 				F5882F581900AA1600CA7DC2 /* request-icon.png */,
+				F5AC0D83190C69BC0020644C /* request-pill-accept-down.png */,
+				F5AC0D86190C69BC0020644C /* request-pill-accept-down@2x.png */,
+				F5AC0D85190C69BC0020644C /* request-pill-accept.png */,
+				F5AC0D84190C69BC0020644C /* request-pill-accept@2x.png */,
+				F5AC0D8E190C6BA50020644C /* request-pill-dismiss.png */,
+				F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */,
+				F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */,
+				F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */,
 				F5FFF46018B81F4E00CD1E43 /* Poison.iconset */,
 			);
 			name = art;
@@ -762,16 +786,20 @@
 				F52D013F18B7CFB70033680F /* status-light-offline.png in Resources */,
 				F52D014218B7CFB70033680F /* status-light-online@2x.png in Resources */,
 				F52D013318B7CFB70033680F /* icon_group_join@2x.png in Resources */,
+				F5AC0D92190C6BA50020644C /* request-pill-dismiss.png in Resources */,
+				F5AC0D95190C6BA50020644C /* request-pill-dismiss@2x.png in Resources */,
 				F52D013018B7CFB70033680F /* icon_group_ignore.png in Resources */,
 				F52D014418B7CFB70033680F /* tox_logo@2x.png in Resources */,
 				F5C1B309190B55EE00081FEA /* avatar-mask-squircle@2x.png in Resources */,
 				F52714A818DF823400B7E663 /* AddFriend.xib in Resources */,
 				F52714AD18DF823400B7E663 /* NewUser.xib in Resources */,
+				F5AC0D87190C69BC0020644C /* request-pill-accept-down.png in Resources */,
 				F52D014118B7CFB70033680F /* status-light-online.png in Resources */,
 				F52714A918DF823400B7E663 /* AVAwayViewExperimental.xib in Resources */,
 				F52D013B18B7CFB70033680F /* icon-frequests.png in Resources */,
 				F5882F5A1900AA1600CA7DC2 /* request-icon.png in Resources */,
 				F5C1B308190B55EE00081FEA /* avatar-mask-roundrect.png in Resources */,
+				F5AC0D93190C6BA50020644C /* request-pill-dismiss-down@2x.png in Resources */,
 				F52D013718B7CFB70033680F /* icon_minus@2x.png in Resources */,
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
 				F52D013A18B7CFB70033680F /* icon_smiley.png in Resources */,
@@ -779,6 +807,8 @@
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
 				F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */,
 				F5FFF46618B8283300CD1E43 /* oi@2x.png in Resources */,
+				F5AC0D8A190C69BC0020644C /* request-pill-accept-down@2x.png in Resources */,
+				F5AC0D88190C69BC0020644C /* request-pill-accept@2x.png in Resources */,
 				F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */,
 				F538754F18C28B4000AED945 /* titlebar_incoming_files@2x.png in Resources */,
 				F5FFF46518B8283300CD1E43 /* oi.png in Resources */,
@@ -787,6 +817,7 @@
 				F52D013618B7CFB70033680F /* icon_minus.png in Resources */,
 				F5882F5B1900AA1600CA7DC2 /* request-icon@2x.png in Resources */,
 				F5C1B30B190B55EE00081FEA /* avatar-mask-square.png in Resources */,
+				F5AC0D94190C6BA50020644C /* request-pill-dismiss-down.png in Resources */,
 				F5FFF46118B81F4E00CD1E43 /* Poison.iconset in Resources */,
 				F5C1B30A190B55EE00081FEA /* avatar-mask-square@2x.png in Resources */,
 				F52D014918B7CFB70033680F /* user-icon-default.png in Resources */,
@@ -805,6 +836,7 @@
 				F52D014018B7CFB70033680F /* status-light-offline@2x.png in Resources */,
 				F5C1B307190B55EE00081FEA /* avatar-mask-squircle.png in Resources */,
 				F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */,
+				F5AC0D89190C69BC0020644C /* request-pill-accept.png in Resources */,
 				F52714AA18DF823400B7E663 /* ChatPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

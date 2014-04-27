@@ -6,17 +6,15 @@
     NSInteger _clickedRow;
 }
 
-- (NSInteger)clickedRow {
+- (NSInteger)menuSelectedRow {
     return _clickedRow;
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)event {
     NSPoint loc = [self convertPoint:event.locationInWindow fromView:nil];
     NSInteger row = [self rowAtPoint:loc];
-    if (row == -1)
-        return nil;
+    _clickedRow = row;
     if ([self.delegate respondsToSelector:@selector(tableView:menuForRow:)]) {
-        _clickedRow = row;
         return [(id<SCSelectiveMenuTableViewing>)self.delegate tableView:self menuForRow:row];
     }
     return nil;

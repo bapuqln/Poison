@@ -83,7 +83,8 @@
 }
 
 - (void)decline {
-    return;
+    SCAppDelegate *d = [NSApp delegate];
+    [d destroyFriendRequest:self];
 }
 
 @end

@@ -186,6 +186,13 @@
     });
 }
 
+- (void)destroyFriendRequest:(SCFriendRequest *)request {
+    [self willChangeValueForKey:@"requests"];
+    [_requests removeObjectForKey:request.senderName];
+    [self didChangeValueForKey:@"requests"];
+    [self archiveFriendRequests];
+}
+
 #pragma mark - Opening stuff
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {

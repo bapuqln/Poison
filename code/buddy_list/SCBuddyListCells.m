@@ -179,6 +179,8 @@
 - (void)applyMaskIfRequired {
     if (self.avatarView.wantsLayer)
         return;
+    self.accessoryView.wantsLayer = YES;
+    self.accessoryView.alphaValue = 0.0;
     self.avatarView.wantsLayer = YES;
     NSImage *mask = SCAvatarMaskImage();
     CALayer *maskLayer = [CALayer layer];
@@ -201,11 +203,22 @@
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent {
+    self.accessoryView.alphaValue = 0.0;
     self.accessoryView.hidden = NO;
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext currentContext].duration = 0.2;
+    [self.accessoryView animator].alphaValue = 1.0;
+    [NSAnimationContext endGrouping];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-    self.accessoryView.hidden = YES;
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext currentContext].duration = 0.2;
+    [NSAnimationContext currentContext].completionHandler = ^{
+        self.accessoryView.hidden = YES;
+    };
+    [self.accessoryView animator].alphaValue = 0.0;
+    [NSAnimationContext endGrouping];
 }
 
 - (void)setObjectValue:(id)objectValue {
@@ -215,6 +228,23 @@
         self.mainLabel.stringValue = [r.senderName substringToIndex:8];
         self.auxLabel.stringValue = r.message;
     }
+}
+
+@end
+
+@interface _SCRequestCellBlurView : NSView
+@end
+
+@implementation _SCRequestCellBlurView
+
+- (void)drawRect:(NSRect)dirtyRect {
+    static NSGradient *blurGrad = nil;
+    if (!blurGrad) {
+        NSColor *s = [NSColor colorWithCalibratedWhite:0.20 alpha:0.0];
+        NSColor *e = [NSColor colorWithCalibratedWhite:0.20 alpha:1.0];
+        blurGrad = [[NSGradient alloc] initWithStartingColor:s endingColor:e];
+    }
+    [blurGrad drawInRect:self.bounds angle:0.0];
 }
 
 @end

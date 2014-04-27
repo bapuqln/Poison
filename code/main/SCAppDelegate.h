@@ -5,7 +5,7 @@
 #import "SCMainWindowing.h"
 #include "tox.h"
 
-@class SCStandaloneWindowController;
+@class SCStandaloneWindowController, SCFriendRequest;
 @interface SCAppDelegate : NSObject <NSApplicationDelegate, DESToxConnectionDelegate>
 @property (strong, nonatomic) NSWindowController *mainWindowController;
 - (void)makeApplicationReadyForToxing:(txd_intermediate_t)userProfile
@@ -22,4 +22,6 @@
 
 - (void)focusWindowForConversation:(DESConversation *)conv;
 - (void)removeAuxWindowFromService:(SCStandaloneWindowController *)w;
+
+- (void)destroyFriendRequest:(SCFriendRequest *)request;
 @end

@@ -7,5 +7,5 @@
 @end
 
 @interface SCSelectiveMenuTableView : NSTableView
-
+@property (readonly) NSInteger menuSelectedRow;
 @end

@@ -130,11 +130,11 @@
     self.auxiliaryView.borderColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     self.auxiliaryView.shadowColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
     self.auxiliaryView.dragsWindow = YES;
-    self.friendListView.delegate = self;
     self.filterField.delegate = self;
 
     self.friendListView.target = self;
     self.friendListView.doubleAction = @selector(openAuxiliaryWindowForSelectedRow:);
+    self.friendListView.action = @selector(didClickButNotSelect:);
 }
 
 - (void)detachHandlersFromConnection {
@@ -308,6 +308,12 @@
         SCFriendCellView *dequeued = [tableView makeViewWithIdentifier:cellKind
                                                                  owner:nil];
         dequeued.manager = self;
+        if ([cellKind isEqualToString:@"RequestCell"]) {
+            ((SCRequestCellView *)dequeued).acceptButton.target = self;
+            ((SCRequestCellView *)dequeued).acceptButton.action = @selector(acceptRequestFromCell:);
+            ((SCRequestCellView *)dequeued).declineButton.target = self;
+            ((SCRequestCellView *)dequeued).declineButton.action = @selector(declineRequestFromCell:);
+        }
         [dequeued applyMaskIfRequired];
         return dequeued;
     }
@@ -348,14 +354,20 @@
     id model = [_dataSource objectAtRowIndex:row];
     if ([model conformsToProtocol:@protocol(DESConversation)]) {
         return YES;
-    } else if ([model isKindOfClass:[DESRequest class]]) {
+    }
+    return NO;
+}
+
+- (void)didClickButNotSelect:(NSTableView *)sender {
+    NSLog(@"%lu", sender.clickedRow);
+    id model = [_dataSource objectAtRowIndex:sender.clickedRow];
+    if ([model isKindOfClass:[DESRequest class]]) {
         if (!_requestSheet)
             _requestSheet = [[SCRequestDialogController alloc] initWithWindowNibName:@"RequestDialog"];
         [_requestSheet loadWindow];
         _requestSheet.request = model;
         [NSApp beginSheet:_requestSheet.window modalForWindow:self.view.window modalDelegate:self didEndSelector:@selector(requestSheet:didEndWithReturnCode:contextInfo:) contextInfo:NULL];
     }
-    return NO;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
@@ -366,7 +378,7 @@
 }
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
-    NSUInteger ci = self.friendListView.clickedRow;
+    NSUInteger ci = ((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow;
     DESConversation *conv = [_dataSource objectAtRowIndex:ci];
     [menu itemAtIndex:0].title = conv.preferredUIName;
 }
@@ -401,7 +413,7 @@
 }
 
 - (IBAction)removeFriendConfirm:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:self.friendListView.clickedRow];
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow];
     if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFriendsImmediately"]) {
@@ -427,7 +439,7 @@
 }
 
 - (IBAction)presentNicknameEditor:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:self.friendListView.clickedRow];
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow];
     if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
 
@@ -527,6 +539,22 @@
     }
     [sheet orderOut:self];
     _requestSheet = nil;
+}
+
+#pragma mark - request cell buttons
+
+- (IBAction)acceptRequestFromCell:(NSView *)sender {
+    DESRequest *model = ((NSTableCellView *)sender.superview.superview).objectValue;
+    if (!_requestSheet)
+        _requestSheet = [[SCRequestDialogController alloc] initWithWindowNibName:@"RequestDialog"];
+    [_requestSheet loadWindow];
+    _requestSheet.request = model;
+    [NSApp beginSheet:_requestSheet.window modalForWindow:self.view.window modalDelegate:self didEndSelector:@selector(requestSheet:didEndWithReturnCode:contextInfo:) contextInfo:NULL];
+}
+
+- (IBAction)declineRequestFromCell:(NSView *)sender {
+    DESRequest *model = ((NSTableCellView *)sender.superview.superview).objectValue;
+    [model decline];
 }
 
 @end
