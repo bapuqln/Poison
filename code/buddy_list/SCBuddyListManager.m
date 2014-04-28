@@ -152,6 +152,10 @@
             f = [NSPredicate predicateWithBlock:self.caseSensitiveFilterBlock];
         fset = [fset filteredSetUsingPredicate:f];
     }
+
+    if (fset.count == 0)
+        return @[];
+
     NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"peerNumber"
                                                          ascending:YES];
     NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:fset.count + 1];
@@ -175,6 +179,10 @@
             f = [NSPredicate predicateWithBlock:self.caseSensitiveFilterBlock];
         gset = [gset filteredSetUsingPredicate:f];
     }
+
+    if (gset.count == 0)
+        return @[];
+
     NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"peerNumber"
                                                          ascending:YES];
     NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:gset.count + 1];
@@ -189,9 +197,10 @@
 }
 
 - (NSArray *)_repopulateOrderingList_Requests {
-    if (_filterString) /* Don't search requests */
-        return @[];
     NSSet *rset = [(SCAppDelegate *)[NSApp delegate] requests];
+    if (_filterString || rset.count == 0) /* Don't search requests */
+        return @[];
+
     NSSortDescriptor *desc = [[NSSortDescriptor alloc] initWithKey:@"dateReceived"
                                                          ascending:YES];
     NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:rset.count + 1];
