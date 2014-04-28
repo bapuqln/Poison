@@ -95,7 +95,7 @@ void *const SCAddFriendSheetContext = (void *)1;
         return;
     }
     [self.addPanel fillWithURL:url];
-    [NSApp beginSheet:self.addPanel.window modalForWindow:self.window modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:) contextInfo:NULL];
+    [NSApp beginSheet:self.addPanel.window modalForWindow:self.window modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:) contextInfo:SCAddFriendSheetContext];
 }
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
