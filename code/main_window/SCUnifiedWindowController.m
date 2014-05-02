@@ -119,7 +119,8 @@
     NSMutableAttributedString *base;
     base = [[NSMutableAttributedString alloc] initWithString:@""
                                                   attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]}];
-    if ([_watchingConversation conformsToProtocol:@protocol(DESFriend)]
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"publicSights"]
+        && [_watchingConversation conformsToProtocol:@protocol(DESFriend)]
         && ((DESFriend *)_watchingConversation).port != 0) {
         DESFriend *f = (DESFriend *)_watchingConversation;
         NSString *inf = [NSString stringWithFormat:@"%@:%hu • ", f.address,

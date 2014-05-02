@@ -96,4 +96,12 @@
     }
 }
 
+#pragma mark - IDs
+
+- (NSString *)conversationIdentifier {
+    NSString *base = (self.type == DESConversationTypeFriend? @"F:"
+                      : @"G:");
+    return [base stringByAppendingString:self.publicKey];
+}
+
 @end

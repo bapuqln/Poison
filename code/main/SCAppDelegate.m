@@ -13,6 +13,7 @@
 #import "SCMenuStatusView.h"
 #import "SCFriendRequest.h"
 #import "SCStandaloneWindowController.h"
+#import "DESConversation+Poison_CustomName.h"
 
 /* note: this is hard-coded to make tampering harder. */
 #define SCApplicationDownloadPage (@"http://download.tox.im/")
@@ -406,8 +407,7 @@
 }
 
 - (void)focusWindowForConversation:(DESConversation *)conv {
-    NSString *mark = conv.type == DESConversationTypeFriend? @"F:" : @"G:";
-    NSString *key = [mark stringByAppendingString:conv.publicKey];
+    NSString *key = conv.conversationIdentifier;
     SCStandaloneWindowController *ctl = _auxiliaryChatWindows[key];
     if (!ctl) {
         ctl = [[SCStandaloneWindowController alloc] initWithConversation:conv];

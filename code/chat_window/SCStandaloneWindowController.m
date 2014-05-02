@@ -37,9 +37,7 @@
 }
 
 - (NSString *)conversationIdentifier {
-    NSString *base = (_watchingFriend.type == DESConversationTypeFriend? @"F:"
-                      : @"G:");
-    return [base stringByAppendingString:_watchingFriend.publicKey];
+    return _watchingFriend.conversationIdentifier;
 }
 
 - (void)addKVOHandlers {
@@ -74,6 +72,9 @@
 }
 
 - (void)updateWidget {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"publicSights"])
+        return;
+
     SCWidgetedWindow *w = (SCWidgetedWindow *)self.window;
     DESFriend *f = (DESFriend *)_watchingFriend;
     [CATransaction begin];

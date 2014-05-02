@@ -9,4 +9,5 @@
                                            backgroundColour:(NSColor *)bg;
 
 - (NSImage *)userImage;
+- (NSString *)conversationIdentifier;
 @end

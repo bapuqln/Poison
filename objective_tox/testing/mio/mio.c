@@ -280,6 +280,7 @@ int convert(int format, char *file, char *fileout) {
         for (int n = 0; n < 20; ++n) {
             tox_do(t);
             printf(".");
+            fflush(stdout);
             usleep(50000);
         }
         puts(" done");
