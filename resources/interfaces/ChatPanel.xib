@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
@@ -74,9 +74,19 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="435"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <customView id="lUW-Ma-cOW" customClass="SCGradientView">
+                <customView id="lUW-Ma-cOW" customClass="SCVideoPaneView">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="141"/>
                     <autoresizingMask key="autoresizingMask"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="OQs-WY-Mzt">
+                            <rect key="frame" x="181" y="11" width="118" height="118"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="vp_layout_test_sample" id="mZv-au-Be8"/>
+                        </imageView>
+                    </subviews>
+                    <connections>
+                        <outlet property="videoSquare" destination="OQs-WY-Mzt" id="Jcd-KQ-CUq"/>
+                    </connections>
                 </customView>
                 <customView id="1">
                     <rect key="frame" x="0.0" y="142" width="480" height="293"/>
@@ -97,10 +107,6 @@
                                         <action selector="_testTogglingVideoList:" target="-2" id="zro-Az-lkg"/>
                                     </connections>
                                 </button>
-                                <progressIndicator maxValue="100" indeterminate="YES" controlSize="small" style="bar" id="2dT-lI-cnO">
-                                    <rect key="frame" x="309" y="8" width="80" height="12"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                </progressIndicator>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="VYZ-Q9-G3v">
                                     <rect key="frame" x="8" y="6" width="295" height="17"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -230,5 +236,6 @@
     <resources>
         <image name="NSShareTemplate" width="18" height="16"/>
         <image name="titlebar_incoming_files" width="22" height="22"/>
+        <image name="vp_layout_test_sample" width="256" height="256"/>
     </resources>
 </document>

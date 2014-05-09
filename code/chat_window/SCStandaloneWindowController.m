@@ -36,8 +36,16 @@
     return self;
 }
 
+- (DESConversation *)conversation {
+    return _watchingFriend;
+}
+
 - (NSString *)conversationIdentifier {
     return _watchingFriend.conversationIdentifier;
+}
+
+- (SCChatViewController *)chatView {
+    return _chatView;
 }
 
 - (void)addKVOHandlers {

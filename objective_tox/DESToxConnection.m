@@ -57,15 +57,12 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 #pragma mark - Run loop
 
 - (void)start {
-    uint8_t *kek = malloc(TOX_FRIEND_ADDRESS_SIZE);
-    tox_get_address(self.tox, kek);
-    DESInfo(@"Our public key: %@", DESConvertFriendAddressToString(kek));
-    free(kek);
     if (!self.isMessengerLoopStopping) {
         DESWarn(@"You are calling [DESToxConnection start] multiple times. They will be ignored.");
         return;
     }
     self.isMessengerLoopStopping = NO;
+    DESInfo(@"zenshin aru nomi!");
     dispatch_async(self.messengerQueue, ^{
         [self _desRunLoopRun];
         dispatch_async(dispatch_get_main_queue(), ^{

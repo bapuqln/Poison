@@ -5,9 +5,11 @@
 #import "SCMainWindowing.h"
 #include "tox.h"
 
-@class SCStandaloneWindowController, SCFriendRequest;
+@class SCStandaloneWindowController, SCFriendRequest, SCConversationManager;
 @interface SCAppDelegate : NSObject <NSApplicationDelegate, DESToxConnectionDelegate>
 @property (strong, nonatomic) NSWindowController *mainWindowController;
+@property (strong) SCConversationManager *conversationManager;
+
 - (void)makeApplicationReadyForToxing:(txd_intermediate_t)userProfile
                                  name:(NSString *)profileName
                              password:(NSString *)pass;
@@ -24,4 +26,6 @@
 - (void)removeAuxWindowFromService:(SCStandaloneWindowController *)w;
 
 - (void)destroyFriendRequest:(SCFriendRequest *)request;
+
+- (void)deleteFriend:(DESFriend *)friend confirmingInWindow:(NSWindow *)window;
 @end

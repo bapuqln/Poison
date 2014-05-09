@@ -204,4 +204,8 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
     [self didChangeValueForKey:@"port"];
 }
 
+- (void)dealloc {
+    DESInfo(@"deallocated!");
+}
+
 @end

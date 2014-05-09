@@ -167,14 +167,19 @@
     change = [change copy];
     if (object == _dataSource) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (change[NSKeyValueChangeOldKey] == [NSNull null]) {
+            NSInteger selectedIndex = self.friendListView.selectedRow;
+            [self.friendListView reloadData];
+            if ([change[NSKeyValueChangeOldKey] count] < [change[NSKeyValueChangeNewKey] count]) {
+                selectedIndex = MAX(selectedIndex - 1, 0);
+            }
+            [self.friendListView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedIndex] byExtendingSelection:NO];
+            /*if (change[NSKeyValueChangeOldKey] == [NSNull null]) {
                 [self.friendListView reloadData];
                 return;
             }
             
             NSMutableArray *shadowOrder = [change[NSKeyValueChangeOldKey] mutableCopy];
 
-            [self.friendListView beginUpdates];
             NSArray *newValues = change[NSKeyValueChangeNewKey];
             NSMutableIndexSet *opList = [NSMutableIndexSet indexSet];
 
@@ -183,15 +188,24 @@
                     [opList addIndex:i];
             }
             [shadowOrder removeObjectsAtIndexes:opList];
+            [self.friendListView beginUpdates];
             [self.friendListView removeRowsAtIndexes:opList withAnimation:NSTableViewAnimationEffectGap | NSTableViewAnimationSlideUp];
+            [self.friendListView endUpdates];
 
             [opList removeAllIndexes];
             for (int i = 0; i < newValues.count; ++i) {
                 if (![shadowOrder containsObject:newValues[i]])
                     [opList addIndex:i];
             }
+            [self.friendListView beginUpdates];
             [self.friendListView insertRowsAtIndexes:opList withAnimation:NSTableViewAnimationEffectGap | NSTableViewAnimationSlideDown];
             [self.friendListView endUpdates];
+
+            [self.friendListView beginUpdates];
+            NSIndexSet *allIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newValues.count)];
+            [self.friendListView reloadDataForRowIndexes:allIndexes columnIndexes:[NSIndexSet indexSetWithIndex:0]];
+            [self.friendListView noteHeightOfRowsWithIndexesChanged:allIndexes];
+            [self.friendListView endUpdates];*/
         });
         return;
     }
@@ -359,7 +373,6 @@
 }
 
 - (void)didClickButNotSelect:(NSTableView *)sender {
-    NSLog(@"%lu", sender.clickedRow);
     id model = [_dataSource objectAtRowIndex:sender.clickedRow];
     if ([model isKindOfClass:[DESRequest class]]) {
         if (!_requestSheet)
@@ -416,26 +429,7 @@
     DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow];
     if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFriendsImmediately"]) {
-        [(SCAppDelegate *)[NSApp delegate] removeFriend:f];
-        return;
-    }
-
-    NSAlert *confirmation = [[NSAlert alloc] init];
-    confirmation.messageText = NSLocalizedString(@"Remove Friend", nil);
-    NSString *template = NSLocalizedString(@"Do you really want to remove %@ from your friends list?", nil);
-    confirmation.informativeText = [NSString stringWithFormat:template, f.preferredUIName];
-    NSButton *checkbox = [[NSButton alloc] initWithFrame:CGRectZero];
-    checkbox.buttonType = NSSwitchButton;
-    checkbox.title = NSLocalizedString(@"Don't ask me whether to remove friends again", nil);
-    [checkbox sizeToFit];
-    confirmation.accessoryView = checkbox;
-    [confirmation addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
-    [confirmation addButtonWithTitle:NSLocalizedString(@"No", nil)];
-    [confirmation beginSheetModalForWindow:self.view.window
-                             modalDelegate:self
-                            didEndSelector:@selector(commitDeletingFriendFromSheet:returnCode:userInfo:)
-                               contextInfo:(__bridge void *)f];
+    [(SCAppDelegate *)[NSApp delegate] deleteFriend:f confirmingInWindow:self.view.window];
 }
 
 - (IBAction)presentNicknameEditor:(id)sender {
@@ -461,14 +455,6 @@
     [NSApp beginSheet:self.nicknameEditorSheet modalForWindow:self.view.window modalDelegate:self didEndSelector:@selector(commitNicknameFromSheet:returnCode:userInfo:) contextInfo:(__bridge void *)(f)];
     [self.nicknameField becomeFirstResponder];
     [self.nicknameField selectText:self];
-}
-
-- (void)commitDeletingFriendFromSheet:(NSAlert *)sheet returnCode:(NSInteger)ret userInfo:(void *)friend {
-    if (((NSButton *)sheet.accessoryView).state == NSOnState)
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFriendsImmediately"];
-    if (ret == NSAlertFirstButtonReturn) {
-        [(SCAppDelegate *)[NSApp delegate] removeFriend:(__bridge DESFriend *)friend];
-    }
 }
 
 - (void)commitNicknameFromSheet:(NSWindow *)sheet returnCode:(NSInteger)ret userInfo:(void *)friend {

@@ -46,6 +46,9 @@
                                 <behavior key="behavior" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="removeFriendConfirm:" target="-2" id="RVd-jF-M2V"/>
+                            </connections>
                         </button>
                         <popUpButton id="qxV-WJ-N6q">
                             <rect key="frame" x="4" y="2" width="20" height="22"/>
@@ -318,8 +321,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="4c3-1E-B67"/>
-                <menuItem title="Rename Friend..." id="F4C-Bn-8WU">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                <menuItem title="Rename Friend..." keyEquivalent="r" id="F4C-Bn-8WU">
                     <connections>
                         <action selector="presentNicknameEditor:" target="-2" id="z9f-IB-fKw"/>
                     </connections>
@@ -352,7 +354,9 @@
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="nFI-cp-PRw"/>
                 <menuItem title="Remove Friend..." id="Tf8-Su-cfv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                     <connections>
                         <action selector="removeFriendConfirm:" target="-2" id="khJ-ps-bQ6"/>
                     </connections>

@@ -11,6 +11,8 @@
 #import "NSString+CanonicalID.h"
 #import "SCBuddyListShared.h"
 #import "DESConversation+Poison_CustomName.h"
+#import "SCAppDelegate.h"
+#import "SCConversationManager.h"
 
 #define SCUnifiedDefaultWindowFrame ((CGRect){{0, 0}, {700, 400}})
 #define SCUnifiedMinimumSize ((CGSize){700, 400})
@@ -74,6 +76,9 @@
     self.rootView = root;
     [self.window.contentView addSubview:self.rootView];
     [root setAutosaveName:@"UnifiedSplitPane"];
+
+    DESConversation *selected = self.friendsListCont.conversationSelectedInView;
+    self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:selected];
 }
 
 - (SCBuddyListController *)buddyListController {
@@ -96,6 +101,7 @@
     _watchingConversation = conversation;
     [self updateWindowTitle];
     [_watchingConversation addObserver:self forKeyPath:@"presentableTitle" options:NSKeyValueObservingOptionNew context:NULL];
+    self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:conversation];
     if ([_watchingConversation conformsToProtocol:@protocol(DESFriend)]) {
         self.window.representedURL = [NSBundle.mainBundle bundleURL];
         NSButton *b = [self.window standardWindowButton:NSWindowDocumentIconButton];

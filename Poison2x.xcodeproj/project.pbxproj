@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		F517D85C19156EF100B236FE /* SCVideoPaneView.m in Sources */ = {isa = PBXBuildFile; fileRef = F517D85B19156EF100B236FE /* SCVideoPaneView.m */; };
 		F517FCA918B91CDA0060D575 /* SCProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F517FCA818B91CDA0060D575 /* SCProfileManager.m */; };
 		F5239AAA190D750B00B06821 /* SCConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5239AA9190D750B00B06821 /* SCConversationManager.m */; };
 		F525114618FCC3BF00BD9EAA /* SCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F525114518FCC3BF00BD9EAA /* SCTextField.m */; };
@@ -32,7 +33,6 @@
 		F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A518DF823400B7E663 /* MainMenu.xib */; };
 		F52714AD18DF823400B7E663 /* NewUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A618DF823400B7E663 /* NewUser.xib */; };
 		F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A718DF823400B7E663 /* QRSheet.xib */; };
-		F52714B218DF9DA400B7E663 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F52714B418DF9DA400B7E663 /* Localizable.strings */; };
 		F52D013018B7CFB70033680F /* icon_group_ignore.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011518B7CFB70033680F /* icon_group_ignore.png */; };
 		F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */; };
 		F52D013218B7CFB70033680F /* icon_group_join.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011718B7CFB70033680F /* icon_group_join.png */; };
@@ -88,6 +88,7 @@
 		F56956D618E88C4700E1EB0D /* SCBuddyListCells.m in Sources */ = {isa = PBXBuildFile; fileRef = F56956D518E88C4700E1EB0D /* SCBuddyListCells.m */; };
 		F56956D918E88EE700E1EB0D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56956D818E88EE700E1EB0D /* Quartz.framework */; };
 		F56B873818EE42E1008B5829 /* SCBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = F56B873718EE42E1008B5829 /* SCBase64.m */; };
+		F572E9EA19157423009FE61B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F572E9EC19157423009FE61B /* Localizable.strings */; };
 		F577A5421905E1BC002AF82F /* SCRequestDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = F577A5411905E1BC002AF82F /* SCRequestDialogController.m */; };
 		F5882F5A1900AA1600CA7DC2 /* request-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F5882F581900AA1600CA7DC2 /* request-icon.png */; };
 		F5882F5B1900AA1600CA7DC2 /* request-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5882F591900AA1600CA7DC2 /* request-icon@2x.png */; };
@@ -118,6 +119,9 @@
 		F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */; };
 		F5DAB46718C962E90046ED96 /* qr-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DAB46618C962E90046ED96 /* qr-placeholder.png */; };
 		F5DAB46A18C970A50046ED96 /* SCQRCodeSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */; };
+		F5E1A2C819170EFC00D0037A /* vp_layout_test_sample@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */; };
+		F5E1A2C919170EFC00D0037A /* vp_layout_test_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */; };
+		F5E50C421913586200C3BE48 /* SCMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E50C411913586200C3BE48 /* SCMessages.m */; };
 		F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */; };
 		F5F0EF0B1901D5C300A292F9 /* SCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF0A1901D5C300A292F9 /* SCFriendRequest.m */; };
 		F5F0EF1119023AF000A292F9 /* SCNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF1019023AF000A292F9 /* SCNotificationManager.m */; };
@@ -199,6 +203,8 @@
 
 /* Begin PBXFileReference section */
 		F50F9C0D18C3AB3600D06A0F /* ObjectiveTox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ObjectiveTox.xcodeproj; sourceTree = "<group>"; };
+		F517D85A19156EF100B236FE /* SCVideoPaneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoPaneView.h; sourceTree = "<group>"; };
+		F517D85B19156EF100B236FE /* SCVideoPaneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoPaneView.m; sourceTree = "<group>"; };
 		F517FCA718B91CDA0060D575 /* SCProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCProfileManager.h; sourceTree = "<group>"; };
 		F517FCA818B91CDA0060D575 /* SCProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCProfileManager.m; sourceTree = "<group>"; };
 		F5239AA8190D750B00B06821 /* SCConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCConversationManager.h; sourceTree = "<group>"; };
@@ -212,7 +218,6 @@
 		F52714A518DF823400B7E663 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		F52714A618DF823400B7E663 /* NewUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewUser.xib; sourceTree = "<group>"; };
 		F52714A718DF823400B7E663 /* QRSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRSheet.xib; sourceTree = "<group>"; };
-		F52714B318DF9DA400B7E663 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F52D011518B7CFB70033680F /* icon_group_ignore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_ignore.png; sourceTree = "<group>"; };
 		F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_group_ignore@2x.png"; sourceTree = "<group>"; };
 		F52D011718B7CFB70033680F /* icon_group_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_join.png; sourceTree = "<group>"; };
@@ -291,6 +296,8 @@
 		F56B873618EE42E1008B5829 /* SCBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBase64.h; sourceTree = "<group>"; };
 		F56B873718EE42E1008B5829 /* SCBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBase64.m; sourceTree = "<group>"; };
 		F56B873E18EE692A008B5829 /* SCValidationHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCValidationHelpers.h; sourceTree = "<group>"; };
+		F572E9EB19157423009FE61B /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F572E9F11915748D009FE61B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F577A5401905E1BC002AF82F /* SCRequestDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRequestDialogController.h; sourceTree = "<group>"; };
 		F577A5411905E1BC002AF82F /* SCRequestDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRequestDialogController.m; sourceTree = "<group>"; };
 		F5882F581900AA1600CA7DC2 /* request-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-icon.png"; sourceTree = "<group>"; };
@@ -333,6 +340,10 @@
 		F5DAB46618C962E90046ED96 /* qr-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr-placeholder.png"; sourceTree = "<group>"; };
 		F5DAB46818C970A50046ED96 /* SCQRCodeSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCQRCodeSheetController.h; sourceTree = "<group>"; };
 		F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCQRCodeSheetController.m; sourceTree = "<group>"; };
+		F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample@2x.png"; sourceTree = "<group>"; };
+		F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample.png; sourceTree = "<group>"; };
+		F5E50C401913586200C3BE48 /* SCMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMessages.h; sourceTree = "<group>"; };
+		F5E50C411913586200C3BE48 /* SCMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMessages.m; sourceTree = "<group>"; };
 		F5E84CDD18DE2C8F00B93FE7 /* SCMenuStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMenuStatusView.h; sourceTree = "<group>"; };
 		F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMenuStatusView.m; sourceTree = "<group>"; };
 		F5F0EF091901D5C300A292F9 /* SCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFriendRequest.h; sourceTree = "<group>"; };
@@ -389,6 +400,8 @@
 		F517FCA618B91CB20060D575 /* managers */ = {
 			isa = PBXGroup;
 			children = (
+				F5E50C401913586200C3BE48 /* SCMessages.h */,
+				F5E50C411913586200C3BE48 /* SCMessages.m */,
 				F5239AA8190D750B00B06821 /* SCConversationManager.h */,
 				F5239AA9190D750B00B06821 /* SCConversationManager.m */,
 				F541811318C412EC00AB220E /* SCThemeManager.h */,
@@ -406,7 +419,7 @@
 		F52714AF18DF9D9E00B7E663 /* strings */ = {
 			isa = PBXGroup;
 			children = (
-				F52714B418DF9DA400B7E663 /* Localizable.strings */,
+				F572E9EC19157423009FE61B /* Localizable.strings */,
 			);
 			path = strings;
 			sourceTree = "<group>";
@@ -475,6 +488,8 @@
 				F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */,
 				F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */,
 				F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */,
+				F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */,
+				F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */,
 				F5FFF46018B81F4E00CD1E43 /* Poison.iconset */,
 			);
 			name = art;
@@ -545,6 +560,8 @@
 			children = (
 				F541810C18C3FEF500AB220E /* SCChatViewController.h */,
 				F541810D18C3FEF500AB220E /* SCChatViewController.m */,
+				F517D85A19156EF100B236FE /* SCVideoPaneView.h */,
+				F517D85B19156EF100B236FE /* SCVideoPaneView.m */,
 				F58EE9AB18C595530033F2D4 /* SCChatView.h */,
 				F58EE9AC18C595530033F2D4 /* SCChatView.m */,
 				F525114418FCC3BF00BD9EAA /* SCTextField.h */,
@@ -726,6 +743,8 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				ja,
 			);
 			mainGroup = F5B5421218B6D23C00226CA8;
 			productRefGroup = F5B5421C18B6D23C00226CA8 /* Products */;
@@ -808,9 +827,11 @@
 				F52D013718B7CFB70033680F /* icon_minus@2x.png in Resources */,
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
 				F52D013A18B7CFB70033680F /* icon_smiley.png in Resources */,
+				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample@2x.png in Resources */,
 				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
 				F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */,
+				F572E9EA19157423009FE61B /* Localizable.strings in Resources */,
 				F5FFF46618B8283300CD1E43 /* oi@2x.png in Resources */,
 				F5AC0D8A190C69BC0020644C /* request-pill-accept-down@2x.png in Resources */,
 				F5AC0D88190C69BC0020644C /* request-pill-accept@2x.png in Resources */,
@@ -831,13 +852,13 @@
 				F52D013C18B7CFB70033680F /* icon-frequests@2x.png in Resources */,
 				F58EE9A918C57A760033F2D4 /* DefaultDefaults.plist in Resources */,
 				F52714AB18DF823400B7E663 /* FriendsPanel.xib in Resources */,
+				F5E1A2C919170EFC00D0037A /* vp_layout_test_sample.png in Resources */,
 				F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */,
 				F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */,
 				F52D013818B7CFB70033680F /* icon_plus.png in Resources */,
 				F52D013518B7CFB70033680F /* icon_info@2x.png in Resources */,
 				F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */,
 				F5F6D5F318DE5AB200A14557 /* status-light-missing@2x.png in Resources */,
-				F52714B218DF9DA400B7E663 /* Localizable.strings in Resources */,
 				F52D014018B7CFB70033680F /* status-light-offline@2x.png in Resources */,
 				F5C1B307190B55EE00081FEA /* avatar-mask-squircle.png in Resources */,
 				F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */,
@@ -889,6 +910,7 @@
 				F538754218C25DB500AED945 /* SCNewUserWindowController.m in Sources */,
 				F543BE3418E126CC004C70D3 /* NSString+CanonicalID.m in Sources */,
 				F53DB89918B6DD37008D7ED5 /* NSWindow+Shake.m in Sources */,
+				F5E50C421913586200C3BE48 /* SCMessages.m in Sources */,
 				F541810A18C3FABD00AB220E /* SCNonGarbageSplitView.m in Sources */,
 				F5239AAA190D750B00B06821 /* SCConversationManager.m in Sources */,
 				F5F0EF1119023AF000A292F9 /* SCNotificationManager.m in Sources */,
@@ -903,6 +925,7 @@
 				F53DB89A18B6DD37008D7ED5 /* SCGradientView.m in Sources */,
 				F5B5422B18B6D23C00226CA8 /* main.m in Sources */,
 				F525114618FCC3BF00BD9EAA /* SCTextField.m in Sources */,
+				F517D85C19156EF100B236FE /* SCVideoPaneView.m in Sources */,
 				F53DB8A118B6DDDE008D7ED5 /* SCBuddyListController.m in Sources */,
 				F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */,
 				F56B873818EE42E1008B5829 /* SCBase64.m in Sources */,
@@ -943,10 +966,11 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F52714B418DF9DA400B7E663 /* Localizable.strings */ = {
+		F572E9EC19157423009FE61B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F52714B318DF9DA400B7E663 /* en */,
+				F572E9EB19157423009FE61B /* en */,
+				F572E9F11915748D009FE61B /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

@@ -2,8 +2,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class DESConversation;
+@class DESConversation, SCChatViewController;
 @interface SCStandaloneWindowController : NSWindowController <NSWindowDelegate>
+@property (readonly) DESConversation *conversation;
+@property (readonly) NSString *conversationIdentifier;
+
 - (instancetype)initWithConversation:(DESConversation *)conv;
-- (NSString *)conversationIdentifier;
+- (SCChatViewController *)chatView;
 @end

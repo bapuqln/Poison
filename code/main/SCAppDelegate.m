@@ -14,6 +14,7 @@
 #import "SCFriendRequest.h"
 #import "SCStandaloneWindowController.h"
 #import "DESConversation+Poison_CustomName.h"
+#import "SCConversationManager.h"
 
 /* note: this is hard-coded to make tampering harder. */
 #define SCApplicationDownloadPage (@"http://download.tox.im/")
@@ -117,6 +118,7 @@
     self.toxConnection = [[DESToxConnection alloc] init];
     self.toxConnection.delegate = self;
     self.akiUserInfoMenuItemPlaceholder.view = self.userInfoMenuItem;
+    self.conversationManager = [[SCConversationManager alloc] init];
     _auxiliaryChatWindows = [[NSMutableDictionary alloc] initWithCapacity:5];
 
     [self.dockMenu removeItemAtIndex:0];
@@ -310,6 +312,7 @@
     placeholder.title = self.akiUserInfoMenuItemPlaceholder.title;
     [self.dockMenu insertItem:placeholder atIndex:0];
 
+    self.conversationManager = nil;
     self.toxConnection = nil;
     self.profileName = nil;
     self.profilePass = nil;
@@ -324,14 +327,23 @@
 }
 
 - (void)didAddFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
-    [self willChangeValueForKey:@"requests"];
-    [_requests removeObjectForKey:friend.publicKey];
-    [self didChangeValueForKey:@"requests"];
+    [self.conversationManager addConversation:friend];
+    if (_requests[friend.publicKey] != nil) {
+        [self willChangeValueForKey:@"requests"];
+        [_requests removeObjectForKey:friend.publicKey];
+        [self didChangeValueForKey:@"requests"];
+        [self archiveFriendRequests];
+    }
     [self saveProfile];
-    [self archiveFriendRequests];
 }
 
 - (void)didRemoveFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
+    [self.conversationManager deleteConversation:friend];
+
+    SCStandaloneWindowController *wc = _auxiliaryChatWindows[friend.conversationIdentifier];
+    if (wc)
+        [self removeAuxWindowFromService:wc];
+
     NSMutableDictionary *map = [[SCProfileManager privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
     [map removeObjectForKey:friend.publicKey];
     [SCProfileManager setPrivateSetting:map forKey:@"nicknames"];
@@ -387,6 +399,39 @@
     }
 }
 
+#pragma mark - UI Management
+
+- (void)deleteFriend:(DESFriend *)friend confirmingInWindow:(NSWindow *)window {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFriendsImmediately"] || !window) {
+        [self removeFriend:friend];
+        return;
+    }
+
+    NSAlert *confirmation = [[NSAlert alloc] init];
+    confirmation.messageText = NSLocalizedString(@"Remove Friend", nil);
+    NSString *template = NSLocalizedString(@"Do you really want to remove %@ from your friends list?", nil);
+    confirmation.informativeText = [NSString stringWithFormat:template, friend.preferredUIName];
+    NSButton *checkbox = [[NSButton alloc] initWithFrame:CGRectZero];
+    checkbox.buttonType = NSSwitchButton;
+    checkbox.title = NSLocalizedString(@"Don't ask me whether to remove friends again", nil);
+    [checkbox sizeToFit];
+    confirmation.accessoryView = checkbox;
+    [confirmation addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
+    [confirmation addButtonWithTitle:NSLocalizedString(@"No", nil)];
+    [confirmation beginSheetModalForWindow:window
+                             modalDelegate:self
+                            didEndSelector:@selector(commitDeletingFriendFromSheet:returnCode:userInfo:)
+                               contextInfo:(__bridge void *)friend];
+}
+
+- (void)commitDeletingFriendFromSheet:(NSAlert *)sheet returnCode:(NSInteger)ret userInfo:(void *)friend {
+    if (((NSButton *)sheet.accessoryView).state == NSOnState)
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFriendsImmediately"];
+    if (ret == NSAlertFirstButtonReturn) {
+        [self removeFriend:(__bridge DESFriend *)friend];
+    }
+}
+
 #pragma mark - Auxiliary Windows
 
 - (IBAction)showAboutWindow:(id)sender {
@@ -411,6 +456,7 @@
     SCStandaloneWindowController *ctl = _auxiliaryChatWindows[key];
     if (!ctl) {
         ctl = [[SCStandaloneWindowController alloc] initWithConversation:conv];
+        ctl.chatView.conversation = [self.conversationManager conversationFor:conv];
         _auxiliaryChatWindows[key] = ctl;
     }
     [ctl showWindow:self];
@@ -478,6 +524,28 @@
     } else {
         NSBeep();
     }
+}
+
+- (IBAction)renameFriend:(id)sender {
+}
+
+- (IBAction)menuRemoveFriend:(id)sender {
+    NSWindow *activeWindow = [NSApp keyWindow];
+    if ([activeWindow.windowController conformsToProtocol:@protocol(SCMainWindowing)]) {
+        DESConversation *conv = ((id<SCMainWindowing>)activeWindow.windowController).buddyListController.conversationSelectedInView;
+        if ([conv conformsToProtocol:@protocol(DESFriend)]) {
+            [self deleteFriend:(DESFriend *)conv confirmingInWindow:activeWindow];
+            return;
+        }
+    } else if ([activeWindow.windowController isKindOfClass:[SCStandaloneWindowController class]]) {
+        SCStandaloneWindowController *wc = activeWindow.windowController;
+        DESConversation *conv = wc.conversation;
+        if ([conv conformsToProtocol:@protocol(DESFriend)]) {
+            [self deleteFriend:(DESFriend *)conv confirmingInWindow:activeWindow];
+            return;
+        }
+    }
+    NSBeep();
 }
 
 #pragma mark - Data Export

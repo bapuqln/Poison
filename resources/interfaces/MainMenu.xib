@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
@@ -116,6 +116,26 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="logOutFromUI:" target="494" id="VHD-nf-aID"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Friend" id="PPU-a9-N0t">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Friend" id="n0l-E3-Pg1">
+                        <items>
+                            <menuItem title="Rename Friend..." keyEquivalent="r" id="65e-tO-pMD">
+                                <connections>
+                                    <action selector="renameFriend:" target="494" id="mag-JY-5Gy"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove Friend" id="GnC-j4-fI7">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                <connections>
+                                    <action selector="menuRemoveFriend:" target="494" id="BIA-RM-n12"/>
                                 </connections>
                             </menuItem>
                         </items>

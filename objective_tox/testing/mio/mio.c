@@ -31,7 +31,8 @@ void usage(const char *name) {
     printf("usage: %s convert [-nico / -maki / -cherry / -toxcore] "
            "<input file> <output file>\n", name);
     printf("usage: %s survey <input file>\n", name);
-    printf("usage: %s passwd <input file>\n\n", name);
+    printf("usage: %s passwd <input file>\n", name);
+    printf("usage: %s upgrade <input file> <output file>\n\n", name);
       puts("note: The switches provided to convert determine the type "
            "of the output file.\n"
            "-nico: Padded maki-file. Leaks the least amount of information.\n"
@@ -39,6 +40,62 @@ void usage(const char *name) {
            "-cherry: Unencrypted TXD binary. Absolutely no protection at all.\n"
            "-toxcore: Unencrypted vanilla file. Works with most other clients, "
                       "but not encrypted.");
+}
+
+int upgrade(const char *file, const char *output) {
+    FILE *f = fopen(file, "r");
+    if (!f) {
+        perror("mio/upgrade");
+        return -1;
+    }
+
+    fseek(f, 0, SEEK_END);
+    size_t bufsize = ftell(f);
+    fseek(f, 0, 0);
+    uint8_t *buf = malloc(bufsize);
+    fread(buf, bufsize, 1, f);
+    fclose(f);
+
+    Tox *temptox = tox_new(1);
+    tox_load(temptox, buf, (uint32_t)bufsize);
+    free(buf);
+
+    puts("mio/upgrade: letting Tox run for a bit");
+    for (int n = 0; n < 20; ++n) {
+        tox_do(temptox);
+        printf(".");
+        fflush(stdout);
+        usleep(50000);
+    }
+    puts(" done");
+
+    txd_intermediate_t txd = txd_intermediate_from_tox(temptox);
+    tox_kill(temptox);
+
+    uint8_t *clear;
+    uint64_t clearlen;
+    int eerr = txd_export_to_buf(txd, &clear, &clearlen);
+    if (eerr != TXD_ERR_SUCCESS) {
+        printf("mio/upgrade: error: txd_export_to_buf failed with code %d\n",
+               eerr);
+        return -1;
+    }
+    txd_intermediate_free(txd);
+
+    char *template = strdup(".si-XXXXXXXX");
+    char *temp = mktemp(template);
+    int fd = open(temp, O_CREAT | O_EXCL | O_WRONLY, 0600);
+    if (fd == -1) {
+        perror("mio/upgrade/write");
+        free(clear);
+        return -1;
+    }
+    write(fd, clear, clearlen);
+    close(fd);
+    rename(temp, output);
+    free(template);
+    free(clear);
+    return 0;
 }
 
 int passwd(const char *file) {
@@ -349,6 +406,8 @@ int main(int argc, char *argv[]) {
         return convert(fmt, argv[3], argv[4]);
     } else if (!strcmp(cmd, "survey") && argc == 3) {
         return survey(argv[2]);
+    } else if (!strcmp(cmd, "upgrade") && argc == 4) {
+        return upgrade(argv[2], argv[3]);
     }
     return 0;
 }

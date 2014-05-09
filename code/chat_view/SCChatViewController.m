@@ -5,6 +5,7 @@
 #import "SCGradientView.h"
 #import "SCThemeManager.h"
 #import "SCFillingView.h"
+#import "SCConversationManager.h"
 #import <WebKit/WebKit.h>
 
 NS_INLINE NSColor *SCDarkenedColor(NSColor *color, CGFloat factor) {
@@ -34,8 +35,6 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     return (NSString*)out_;
 }
 
-static NSArray *testing_names = NULL;
-
 @interface SCChatViewController ()
 @property (strong) IBOutlet NSSplitView *transcriptSplitView;
 @property (strong) IBOutlet NSSplitView *splitView;
@@ -59,10 +58,7 @@ static NSArray *testing_names = NULL;
     NSArray *_completeCycle;
     NSUInteger _completeIndex;
     NSRange _completeClobber;
-}
-
-+ (void)load {
-    testing_names = @[@"Alice", @"Bob", @"Adam", @"Alex", @"James", @"[420]xXxKuShG@m3R9001xXx"];
+    NSString *_currentTheme;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -89,6 +85,9 @@ static NSArray *testing_names = NULL;
            selector:@selector(textFieldDidResize:)
                name:NSViewFrameDidChangeNotification
              object:self.textField];
+    [nc addObserver:self selector:@selector(reloadThemeOnUserDefaultsChange:)
+               name:NSUserDefaultsDidChangeNotification
+             object:[NSUserDefaults standardUserDefaults]];
     self.textField.delegate = self;
     [self.splitView setFrameOrigin:(CGPoint){0, self.chatEntryView.frame.size.height}];
     [self.chatEntryView setFrameOrigin:(CGPoint){0, 0}];
@@ -97,6 +96,11 @@ static NSArray *testing_names = NULL;
     [self.view addSubview:self.chatEntryView];
     [self.splitView adjustSubviews];
     [self.transcriptSplitView adjustSubviews];
+}
+
+- (void)reloadThemeOnUserDefaultsChange:(NSNotification *)note {
+    if (![_currentTheme isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"chatStyle"]])
+        [self reloadTheme];
 }
 
 - (void)reloadTheme {
@@ -113,10 +117,11 @@ static NSArray *testing_names = NULL;
     self.videoBackground.topColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.10);
     self.videoBackground.bottomColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.15);
     self.videoBackground.borderColor = nil;
-    self.videoBackground.shadowColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.6);
+    self.videoBackground.shadowColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.3);
     self.videoBackground.dragsWindow = YES;
     
     [self.webView.mainFrame loadRequest:[NSURLRequest requestWithURL:[tm baseTemplateURLOfCurrentTheme]]];
+    _currentTheme = [tm pathOfCurrentThemeDirectory];
 }
 
 - (void)layoutSubviews_ {
@@ -225,7 +230,7 @@ static NSArray *testing_names = NULL;
     const char *frag = [fragment UTF8String];
     NSUInteger len = [fragment lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *completes = [NSMutableArray arrayWithCapacity:10];
-    for (NSString *possibleName in testing_names) {
+    for (NSString *possibleName in (self.conversation.completionOrder ?: [NSOrderedSet orderedSet])) {
         NSString *actualComparator = [possibleName lowercaseString];
         if ([actualComparator lengthOfBytesUsingEncoding:NSUTF8StringEncoding] >= len
             && memcmp(frag, [actualComparator UTF8String], len) == 0) {
@@ -350,6 +355,52 @@ static NSArray *testing_names = NULL;
                                         actualHeight + 6};
     self.chatEntryView.frameSize = (CGSize){self.chatEntryView.frame.size.width,
         newHeight};
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeKVOHandlers];
+}
+
+#pragma mark - chat stuff
+
+- (void)setConversation:(SCConversation *)conversation {
+    if (_conversation)
+        [self removeKVOHandlers];
+    _conversation = conversation;
+    _conversation.container = self;
+    [self addKVOHandlers];
+    [self updateHeader];
+}
+
+- (void)addKVOHandlers {
+    [_conversation.underlyingConversation addObserver:self
+                                           forKeyPath:@"presentableTitle"
+                                              options:NSKeyValueObservingOptionNew
+                                              context:NULL];
+    [_conversation.underlyingConversation addObserver:self
+                                           forKeyPath:@"presentableSubtitle"
+                                              options:NSKeyValueObservingOptionNew
+                                              context:NULL];
+}
+
+- (void)removeKVOHandlers {
+    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableTitle"];
+    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableSubtitle"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    [self updateHeader];
+}
+
+- (void)updateHeader {
+    NSMutableAttributedString *header;
+    header = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", _conversation.underlyingConversation.presentableTitle]];
+    NSAttributedString *sub;
+    sub = [[NSMutableAttributedString alloc] initWithString:_conversation.underlyingConversation.presentableSubtitle
+                                                 attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:11]}];
+    [header appendAttributedString:sub];
+    self.chatTitle.attributedStringValue = header;
 }
 
 @end
