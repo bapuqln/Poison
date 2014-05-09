@@ -92,15 +92,7 @@ case $1 in
         ;;
     genstrings)
         echo "updating .strings for code..."
-        for lang in resources/strings/*.lproj
-        do
-            lang_=$(basename $lang)
-            echo "... $lang_"
-            find . -name '*.m' | xargs genstrings --little-endian -o "resources/strings/$lang_"
-            #iconv -f "UTF-16LE" -t "UTF-8" "resources/strings/$lang_/Localizable.strings" > \
-            #      "resources/strings/$lang_/Localizable.strings_"
-            #mv "resources/strings/$lang_/Localizable.strings_" "resources/strings/$lang_/Localizable.strings"
-        done
+        find . -name '*.m' | xargs genstrings --little-endian -o "resources/strings/en.lproj/Localizable.strings"
         ;;
 esac
 

@@ -46,14 +46,9 @@
                                 <behavior key="behavior" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                             </buttonCell>
-                        </button>
-                        <button id="fhk-ka-5gF">
-                            <rect key="frame" x="223" y="3" width="21" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                            <buttonCell key="cell" type="smallSquare" title="(none)" bezelStyle="smallSquare" image="icon-frequests" imagePosition="only" alignment="center" controlSize="small" state="on" imageScaling="proportionallyDown" inset="2" id="oqU-Ub-bxK">
-                                <behavior key="behavior" lightByContents="YES"/>
-                                <font key="font" metaFont="smallSystem"/>
-                            </buttonCell>
+                            <connections>
+                                <action selector="removeFriendConfirm:" target="-2" id="RVd-jF-M2V"/>
+                            </connections>
                         </button>
                         <popUpButton id="qxV-WJ-N6q">
                             <rect key="frame" x="4" y="2" width="20" height="22"/>
@@ -79,19 +74,6 @@
                                 </menu>
                             </popUpButtonCell>
                         </popUpButton>
-                        <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="n8r-k9-TXs">
-                            <rect key="frame" x="152" y="5" width="65" height="14"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                            <shadow key="shadow">
-                                <size key="offset" width="0.0" height="-1"/>
-                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </shadow>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="(placeholder)" id="Ns6-Hb-TkA">
-                                <font key="font" metaFont="smallSystemBold"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
                     </subviews>
                 </customView>
                 <customView id="qG6-3y-zTm" customClass="SCGradientView">
@@ -145,7 +127,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <searchField verticalHuggingPriority="750" id="Z37-5k-Qte">
-                            <rect key="frame" x="7" y="7" width="236" height="22"/>
+                            <rect key="frame" x="8" y="7" width="235" height="22"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search" usesSingleLineMode="YES" bezelStyle="round" id="1bv-M5-5nB">
                                 <font key="font" metaFont="system"/>
@@ -259,8 +241,8 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="request-icon" id="vHm-ad-hxt"/>
                                                     </imageView>
-                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="WPp-DO-jmP">
-                                                        <rect key="frame" x="50" y="20" width="173" height="17"/>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="WPp-DO-jmP">
+                                                        <rect key="frame" x="50" y="20" width="185" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="(placeholder)" id="op6-Gs-m26">
                                                             <font key="font" metaFont="system"/>
@@ -268,8 +250,8 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="JpT-Nk-QbE">
-                                                        <rect key="frame" x="50" y="5" width="173" height="14"/>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="JpT-Nk-QbE">
+                                                        <rect key="frame" x="50" y="5" width="185" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="(placeholder)" id="yUd-kr-Zak">
                                                             <font key="font" metaFont="smallSystem"/>
@@ -277,39 +259,47 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <customView hidden="YES" id="CTT-EB-4J8">
-                                                        <rect key="frame" x="150" y="0.0" width="100" height="40"/>
+                                                    <customView hidden="YES" id="CTT-EB-4J8" customClass="_SCRequestCellBlurView">
+                                                        <rect key="frame" x="100" y="0.0" width="150" height="40"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="nJM-wO-aYs">
-                                                                <rect key="frame" x="49" y="-2" width="39" height="38"/>
+                                                                <rect key="frame" x="105" y="8" width="32" height="24"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <buttonCell key="cell" type="round" bezelStyle="circular" imagePosition="above" alignment="left" borderStyle="border" imageScaling="proportionallyDown" id="b4v-kb-g9S">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="label"/>
+                                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="request-pill-accept" imagePosition="above" alignment="center" alternateImage="request-pill-accept-down" imageScaling="proportionallyDown" id="b4v-kb-g9S">
+                                                                    <behavior key="behavior" lightByContents="YES"/>
+                                                                    <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
                                                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="eh9-My-a9X">
-                                                                <rect key="frame" x="15" y="-2" width="39" height="38"/>
+                                                                <rect key="frame" x="73" y="8" width="32" height="24"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <buttonCell key="cell" type="round" bezelStyle="circular" imagePosition="above" alignment="left" borderStyle="border" imageScaling="proportionallyDown" id="PRQ-fO-rR1">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="label"/>
+                                                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="request-pill-dismiss" imagePosition="above" alignment="left" alternateImage="request-pill-dismiss-down" imageScaling="proportionallyDown" id="PRQ-fO-rR1">
+                                                                    <behavior key="behavior" lightByContents="YES"/>
+                                                                    <font key="font" metaFont="system"/>
                                                                 </buttonCell>
+                                                                <connections>
+                                                                    <action selector="declineRequestFromCell:" target="-2" id="XNo-I6-18H"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </customView>
                                                 </subviews>
                                                 <connections>
+                                                    <outlet property="acceptButton" destination="nJM-wO-aYs" id="59u-x2-Hhx"/>
                                                     <outlet property="accessoryView" destination="CTT-EB-4J8" id="Jqn-SG-XFc"/>
                                                     <outlet property="auxLabel" destination="JpT-Nk-QbE" id="4fP-GY-up4"/>
                                                     <outlet property="avatarView" destination="dUh-73-l8c" id="M8H-ch-cpM"/>
+                                                    <outlet property="declineButton" destination="eh9-My-a9X" id="WnN-bZ-Mc5"/>
                                                     <outlet property="mainLabel" destination="WPp-DO-jmP" id="qYJ-wx-VZZ"/>
                                                 </connections>
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="1UN-1m-LIf"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -331,8 +321,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="4c3-1E-B67"/>
-                <menuItem title="Rename Friend..." id="F4C-Bn-8WU">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                <menuItem title="Rename Friend..." keyEquivalent="r" id="F4C-Bn-8WU">
                     <connections>
                         <action selector="presentNicknameEditor:" target="-2" id="z9f-IB-fKw"/>
                     </connections>
@@ -365,7 +354,9 @@
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="nFI-cp-PRw"/>
                 <menuItem title="Remove Friend..." id="Tf8-Su-cfv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                     <connections>
                         <action selector="removeFriendConfirm:" target="-2" id="khJ-ps-bQ6"/>
                     </connections>
@@ -591,10 +582,13 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="icon-frequests" width="16" height="13"/>
         <image name="icon_minus" width="12" height="13"/>
         <image name="icon_plus" width="12" height="13"/>
         <image name="request-icon" width="16" height="16"/>
+        <image name="request-pill-accept" width="32" height="24"/>
+        <image name="request-pill-accept-down" width="32" height="24"/>
+        <image name="request-pill-dismiss" width="32" height="24"/>
+        <image name="request-pill-dismiss-down" width="32" height="24"/>
         <image name="status-light-away" width="11" height="11"/>
         <image name="status-light-offline" width="11" height="11"/>
         <image name="status-light-online" width="11" height="11"/>
