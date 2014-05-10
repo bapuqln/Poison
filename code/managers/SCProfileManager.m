@@ -144,8 +144,11 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     _txd_kill_memory(buf, size);
     free(buf);
     NSData *contents = [[NSData alloc] initWithBytesNoCopy:enc length:encsize freeWhenDone:YES];
+    NSURL *dest = [datadir URLByAppendingPathComponent:@"data.txd" isDirectory:NO];
     @synchronized (self) {
-        [contents writeToFile:[datadir.path stringByAppendingPathComponent:@"data.txd"] atomically:YES];
+        [fileManager createFileAtPath:dest.path contents:contents attributes:@{
+            NSFilePosixPermissions: @(0600)
+        }];
     }
     return YES;
 }
@@ -230,8 +233,6 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
         return;
     }
 
-    //[buf writeToFile:@"/Volumes/stal/pstore.shadow" atomically:YES];
-
     NSString *pass = ((SCAppDelegate *)[NSApp delegate]).profilePass;
     uint64_t pl = [pass lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 
@@ -243,10 +244,17 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     txd_encrypt_buf((uint8_t *)[pass UTF8String], pl, buf.bytes, buf.length,
                     &e, &es, [comment UTF8String], 0);
 
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *profileHome = [self.profileDirectory URLByAppendingPathComponent:self.currentProfileIdentifier isDirectory:YES];
-    [[NSFileManager defaultManager] createDirectoryAtURL:profileHome withIntermediateDirectories:YES attributes:nil error:nil];
-    [[NSData dataWithBytesNoCopy:e length:es freeWhenDone:YES] writeToURL:[profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO] atomically:YES];
+    [fileManager createDirectoryAtURL:profileHome withIntermediateDirectories:YES attributes:nil error:nil];
+    NSData *blob = [NSData dataWithBytesNoCopy:e length:es freeWhenDone:YES];
+    NSURL *dest = [profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO];
+    [fileManager createFileAtPath:dest.path contents:blob attributes:@{
+        NSFilePosixPermissions: @(0600)
+    }];
+
     SCPrivateSettingsNeedCommit = NO;
+
     [lock unlock];
 }
 

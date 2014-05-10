@@ -297,7 +297,7 @@
 		F56B873718EE42E1008B5829 /* SCBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBase64.m; sourceTree = "<group>"; };
 		F56B873E18EE692A008B5829 /* SCValidationHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCValidationHelpers.h; sourceTree = "<group>"; };
 		F572E9EB19157423009FE61B /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F572E9F11915748D009FE61B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F572E9F11915748D009FE61B /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F577A5401905E1BC002AF82F /* SCRequestDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRequestDialogController.h; sourceTree = "<group>"; };
 		F577A5411905E1BC002AF82F /* SCRequestDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRequestDialogController.m; sourceTree = "<group>"; };
 		F5882F581900AA1600CA7DC2 /* request-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-icon.png"; sourceTree = "<group>"; };
