@@ -91,7 +91,11 @@
                         f.port];
         ((NSTextField *)w.widgetView).stringValue = as;
     } else {
-        ((NSTextField *)w.widgetView).stringValue = @"";
+        if ([f.address isEqualToString:@"tcprelay"]) {
+            ((NSTextField *)w.widgetView).stringValue = @"(relayed)";
+        } else {
+            ((NSTextField *)w.widgetView).stringValue = @"";
+        }
     }
     [((NSTextField *)w.widgetView) sizeToFit];
     [CATransaction commit];

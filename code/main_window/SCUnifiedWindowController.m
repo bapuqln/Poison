@@ -126,11 +126,16 @@
     base = [[NSMutableAttributedString alloc] initWithString:@""
                                                   attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]}];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"publicSights"]
-        && [_watchingConversation conformsToProtocol:@protocol(DESFriend)]
-        && ((DESFriend *)_watchingConversation).port != 0) {
+        && [_watchingConversation conformsToProtocol:@protocol(DESFriend)]) {
         DESFriend *f = (DESFriend *)_watchingConversation;
-        NSString *inf = [NSString stringWithFormat:@"%@:%hu • ", f.address,
-                         f.port];
+        NSString *inf;
+        if (f.port != 0) {
+            inf = [NSString stringWithFormat:@"%@:%hu • ", f.address, f.port];
+        } else if ([f.address isEqualToString:@"tcprelay"]) {
+            inf = @"(relayed)";
+        } else {
+            inf = @"";
+        }
         NSAttributedString *a = [[NSAttributedString alloc] initWithString:inf];
         [base appendAttributedString:a];
     }

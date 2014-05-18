@@ -148,7 +148,7 @@
                                         <webView maintainsBackForwardList="NO" id="Pzv-Ni-bVV">
                                             <rect key="frame" x="0.0" y="0.0" width="330" height="267"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
+                                            <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO" allowsAnimatedImages="NO" allowsAnimatedImageLooping="NO">
                                                 <nil key="identifier"/>
                                             </webPreferences>
                                         </webView>

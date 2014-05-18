@@ -87,8 +87,8 @@
     [[self conversationFor:con] markDeliveryOfMessage:messageID];
 }
 
-- (void)conversation:(DESConversation *)con didReceiveMessage:(NSString *)message ofType:(DESMessageType)type_ fromSender:(DESFriend *)sender {
-
-}
+/*- (void)conversation:(DESConversation *)con didReceiveMessage:(NSString *)message ofType:(DESMessageType)type_ fromSender:(DESFriend *)sender {
+    [[self conversationFor:con] postChatMessage:message ofType:type_ sender:sender];
+}*/
 
 @end

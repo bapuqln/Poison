@@ -80,14 +80,15 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     self.webView.drawsBackground = NO;
     self.webView.frameLoadDelegate = self;
     [self reloadTheme];
+    SCThemeManager *tm = [SCThemeManager sharedManager];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self
            selector:@selector(textFieldDidResize:)
                name:NSViewFrameDidChangeNotification
              object:self.textField];
-    [nc addObserver:self selector:@selector(reloadThemeOnUserDefaultsChange:)
-               name:NSUserDefaultsDidChangeNotification
-             object:[NSUserDefaults standardUserDefaults]];
+    [nc addObserver:self selector:@selector(reloadTheme)
+               name:SCTranscriptThemeDidChangeNotification
+             object:tm];
     self.textField.delegate = self;
     [self.splitView setFrameOrigin:(CGPoint){0, self.chatEntryView.frame.size.height}];
     [self.chatEntryView setFrameOrigin:(CGPoint){0, 0}];
@@ -96,11 +97,6 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     [self.view addSubview:self.chatEntryView];
     [self.splitView adjustSubviews];
     [self.transcriptSplitView adjustSubviews];
-}
-
-- (void)reloadThemeOnUserDefaultsChange:(NSNotification *)note {
-    if (![_currentTheme isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"chatStyle"]])
-        [self reloadTheme];
 }
 
 - (void)reloadTheme {

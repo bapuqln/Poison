@@ -1,46 +1,53 @@
-html, body {
-    padding:0; margin:0;
-    font-family:Helvetica, sans-serif;
-    font-size:13px;
-}
-div.context {
-    width:100%;
-    border-top:1px #999 solid;
-    padding-top:0.5em;
-    padding-bottom:0.5em;
-}
-div.context:first-child {
-    border-top:none;
-}
-div.context-item {
-    display:block;
-    padding-left:0.5em;
-    padding-right:0.5em;
-}
-div.messages {
-    vertical-align:top;
-    box-sizing:border-box;
-    clear:both;
-}
-div.messages > p {
+body {
     margin:0;
-    color:#000;
-    word-wrap:break-word;
+    font-size:13px;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Geneva, sans-serif;
 }
-div.messages > p.implications {
-    color:green;
+
+div.context {
+    padding:10px;
+    border-bottom: 1px #dddddd solid;
 }
-div.timestamp {
-    vertical-align:top;
-    font-weight:lighter;
-    color:#AAA;
-    float:right;
+div.context:after,
+div.context:before {
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
-div.sender {
-    font-weight:bold;
-    color:#000;
+
+div.context:last-child {
+    border: none;
+}
+
+.date_change {
+    padding:5px 10px!important;
+    text-align: center;
+    font-size:11px;
+}
+
+.other > .avatar {
     float:left;
 }
-div.ours > div.sender {
-    color:#0074cf;
+
+.self > .avatar {
+    float:right;
+}
+
+.other .message {
+    padding:3px 24px 3px 48px;
+}
+
+.self .message {
+    padding:3px 48px 3px 24px;
+    text-align:right;
+}
+
+.self.action {
+    text-align:right;
+}
+
+.other.action {
+    text-align:left;
 }

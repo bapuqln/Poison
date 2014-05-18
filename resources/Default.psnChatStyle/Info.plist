@@ -17,7 +17,7 @@
 	<key>aiThemeBarTopColor</key>
 	<string>E4E9F3</string>
 	<key>aiThemeBaseTemplateName</key>
-	<string>themebase.html</string>
+	<string>theme.html</string>
 	<key>aiDescription</key>
 	<string>The default chat style used by Poison.</string>
 	<key>aiHumanReadableName</key>

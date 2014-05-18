@@ -190,4 +190,8 @@ NSString *const SCTranscriptThemeDidChangeNotification = @"SCTranscriptThemeDidC
     return (NSArray*)discoveredThemes;
 }
 
+- (NSString *)pathOfCurrentThemeDirectory {
+    return themeBasePath;
+}
+
 @end

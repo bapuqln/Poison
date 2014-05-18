@@ -29,10 +29,16 @@ int DESCopyNetAddress(Tox *tox, int32_t peernum, char **ip_out, uint16_t *port_o
     Messenger *priv = (Messenger *)tox;
     /* CCID for net_crypto. */
     int ccid = priv -> friendlist[peernum].crypt_connection_id;
-    /* LUID for lossless UDP connection. */
-    uint16_t luid = priv -> net_crypto -> crypto_connections[ccid].number;
-    tox_array isconns = priv -> net_crypto -> lossless_udp -> connections;
-    IP_Port identity = (&tox_array_get(&isconns, luid, Connection))->ip_port;
+    uint8_t is_direct = 0;
+    uint32_t status = crypto_connection_status(priv -> net_crypto, ccid, &is_direct);
+    if (status != CRYPTO_CONN_ESTABLISHED) {
+        if (ip_out)
+            *ip_out = "tcprelay";
+        if (port_out)
+            *port_out = 0;
+        return 1;
+    }
+    IP_Port identity = priv -> net_crypto -> crypto_connections[ccid].ip_port;
     if (identity.ip.family == AF_INET) {
         char *s = malloc(INET_ADDRSTRLEN);
         inet_ntop(AF_INET, identity.ip.ip4.uint8, s, INET_ADDRSTRLEN);

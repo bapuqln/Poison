@@ -5,9 +5,9 @@
 
 @interface SCGradientView : SCDraggingView
 
-@property (strong, nonatomic) NSColor *topColor;
-@property (strong, nonatomic) NSColor *bottomColor;
-@property (strong, nonatomic) NSColor *shadowColor;
-@property (strong, nonatomic) NSColor *borderColor;
+@property (nonatomic) NSColor *topColor;
+@property (nonatomic) NSColor *bottomColor;
+@property (nonatomic) NSColor *shadowColor;
+@property (nonatomic) NSColor *borderColor;
 
 @end

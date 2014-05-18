@@ -6,7 +6,7 @@ NSString *const SCTranscriptThemeDidChangeNotification;
 
 @interface SCThemeManager : NSObject
 
-@property (strong) NSString *pathOfCurrentThemeDirectory;
+@property (strong, readonly) NSString *pathOfCurrentThemeDirectory;
 @property (readonly) NSDictionary *themeDictionary;
 
 + (instancetype)sharedManager;
