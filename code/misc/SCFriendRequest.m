@@ -78,12 +78,12 @@
 }
 
 - (void)accept {
-    SCAppDelegate *d = [NSApp delegate];
+    SCAppDelegate *d = (SCAppDelegate *)[NSApp delegate];
     [d.toxConnection addFriendPublicKeyWithoutRequest:self.senderName];
 }
 
 - (void)decline {
-    SCAppDelegate *d = [NSApp delegate];
+    SCAppDelegate *d = (SCAppDelegate *)[NSApp delegate];
     [d destroyFriendRequest:self];
 }
 

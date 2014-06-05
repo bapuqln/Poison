@@ -126,6 +126,7 @@
 		F5F0EF0B1901D5C300A292F9 /* SCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF0A1901D5C300A292F9 /* SCFriendRequest.m */; };
 		F5F0EF1119023AF000A292F9 /* SCNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF1019023AF000A292F9 /* SCNotificationManager.m */; };
 		F5F41C7718F1BC61009CD9D6 /* SCEditingField.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F41C7618F1BC61009CD9D6 /* SCEditingField.m */; };
+		F5F5F9D0193EBE3D00930FEC /* PoisonFlat.iconset in Resources */ = {isa = PBXBuildFile; fileRef = F5F5F9CF193EBE3D00930FEC /* PoisonFlat.iconset */; };
 		F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6D5F018DE5AB200A14557 /* status-light-missing.png */; };
 		F5F6D5F318DE5AB200A14557 /* status-light-missing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6D5F118DE5AB200A14557 /* status-light-missing@2x.png */; };
 		F5F6DD3E190587CF00112A64 /* SCStandaloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F6DD3C190587CF00112A64 /* SCStandaloneWindowController.m */; };
@@ -318,7 +319,7 @@
 		F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss-down@2x.png"; sourceTree = "<group>"; };
 		F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss-down.png"; sourceTree = "<group>"; };
 		F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-dismiss@2x.png"; sourceTree = "<group>"; };
-		F5B5421B18B6D23C00226CA8 /* Poison.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poison.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5B5421B18B6D23C00226CA8 /* Tox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B5421E18B6D23C00226CA8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F5B5422118B6D23C00226CA8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		F5B5422318B6D23C00226CA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -353,6 +354,7 @@
 		F5F41C7518F1BC61009CD9D6 /* SCEditingField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEditingField.h; sourceTree = "<group>"; };
 		F5F41C7618F1BC61009CD9D6 /* SCEditingField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEditingField.m; sourceTree = "<group>"; };
 		F5F41C7B18F1BD1C009CD9D6 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.md; sourceTree = "<group>"; };
+		F5F5F9CF193EBE3D00930FEC /* PoisonFlat.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = PoisonFlat.iconset; sourceTree = "<group>"; };
 		F5F6A62A18DD3C5A006E5810 /* Copyright.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Copyright.h; path = code/misc/Copyright.h; sourceTree = SOURCE_ROOT; };
 		F5F6D5ED18DE4A0200A14557 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F5F6D5F018DE5AB200A14557 /* status-light-missing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-light-missing.png"; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */,
 				F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */,
 				F5FFF46018B81F4E00CD1E43 /* Poison.iconset */,
+				F5F5F9CF193EBE3D00930FEC /* PoisonFlat.iconset */,
 			);
 			name = art;
 			sourceTree = "<group>";
@@ -587,7 +590,7 @@
 		F5B5421C18B6D23C00226CA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F5B5421B18B6D23C00226CA8 /* Poison.app */,
+				F5B5421B18B6D23C00226CA8 /* Tox.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -723,7 +726,7 @@
 			);
 			name = Poison;
 			productName = Atroquinine;
-			productReference = F5B5421B18B6D23C00226CA8 /* Poison.app */;
+			productReference = F5B5421B18B6D23C00226CA8 /* Tox.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -807,6 +810,7 @@
 				F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */,
 				F52D013D18B7CFB70033680F /* status-light-away.png in Resources */,
 				F5DAB46718C962E90046ED96 /* qr-placeholder.png in Resources */,
+				F5F5F9D0193EBE3D00930FEC /* PoisonFlat.iconset in Resources */,
 				F52D013F18B7CFB70033680F /* status-light-offline.png in Resources */,
 				F52D014218B7CFB70033680F /* status-light-online@2x.png in Resources */,
 				F52D013318B7CFB70033680F /* icon_group_join@2x.png in Resources */,
@@ -1108,7 +1112,8 @@
 					lel,
 					"${PROJECT_DIR}/_support/.security",
 				);
-				PRODUCT_NAME = Poison;
+				PRODUCT_NAME = Tox;
+				SDKROOT = macosx10.9;
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1144,7 +1149,8 @@
 					lel,
 					"${PROJECT_DIR}/_support/.security",
 				);
-				PRODUCT_NAME = Poison;
+				PRODUCT_NAME = Tox;
+				SDKROOT = macosx10.9;
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};

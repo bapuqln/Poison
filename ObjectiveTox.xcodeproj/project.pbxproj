@@ -24,20 +24,20 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		F50F9C4E18C3AB7D00D06A0F /* DHT.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2618C3AB5000D06A0F /* DHT.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		F50F9C4E18C3AB7D00D06A0F /* DHT.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2618C3AB5000D06A0F /* DHT.c */; };
 		F50F9C4F18C3AB7D00D06A0F /* LAN_discovery.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2818C3AB5000D06A0F /* LAN_discovery.c */; };
 		F50F9C5118C3AB7D00D06A0F /* Messenger.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2C18C3AB5000D06A0F /* Messenger.c */; };
-		F50F9C5218C3AB7D00D06A0F /* assoc.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2E18C3AB5000D06A0F /* assoc.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		F50F9C5218C3AB7D00D06A0F /* assoc.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2E18C3AB5000D06A0F /* assoc.c */; };
 		F50F9C5318C3AB7D00D06A0F /* friend_requests.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3018C3AB5000D06A0F /* friend_requests.c */; };
 		F50F9C5418C3AB7D00D06A0F /* group_chats.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3218C3AB5000D06A0F /* group_chats.c */; };
 		F50F9C5518C3AB7D00D06A0F /* net_crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3518C3AB5000D06A0F /* net_crypto.c */; };
-		F50F9C5618C3AB7D00D06A0F /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3718C3AB5000D06A0F /* network.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
-		F50F9C5718C3AB7D00D06A0F /* onion.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3918C3AB5000D06A0F /* onion.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
-		F50F9C5818C3AB7D00D06A0F /* onion_announce.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3B18C3AB5000D06A0F /* onion_announce.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
-		F50F9C5918C3AB7D00D06A0F /* onion_client.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3D18C3AB5000D06A0F /* onion_client.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
-		F50F9C5A18C3AB7D00D06A0F /* ping.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3F18C3AB5000D06A0F /* ping.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		F50F9C5618C3AB7D00D06A0F /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3718C3AB5000D06A0F /* network.c */; };
+		F50F9C5718C3AB7D00D06A0F /* onion.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3918C3AB5000D06A0F /* onion.c */; };
+		F50F9C5818C3AB7D00D06A0F /* onion_announce.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3B18C3AB5000D06A0F /* onion_announce.c */; };
+		F50F9C5918C3AB7D00D06A0F /* onion_client.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3D18C3AB5000D06A0F /* onion_client.c */; };
+		F50F9C5A18C3AB7D00D06A0F /* ping.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C3F18C3AB5000D06A0F /* ping.c */; };
 		F50F9C5B18C3AB7D00D06A0F /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C4118C3AB5000D06A0F /* tox.c */; };
-		F50F9C5C18C3AB7D00D06A0F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C4318C3AB5000D06A0F /* util.c */; settings = {COMPILER_FLAGS = "-Wno-format"; }; };
+		F50F9C5C18C3AB7D00D06A0F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C4318C3AB5000D06A0F /* util.c */; };
 		F52113DE18EA37FE00EB1B99 /* toxlookup.m in Sources */ = {isa = PBXBuildFile; fileRef = F52113DD18EA37FE00EB1B99 /* toxlookup.m */; };
 		F52113E518EA398A00EB1B99 /* DESUserDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = F52113E418EA398900EB1B99 /* DESUserDiscovery.m */; };
 		F535D93019297388004C46AB /* crypto_core.c in Sources */ = {isa = PBXBuildFile; fileRef = F535D92819297388004C46AB /* crypto_core.c */; };
@@ -78,6 +78,8 @@
 		F5BA234618E74C7F00C85A49 /* observer.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234318E74C6600C85A49 /* observer.m */; };
 		F5BA234718E74C8900C85A49 /* mio.c in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234518E74C6600C85A49 /* mio.c */; };
 		F5BA234A18E7684D00C85A49 /* libObjectiveTox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F50F9C0618C3AAD800D06A0F /* libObjectiveTox.a */; };
+		F5F9F70A192D8D7C00BE247F /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F9F708192D8D7C00BE247F /* list.c */; };
+		F5F9F70B192D8D7C00BE247F /* list.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F9F709192D8D7C00BE247F /* list.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -254,6 +256,8 @@
 		F5BA233918E74C1900C85A49 /* mio */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mio; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BA234318E74C6600C85A49 /* observer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = observer.m; sourceTree = "<group>"; };
 		F5BA234518E74C6600C85A49 /* mio.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mio.c; sourceTree = "<group>"; };
+		F5F9F708192D8D7C00BE247F /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
+		F5F9F709192D8D7C00BE247F /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +412,8 @@
 				F535D92D19297388004C46AB /* TCP_client.h */,
 				F535D92E19297388004C46AB /* TCP_server.c */,
 				F535D92F19297388004C46AB /* TCP_server.h */,
+				F5F9F708192D8D7C00BE247F /* list.c */,
+				F5F9F709192D8D7C00BE247F /* list.h */,
 				F558579718D608AD0053DD52 /* data_intermediate.c */,
 				F558579D18D6179C0053DD52 /* data_export.c */,
 				F558579818D608AD0053DD52 /* data.h */,
@@ -498,6 +504,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5F9F70B192D8D7C00BE247F /* list.h in Headers */,
 				F535D93119297388004C46AB /* crypto_core.h in Headers */,
 				F535D93719297388004C46AB /* TCP_server.h in Headers */,
 				F535D93519297388004C46AB /* TCP_client.h in Headers */,
@@ -589,7 +596,7 @@
 		F50F9BFE18C3AAD800D06A0F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Tox;
 			};
 			buildConfigurationList = F50F9C0118C3AAD800D06A0F /* Build configuration list for PBXProject "ObjectiveTox" */;
@@ -635,6 +642,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F54180F018C3ACD500AB220E /* txdplus_crypto.c in Sources */,
+				F5F9F70A192D8D7C00BE247F /* list.c in Sources */,
 				F535D93219297388004C46AB /* ping_array.c in Sources */,
 				F54180F318C3ACD500AB220E /* scrypt-jane.c in Sources */,
 				F5A57C5718C6A0AA00426BDC /* DESCallbacks.m in Sources */,
@@ -736,7 +744,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -749,7 +757,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -776,7 +784,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -791,7 +799,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -818,6 +826,7 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DES_DEBUG=1",
@@ -830,8 +839,9 @@
 				);
 				OTHER_CFLAGS = (
 					"-DTXD_SECURE_MEMORY",
-					"-Wno-attributes",
 					"-Wall",
+					"-Wno-attributes",
+					"-Wno-shorten-64-to-32",
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/_support/lib/iopause.o\"";
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -845,6 +855,7 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -853,8 +864,9 @@
 				);
 				OTHER_CFLAGS = (
 					"-DTXD_SECURE_MEMORY",
-					"-Wno-attributes",
 					"-Wall",
+					"-Wno-attributes",
+					"-Wno-shorten-64-to-32",
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/_support/lib/iopause.o\"";
 				PRODUCT_NAME = "${TARGET_NAME}";

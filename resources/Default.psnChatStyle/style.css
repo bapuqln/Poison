@@ -6,7 +6,8 @@ body {
 
 div.context {
     padding:10px;
-    border-bottom: 1px #dddddd solid;
+    /* border-bottom: 1px #dddddd solid; */
+    position:relative;
 }
 div.context:after,
 div.context:before {
@@ -21,6 +22,10 @@ div.context:last-child {
     border: none;
 }
 
+div.context.message {
+    min-height:32px;
+}
+
 .date_change {
     padding:5px 10px!important;
     text-align: center;
@@ -28,26 +33,47 @@ div.context:last-child {
 }
 
 .other > .avatar {
-    float:left;
+    /*float:left;*/
+    position:absolute;
+    bottom:10px;
+    left:10px;
 }
 
 .self > .avatar {
-    float:right;
+    /* float:right; */
+    position:absolute;
+    bottom:10px;
+    right:10px;
 }
 
-.other .message {
+.other .unit {
     padding:3px 24px 3px 48px;
 }
 
-.self .message {
+.self .unit {
     padding:3px 48px 3px 24px;
     text-align:right;
 }
 
-.self.action {
-    text-align:right;
+.unit:first-child {
+    padding-top:0;
 }
 
-.other.action {
-    text-align:left;
+.message_text {
+    max-width:60%;
+    display:inline-block;
+    background-color:black;
+    color:white;
+    border-radius:13px;
+    padding:3px 10px 4px 10px;
+    
+    word-wrap:break-word;
+}
+
+.self .message_text {
+    margin:auto 0 auto auto;
+}
+
+.action {
+    text-align:center;
 }

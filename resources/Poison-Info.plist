@@ -42,7 +42,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>Poison</string>
+	<string>PoisonFlat</string>
 	<key>CFBundleIdentifier</key>
 	<string>ca.kirara.poison.next</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -80,7 +80,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>m99</string>
+	<string>m100</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
@@ -98,7 +98,7 @@
 	<key>SCDevelopmentName</key>
 	<string>Poison</string>
 	<key>SCGitRef</key>
-	<string>a3b0b1b</string>
+	<string>e8bccb3</string>
 	<key>SCReleaseGroupIdentity</key>
 	<string>You know Sakura Trick is the AOTS of Winter '14, and if you don't think it is, your opinion is invalid, right?</string>
 	<key>ToxHomepage</key>

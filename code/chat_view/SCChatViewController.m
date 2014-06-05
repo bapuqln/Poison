@@ -8,10 +8,10 @@
 #import "SCConversationManager.h"
 #import <WebKit/WebKit.h>
 
-NS_INLINE NSColor *SCDarkenedColor(NSColor *color, CGFloat factor) {
+NS_INLINE NSColor *SCCreateDarkenedColor(NSColor *color, CGFloat factor) {
     CGFloat compo[3];
     [color getRed:&compo[0] green:&compo[1] blue:&compo[2] alpha:NULL];
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 3; ++i) {
         compo[i] *= factor;
     }
     return [NSColor colorWithCalibratedRed:compo[0] green:compo[1] blue:compo[2] alpha:1.0];
@@ -110,10 +110,10 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     
     ((SCFillingView*)self.webView.superview).drawColor = [tm backgroundColorOfCurrentTheme];
     self.userList.backgroundColor = [tm backgroundColorOfCurrentTheme];
-    self.videoBackground.topColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.10);
-    self.videoBackground.bottomColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.15);
+    self.videoBackground.topColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.10);
+    self.videoBackground.bottomColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.15);
     self.videoBackground.borderColor = nil;
-    self.videoBackground.shadowColor = SCDarkenedColor([tm barTopColorOfCurrentTheme], 0.3);
+    self.videoBackground.shadowColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.3);
     self.videoBackground.dragsWindow = YES;
     
     [self.webView.mainFrame loadRequest:[NSURLRequest requestWithURL:[tm baseTemplateURLOfCurrentTheme]]];

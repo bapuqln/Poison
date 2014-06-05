@@ -78,7 +78,8 @@
     [root setAutosaveName:@"UnifiedSplitPane"];
 
     DESConversation *selected = self.friendsListCont.conversationSelectedInView;
-    self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:selected];
+    if (selected)
+        self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:selected];
 }
 
 - (SCBuddyListController *)buddyListController {
@@ -99,6 +100,8 @@
 - (void)conversationDidBecomeFocused:(DESConversation *)conversation {
     [self removeKVOHandlers];
     _watchingConversation = conversation;
+    if (!conversation)
+        return;
     [self updateWindowTitle];
     [_watchingConversation addObserver:self forKeyPath:@"presentableTitle" options:NSKeyValueObservingOptionNew context:NULL];
     self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:conversation];

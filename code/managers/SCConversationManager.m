@@ -13,6 +13,22 @@
     NSMutableOrderedSet *_nameSet;
 }
 
+#pragma mark - WebKit scripting methods
+
++ (BOOL)isKeyExcludedFromWebScript:(const char *)name {
+    return NO;
+}
+
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)selector {
+    return NO;
+}
+
+- (NSURL *)getAppResourceNamed:(NSString *)name {
+    return [[NSBundle mainBundle] URLForResource:name withExtension:@""];
+}
+
+#pragma mark - Other stuff
+
 - (instancetype)initWithConv:(DESConversation *)conv {
     self = [super init];
     if (self) {

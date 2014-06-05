@@ -110,7 +110,7 @@
 - (void)detachHandlersFromConnection {
     [_watchingConnection removeObserver:self forKeyPath:@"friends"];
     [_watchingConnection removeObserver:self forKeyPath:@"groups"];
-    [[NSApp delegate] removeObserver:self forKeyPath:@"requests"];
+    [(NSObject *)[NSApp delegate] removeObserver:self forKeyPath:@"requests"];
 }
 
 - (void)attachKVOHandlersToConnection:(DESToxConnection *)tox {
@@ -119,7 +119,7 @@
     _watchingConnection = tox;
     [tox addObserver:self forKeyPath:@"friends" options:NSKeyValueObservingOptionNew context:NULL];
     [tox addObserver:self forKeyPath:@"groups" options:NSKeyValueObservingOptionNew context:NULL];
-    [[NSApp delegate] addObserver:self forKeyPath:@"requests" options:NSKeyValueObservingOptionNew context:NULL];
+    [(NSObject *)[NSApp delegate] addObserver:self forKeyPath:@"requests" options:NSKeyValueObservingOptionNew context:NULL];
     [self willChangeValueForKey:@"orderingList"];
     if (tox.isActive) {
         _friendListChunk = [self _repopulateOrderingList_Friends];
