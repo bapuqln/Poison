@@ -15,8 +15,6 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 @property BOOL isMessengerLoopStopping;
 
 @property Tox *tox;
-@property uint8_t *toxWaitData; /* The required data length of tox_wait. */
-@property uint16_t toxWaitReqSize; /* These variables are saved so we don't realloc every loop iteration. */
 @end
 
 @implementation DESToxConnection {
@@ -41,7 +39,6 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         tox_callback_connection_status(self.tox, _DESCallbackFriendConnectionStatus, (__bridge void*)self);
         tox_callback_friend_message(self.tox, _DESCallbackFriendMessage, (__bridge void*)self);
         tox_callback_friend_action(self.tox, _DESCallbackFriendAction, (__bridge void*)self);
-
     }
     return self;
 }
@@ -72,46 +69,6 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
     });
 }
 
-#ifndef DES_USE_NAIVE_TOX_LOOP
-- (void)_desRunLoopRun {
-    if (!self.toxWaitData)
-        self.toxWaitData = malloc(tox_wait_data_size());
-    tox_wait_prepare(self.tox, self.toxWaitData);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        int ret = tox_wait_execute(self.toxWaitData, 1, 1);
-        dispatch_async(self.messengerQueue, ^{
-            [self _desRunLoopRunTail:ret];
-        });
-    });
-}
-
-- (void)_desRunLoopRunTail:(int)executeRet {
-    tox_wait_cleanup(self.tox, self.toxWaitData);
-    tox_do(self.tox);
-
-    NSInteger previousNodesCount = self.closeNodesCount;
-    self.closeNodesCount = DESCountCloseNodes(self.tox);
-    if (self.closeNodesCount > 0 && previousNodesCount == 0
-        && [self.delegate respondsToSelector:@selector(connectionDidBecomeEstablished:)])
-        [self.delegate connectionDidBecomeEstablished:self];
-    else if (self.closeNodesCount == 0 && previousNodesCount > 0
-             && [self.delegate respondsToSelector:@selector(connectionDidDisconnect:)])
-        [self.delegate connectionDidDisconnect:self];
-
-    if (!self.isMessengerLoopStopping) {
-        double delayInSeconds = 1.0 / 20.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, self.messengerQueue, ^(void){
-            [self _desRunLoopRun];
-        });
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.delegate respondsToSelector:@selector(connectionDidBecomeInactive:)])
-                [self.delegate connectionDidBecomeInactive:self];
-        });
-    }
-}
-#else
 - (void)_desRunLoopRun {
     tox_do(self.tox);
 
@@ -125,8 +82,8 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         [self.delegate connectionDidDisconnect:self];
 
     if (!self.isMessengerLoopStopping) {
-        double delayInSeconds = 1.0 / 20.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        uint32_t msec = tox_do_interval(self.tox);
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(msec * NSEC_PER_MSEC));
         dispatch_after(popTime, self.messengerQueue, ^(void){
             [self _desRunLoopRun];
         });
@@ -137,7 +94,6 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         });
     }
 }
-#endif
 
 - (BOOL)isActive {
     return !self.isMessengerLoopStopping;
@@ -492,8 +448,6 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 - (void)dealloc {
     if (self.tox)
         tox_kill(self.tox);
-    if (self.toxWaitData)
-        free(self.toxWaitData);
     dispatch_release(self.messengerQueue);
     DESInfo(@"deallocated!");
 }

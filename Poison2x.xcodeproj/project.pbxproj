@@ -1113,7 +1113,7 @@
 					"${PROJECT_DIR}/_support/.security",
 				);
 				PRODUCT_NAME = Tox;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1150,7 +1150,7 @@
 					"${PROJECT_DIR}/_support/.security",
 				);
 				PRODUCT_NAME = Tox;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
