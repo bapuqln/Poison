@@ -1,6 +1,12 @@
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
 
+#if __MAC_OS_X_VERSION_MAX_ALLOWED < 10100
+#define NSFullSizeContentViewWindowMask (0)
+#warning "Blurred views not available on SDK 10.9 and below."
+#warning "NSFullSizeContentViewWindowMask not available on SDK 10.9 and below."
+#endif
+
 #define SCApplicationInfoDictKey(k) ([NSBundle mainBundle].infoDictionary[k])
 #define SCStringPreference(k) ([[NSUserDefaults standardUserDefaults] stringForKey:k])
 #define SCBoolPreference(k) ([[NSUserDefaults standardUserDefaults] boolForKey:k])
@@ -18,6 +24,10 @@ NS_INLINE BOOL SCIsMountainLionOrHigher() {
 
 NS_INLINE BOOL SCIsMavericksOrHigher() {
     return (NSFoundationVersionNumber >= NSFoundationVersionNumber10_8_4)? YES : NO;
+}
+
+NS_INLINE BOOL SCIsYosemiteOrHigher() {
+    return (NSAppKitVersionNumber >= 1318.14)? YES : NO;
 }
 
 NS_INLINE NSURL *SCApplicationSupportDirectory(void) {

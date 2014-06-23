@@ -9,4 +9,6 @@
 @property (nonatomic) BOOL showsUserList;
 
 @property (nonatomic) SCConversation *conversation;
+
+- (void)throwEvent:(NSString *)eventName withObject:(id)object;
 @end

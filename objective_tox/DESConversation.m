@@ -9,7 +9,8 @@
 - (int32_t)peerNumber { DESAbstractWarning; return 0; }
 - (id<DESConversationDelegate>)delegate { DESAbstractWarning; return nil; }
 - (void)setDelegate:(id<DESConversationDelegate>)delegate { DESAbstractWarning; }
-- (DESConversationType)type { DESAbstractWarning; return 255; }
+- (DESConversationType)type { DESAbstractWarning; return 0; }
+- (DESToxConnection *)connection { DESAbstractWarning; return nil; }
 
 - (uint32_t)sendAction:(NSString *)action { DESAbstractWarning; return 0; }
 - (uint32_t)sendMessage:(NSString *)message { DESAbstractWarning; return 0; }
@@ -18,10 +19,12 @@
 
 @implementation DESGroupChat {
     int32_t _groupNum;
-    DESToxConnection *__weak _connection;
     NSMutableSet *_participants;
     NSString *publicKey;
 }
+@synthesize connection = _connection;
+@synthesize peerNumber = _groupNum;
+@synthesize participants = _participants;
 
 - (instancetype)initWithNumber:(int32_t)groupNum onConnection:(DESToxConnection *)connection {
     self = [super init];
@@ -33,29 +36,20 @@
 }
 
 - (NSString *)presentableTitle {
-    return [NSString stringWithFormat:NSLocalizedString(@"Group chat #%d", @"DESGroupChat: Title template"), _groupNum];
+    return [NSString stringWithFormat:NSLocalizedString(@"Group chat #%d", @"DESGroupChat: Title template"), self.peerNumber];
 }
 
 - (NSString *)presentableSubtitle {
     uint32_t participantCount = (uint32_t)[self.participants count];
-    NSString *template = @"%d";
-    if (participantCount == 1)
-        template = NSLocalizedString(@"with %d person", @"DESGroupChat: Title template (singular)");
-    else
-        template = NSLocalizedString(@"with %d people", @"DESGroupChat: Title template (plural)");
-    return [NSString stringWithFormat:template, _groupNum];
+    if (participantCount == 1) {
+        return [NSString stringWithFormat:NSLocalizedString(@"with %d person", @"DESGroupChat: Title template (singular)"), self.peerNumber];
+    } else {
+        return [NSString stringWithFormat:NSLocalizedString(@"with %d people", @"DESGroupChat: Title template (plural)"), self.peerNumber];
+    }
 }
 
 - (NSString *)publicKey {
     return @"";
-}
-
-- (NSSet *)participants {
-    return _participants;
-}
-
-- (int32_t)peerNumber {
-    return _groupNum;
 }
 
 - (DESConversationType)type {

@@ -21,8 +21,28 @@
 	<key>aiDescription</key>
 	<string>The default chat style used by Poison.</string>
 	<key>aiHumanReadableName</key>
-	<string>Default</string>
+	<string>Bubbles (default)</string>
 	<key>aiShortVersionString</key>
 	<string>2.0</string>
+	
+	<key>aiThemeConfiguration</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Bubble colour (self)</string>
+			<key>type</key>
+			<string>colour</string>
+			<key>default</key>
+			<string>#000000</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bubble colour (other)</string>
+			<key>type</key>
+			<string>colour</string>
+			<key>default</key>
+			<string>#888888</string>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -25,6 +25,7 @@ static inline void _txd_write_int_64_le(uint64_t the_int, uint8_t *buf) {
     buf[6] = the_int >> 8;
     buf[7] = the_int;
 }
+
 static inline uint32_t _txd_read_int_32_le(const uint8_t *buf) {
     return (((uint32_t)buf[0] << 24) + ((uint32_t)buf[1] << 16) +
             ((uint32_t)buf[2] << 8) + (uint32_t)buf[3]);
@@ -57,11 +58,11 @@ static inline void _txd_write_int_64_be(uint64_t the_int, uint8_t *buf) {
     buf[0] = the_int;
 }
 
-static inline uint32_t _txd_read_int_32_be(const uint8_t *buf) {
+static inline uint32_t _txd_read_int_32_be(const void *buf) {
     return *((uint32_t*)buf);
 }
 
-static inline uint64_t _txd_read_int_64_be(const uint8_t *buf) {
+static inline uint64_t _txd_read_int_64_be(const void *buf) {
     return *((uint64_t*)buf);
 }
 

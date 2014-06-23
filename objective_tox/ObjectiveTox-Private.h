@@ -9,9 +9,14 @@
 - (void)addGroup:(id<DESConversation>)conversation;
 @end
 
+#pragma mark - Base64
+
+NSString *DESCreateBase64String(NSData *bytes);
+NSData *DESDecodeBase64String(NSString *enc);
+
 #pragma mark - Callbacks
 
-void _DESCallbackFriendRequest(Tox *tox, uint8_t *from, uint8_t *payload,
+void _DESCallbackFriendRequest(Tox *tox, const uint8_t *from, const uint8_t *payload,
                                uint16_t payloadLength, void *dtcInstance);
 void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, uint8_t *payload,
                                      uint16_t payloadLength, void *dtcInstance);
@@ -32,6 +37,9 @@ void _DESCallbackFriendAction(Tox *tox, int32_t from, uint8_t *payload,
 void _DESCallbackFMGeneric(DESToxConnection *conn, int32_t from,
                            uint8_t *payload, uint16_t payloadLength,
                            DESMessageType mtyp);
+void _DESCallbackReadReceipt(Tox *tox, int32_t from, uint32_t messageid,
+                             void *dtcInstance);
+int _DESCallbackControlMessage(void *desfriend, uint8_t *payload, uint32_t length);
 
 #pragma mark - DESRequest concrete subclasses
 
@@ -66,7 +74,7 @@ NS_INLINE DESFriendStatus DESToxToFriendStatus(TOX_USERSTATUS status) {
             return DESFriendStatusAway;
         case TOX_USERSTATUS_BUSY:
             return DESFriendStatusBusy;
-        default:
+        case TOX_USERSTATUS_INVALID:
             return DESFriendStatusOffline;
     }
 }
@@ -79,7 +87,7 @@ NS_INLINE TOX_USERSTATUS DESFriendStatusToTox(DESFriendStatus status) {
             return TOX_USERSTATUS_AWAY;
         case DESFriendStatusBusy:
             return TOX_USERSTATUS_BUSY;
-        default:
+        case DESFriendStatusOffline:
             return TOX_USERSTATUS_INVALID;
     }
 }

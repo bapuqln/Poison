@@ -21,6 +21,7 @@
     NSGradient *_cachedGradient;
     NSShadow *_innerShadow;
     NSShadow *_outerShadow;
+    NSShadow *_outerShadowYosemite;
 }
 
 + (Class)cellClass {
@@ -101,11 +102,22 @@
     return _outerShadow;
 }
 
+- (NSShadow *)outerShadowOfYosemiteTextField {
+    if (!_outerShadowYosemite) {
+        _outerShadowYosemite = [[NSShadow alloc] init];
+        _outerShadowYosemite.shadowBlurRadius = 1.0;
+        _outerShadowYosemite.shadowOffset = (CGSize){0, -0.7};
+        _outerShadowYosemite.shadowColor = [NSColor colorWithCalibratedWhite:0.0
+                                                               alpha:0.13];
+    }
+    return _outerShadowYosemite;
+}
+
 - (CGRect)actualBounds {
     return CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - 1);
 }
 
-- (void)drawRect:(NSRect)dirtyRect {
+- (void)drawRectBelowYosemite:(NSRect)dirtyRect {
     CGRect ab = self.actualBounds;
 
     /* fill it */
@@ -127,7 +139,7 @@
     /* outline */
     [NSGraphicsContext saveGraphicsState];
     [self.outerShadowOfTextField set];
-    if (self.window.isKeyWindow)
+    if (self.window.isKeyWindow && self.window.isMainWindow)
         [self.focusedColorForTextField set];
     else
         [self.unfocusedColorForTextField set];
@@ -138,6 +150,37 @@
     [NSGraphicsContext restoreGraphicsState];
 
     [self.cell drawInteriorWithFrame:ab inView:self];
+}
+
+- (void)drawRectAboveYosemite:(NSRect)dirtyRect {
+    CGRect ab = self.actualBounds;
+    [NSGraphicsContext saveGraphicsState];
+    NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:ab
+                                                         xRadius:4.0
+                                                         yRadius:4.0];
+    if (self.window.isKeyWindow && self.window.isMainWindow) {
+        [[NSColor whiteColor] set];
+        [self.outerShadowOfYosemiteTextField set];
+        [path fill];
+    } else {
+        [[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] set];
+        [path fill];
+        path = [NSBezierPath bezierPathWithRoundedRect:CGRectInset(ab, 0.5, 0.5)
+                                               xRadius:3.42
+                                               yRadius:3.42];
+        [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] set];
+        [path stroke];
+    }
+
+    [NSGraphicsContext restoreGraphicsState];
+    [self.cell drawInteriorWithFrame:ab inView:self];
+}
+
+- (void)drawRect:(NSRect)dirtyRect {
+    if (SCIsYosemiteOrHigher())
+        [self drawRectAboveYosemite:dirtyRect];
+    else
+        [self drawRectBelowYosemite:dirtyRect];
 }
 
 - (void)dealloc {

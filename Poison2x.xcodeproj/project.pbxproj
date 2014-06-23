@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		F505732D1953BDE700C02C07 /* vp_layout_test_sample_16_9.png in Resources */ = {isa = PBXBuildFile; fileRef = F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */; };
+		F505732E1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */; };
 		F517D85C19156EF100B236FE /* SCVideoPaneView.m in Sources */ = {isa = PBXBuildFile; fileRef = F517D85B19156EF100B236FE /* SCVideoPaneView.m */; };
 		F517FCA918B91CDA0060D575 /* SCProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F517FCA818B91CDA0060D575 /* SCProfileManager.m */; };
 		F5239AAA190D750B00B06821 /* SCConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5239AA9190D750B00B06821 /* SCConversationManager.m */; };
@@ -33,6 +35,7 @@
 		F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A518DF823400B7E663 /* MainMenu.xib */; };
 		F52714AD18DF823400B7E663 /* NewUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A618DF823400B7E663 /* NewUser.xib */; };
 		F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A718DF823400B7E663 /* QRSheet.xib */; };
+		F527A91A195008A5000C4A7F /* DESSignKeybag.plist in Resources */ = {isa = PBXBuildFile; fileRef = F527A919195008A5000C4A7F /* DESSignKeybag.plist */; };
 		F52D013018B7CFB70033680F /* icon_group_ignore.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011518B7CFB70033680F /* icon_group_ignore.png */; };
 		F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */; };
 		F52D013218B7CFB70033680F /* icon_group_join.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011718B7CFB70033680F /* icon_group_join.png */; };
@@ -108,6 +111,7 @@
 		F5B5421F18B6D23C00226CA8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B5421E18B6D23C00226CA8 /* Cocoa.framework */; };
 		F5B5422B18B6D23C00226CA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5422A18B6D23C00226CA8 /* main.m */; };
 		F5B5423218B6D23C00226CA8 /* SCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B5423118B6D23C00226CA8 /* SCAppDelegate.m */; };
+		F5C16E4919439517005E67A9 /* themelib.js in Resources */ = {isa = PBXBuildFile; fileRef = F5C16E4819439517005E67A9 /* themelib.js */; };
 		F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B300190B55EE00081FEA /* avatar-mask-roundrect@2x.png */; };
 		F5C1B307190B55EE00081FEA /* avatar-mask-squircle.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B301190B55EE00081FEA /* avatar-mask-squircle.png */; };
 		F5C1B308190B55EE00081FEA /* avatar-mask-roundrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F5C1B302190B55EE00081FEA /* avatar-mask-roundrect.png */; };
@@ -119,10 +123,12 @@
 		F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */; };
 		F5DAB46718C962E90046ED96 /* qr-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DAB46618C962E90046ED96 /* qr-placeholder.png */; };
 		F5DAB46A18C970A50046ED96 /* SCQRCodeSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */; };
-		F5E1A2C819170EFC00D0037A /* vp_layout_test_sample@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */; };
-		F5E1A2C919170EFC00D0037A /* vp_layout_test_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */; };
+		F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */; };
+		F5E1A2C919170EFC00D0037A /* vp_layout_test_sample_1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */; };
 		F5E50C421913586200C3BE48 /* SCMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E50C411913586200C3BE48 /* SCMessages.m */; };
 		F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */; };
+		F5EA627C19563327002479EE /* SCFeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA627B19563327002479EE /* SCFeedbackController.m */; };
+		F5EA627E1956334C002479EE /* Feedback.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5EA627D1956334C002479EE /* Feedback.xib */; };
 		F5F0EF0B1901D5C300A292F9 /* SCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF0A1901D5C300A292F9 /* SCFriendRequest.m */; };
 		F5F0EF1119023AF000A292F9 /* SCNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF1019023AF000A292F9 /* SCNotificationManager.m */; };
 		F5F41C7718F1BC61009CD9D6 /* SCEditingField.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F41C7618F1BC61009CD9D6 /* SCEditingField.m */; };
@@ -203,7 +209,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample_16_9.png; sourceTree = "<group>"; };
+		F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample_16_9@2x.png"; sourceTree = "<group>"; };
 		F50F9C0D18C3AB3600D06A0F /* ObjectiveTox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ObjectiveTox.xcodeproj; sourceTree = "<group>"; };
+		F5168E5F19452CC7000D7557 /* Tox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Tox.entitlements; sourceTree = "<group>"; };
 		F517D85A19156EF100B236FE /* SCVideoPaneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoPaneView.h; sourceTree = "<group>"; };
 		F517D85B19156EF100B236FE /* SCVideoPaneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoPaneView.m; sourceTree = "<group>"; };
 		F517FCA718B91CDA0060D575 /* SCProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCProfileManager.h; sourceTree = "<group>"; };
@@ -219,6 +228,7 @@
 		F52714A518DF823400B7E663 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		F52714A618DF823400B7E663 /* NewUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewUser.xib; sourceTree = "<group>"; };
 		F52714A718DF823400B7E663 /* QRSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRSheet.xib; sourceTree = "<group>"; };
+		F527A919195008A5000C4A7F /* DESSignKeybag.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DESSignKeybag.plist; sourceTree = "<group>"; };
 		F52D011518B7CFB70033680F /* icon_group_ignore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_ignore.png; sourceTree = "<group>"; };
 		F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_group_ignore@2x.png"; sourceTree = "<group>"; };
 		F52D011718B7CFB70033680F /* icon_group_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_join.png; sourceTree = "<group>"; };
@@ -328,6 +338,7 @@
 		F5B5422C18B6D23C00226CA8 /* Poison-Prefix.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "Poison-Prefix.pch"; sourceTree = "<group>"; };
 		F5B5423018B6D23C00226CA8 /* SCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCAppDelegate.h; sourceTree = "<group>"; };
 		F5B5423118B6D23C00226CA8 /* SCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCAppDelegate.m; sourceTree = "<group>"; };
+		F5C16E4819439517005E67A9 /* themelib.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = themelib.js; sourceTree = "<group>"; };
 		F5C1B300190B55EE00081FEA /* avatar-mask-roundrect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-roundrect@2x.png"; sourceTree = "<group>"; };
 		F5C1B301190B55EE00081FEA /* avatar-mask-squircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-squircle.png"; sourceTree = "<group>"; };
 		F5C1B302190B55EE00081FEA /* avatar-mask-roundrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar-mask-roundrect.png"; sourceTree = "<group>"; };
@@ -341,12 +352,15 @@
 		F5DAB46618C962E90046ED96 /* qr-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr-placeholder.png"; sourceTree = "<group>"; };
 		F5DAB46818C970A50046ED96 /* SCQRCodeSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCQRCodeSheetController.h; sourceTree = "<group>"; };
 		F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCQRCodeSheetController.m; sourceTree = "<group>"; };
-		F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample@2x.png"; sourceTree = "<group>"; };
-		F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample.png; sourceTree = "<group>"; };
+		F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample_1_1@2x.png"; sourceTree = "<group>"; };
+		F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample_1_1.png; sourceTree = "<group>"; };
 		F5E50C401913586200C3BE48 /* SCMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMessages.h; sourceTree = "<group>"; };
 		F5E50C411913586200C3BE48 /* SCMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMessages.m; sourceTree = "<group>"; };
 		F5E84CDD18DE2C8F00B93FE7 /* SCMenuStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMenuStatusView.h; sourceTree = "<group>"; };
 		F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMenuStatusView.m; sourceTree = "<group>"; };
+		F5EA627A19563327002479EE /* SCFeedbackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFeedbackController.h; sourceTree = "<group>"; };
+		F5EA627B19563327002479EE /* SCFeedbackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFeedbackController.m; sourceTree = "<group>"; };
+		F5EA627D1956334C002479EE /* Feedback.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Feedback.xib; sourceTree = "<group>"; };
 		F5F0EF091901D5C300A292F9 /* SCFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFriendRequest.h; sourceTree = "<group>"; };
 		F5F0EF0A1901D5C300A292F9 /* SCFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFriendRequest.m; sourceTree = "<group>"; };
 		F5F0EF0F19023AF000A292F9 /* SCNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNotificationManager.h; sourceTree = "<group>"; };
@@ -490,8 +504,10 @@
 				F5AC0D91190C6BA50020644C /* request-pill-dismiss@2x.png */,
 				F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */,
 				F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */,
-				F5E1A2C719170EFC00D0037A /* vp_layout_test_sample.png */,
-				F5E1A2C619170EFC00D0037A /* vp_layout_test_sample@2x.png */,
+				F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */,
+				F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */,
+				F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */,
+				F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */,
 				F5FFF46018B81F4E00CD1E43 /* Poison.iconset */,
 				F5F5F9CF193EBE3D00930FEC /* PoisonFlat.iconset */,
 			);
@@ -576,6 +592,7 @@
 		F5B5421218B6D23C00226CA8 = {
 			isa = PBXGroup;
 			children = (
+				F5168E5F19452CC7000D7557 /* Tox.entitlements */,
 				F567A4E218C5745C00E04F3A /* to-do */,
 				F5F6D5ED18DE4A0200A14557 /* README.md */,
 				F5F41C7B18F1BD1C009CD9D6 /* LICENSE.md */,
@@ -628,6 +645,7 @@
 				F517FCA618B91CB20060D575 /* managers */,
 				F52D010918B7CE4E0033680F /* login_window */,
 				F53DB89E18B6DDB8008D7ED5 /* buddy_list */,
+				F5EA6276195632FC002479EE /* feedback_controller */,
 				F53DB88E18B6DD37008D7ED5 /* common */,
 				F5B5425818B6D81F00226CA8 /* main */,
 				F5B5425918B6D81F00226CA8 /* misc */,
@@ -641,7 +659,9 @@
 				F5CC709B18C2BA1600C41EBF /* friends.rtf */,
 				F5B5422618B6D23C00226CA8 /* Poison-Info.plist */,
 				F58EE9A818C57A760033F2D4 /* DefaultDefaults.plist */,
+				F527A919195008A5000C4A7F /* DESSignKeybag.plist */,
 				F541811618C4138100AB220E /* Default.psnChatStyle */,
+				F5C16E4819439517005E67A9 /* themelib.js */,
 				F52714AF18DF9D9E00B7E663 /* strings */,
 				F52D011418B7CF5A0033680F /* art */,
 				F5B5425D18B6D89B00226CA8 /* interfaces */,
@@ -690,10 +710,20 @@
 				F52714A418DF823400B7E663 /* FriendsPanel.xib */,
 				F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */,
 				F52714A518DF823400B7E663 /* MainMenu.xib */,
+				F5EA627D1956334C002479EE /* Feedback.xib */,
 				F52714A618DF823400B7E663 /* NewUser.xib */,
 				F52714A718DF823400B7E663 /* QRSheet.xib */,
 			);
 			path = interfaces;
+			sourceTree = "<group>";
+		};
+		F5EA6276195632FC002479EE /* feedback_controller */ = {
+			isa = PBXGroup;
+			children = (
+				F5EA627A19563327002479EE /* SCFeedbackController.h */,
+				F5EA627B19563327002479EE /* SCFeedbackController.m */,
+			);
+			path = feedback_controller;
 			sourceTree = "<group>";
 		};
 		F5F6DD37190587B100112A64 /* chat_window */ = {
@@ -738,6 +768,18 @@
 				CLASSPREFIX = SC;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Project Tox";
+				TargetAttributes = {
+					F5B5421A18B6D23C00226CA8 = {
+						SystemCapabilities = {
+							com.apple.Mac = {
+								enabled = 0;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = F5B5421618B6D23C00226CA8 /* Build configuration list for PBXProject "Poison2x" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -747,7 +789,6 @@
 				en,
 				Base,
 				de,
-				ja,
 			);
 			mainGroup = F5B5421218B6D23C00226CA8;
 			productRefGroup = F5B5421C18B6D23C00226CA8 /* Products */;
@@ -807,6 +848,7 @@
 				F541811718C4138100AB220E /* Default.psnChatStyle in Resources */,
 				F538754E18C28B4000AED945 /* titlebar_incoming_files.png in Resources */,
 				F56956CD18E884AE00E1EB0D /* avatar-mask-circle.png in Resources */,
+				F505732E1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png in Resources */,
 				F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */,
 				F52D013D18B7CFB70033680F /* status-light-away.png in Resources */,
 				F5DAB46718C962E90046ED96 /* qr-placeholder.png in Resources */,
@@ -829,16 +871,19 @@
 				F5C1B308190B55EE00081FEA /* avatar-mask-roundrect.png in Resources */,
 				F5AC0D93190C6BA50020644C /* request-pill-dismiss-down@2x.png in Resources */,
 				F52D013718B7CFB70033680F /* icon_minus@2x.png in Resources */,
+				F5EA627E1956334C002479EE /* Feedback.xib in Resources */,
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
 				F52D013A18B7CFB70033680F /* icon_smiley.png in Resources */,
-				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample@2x.png in Resources */,
+				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */,
 				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
 				F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */,
+				F527A91A195008A5000C4A7F /* DESSignKeybag.plist in Resources */,
 				F572E9EA19157423009FE61B /* Localizable.strings in Resources */,
 				F5FFF46618B8283300CD1E43 /* oi@2x.png in Resources */,
 				F5AC0D8A190C69BC0020644C /* request-pill-accept-down@2x.png in Resources */,
 				F5AC0D88190C69BC0020644C /* request-pill-accept@2x.png in Resources */,
+				F505732D1953BDE700C02C07 /* vp_layout_test_sample_16_9.png in Resources */,
 				F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */,
 				F538754F18C28B4000AED945 /* titlebar_incoming_files@2x.png in Resources */,
 				F5FFF46518B8283300CD1E43 /* oi.png in Resources */,
@@ -856,7 +901,7 @@
 				F52D013C18B7CFB70033680F /* icon-frequests@2x.png in Resources */,
 				F58EE9A918C57A760033F2D4 /* DefaultDefaults.plist in Resources */,
 				F52714AB18DF823400B7E663 /* FriendsPanel.xib in Resources */,
-				F5E1A2C919170EFC00D0037A /* vp_layout_test_sample.png in Resources */,
+				F5E1A2C919170EFC00D0037A /* vp_layout_test_sample_1_1.png in Resources */,
 				F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */,
 				F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */,
 				F52D013818B7CFB70033680F /* icon_plus.png in Resources */,
@@ -868,6 +913,7 @@
 				F52D013118B7CFB70033680F /* icon_group_ignore@2x.png in Resources */,
 				F5AC0D89190C69BC0020644C /* request-pill-accept.png in Resources */,
 				F52714AA18DF823400B7E663 /* ChatPanel.xib in Resources */,
+				F5C16E4919439517005E67A9 /* themelib.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -885,7 +931,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\nmake_libvpx() {\n    echo \"Need to build libvpx. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libvpx\n    git clone \"https://chromium.googlesource.com/webm/libvpx\" libvpx && cd libvpx\n    git checkout \"v1.3.0\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libvpx.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libvpx.configure.log\"\n}\nmake_libopus() {\n    echo \"Need to build libopus. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"opus-1.0.3\" \"libopus.tar.gz\"\n    curl -o \"libopus.tar.gz\" \"http://downloads.xiph.org/releases/opus/opus-1.0.3.tar.gz\"\n    tar -xzf \"libopus.tar.gz\" && cd \"opus-1.0.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libopus.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libopus.configure.log\"\n}\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=\"j$BUILD_NUMBER\"\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"m$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\n#if [ ! -f \"$PROJECT_DIR/_support/lib/libvpx.a\" ]; then\n#    make_libvpx; cd $PROJECT_DIR;\n#fi\n#if [ ! -f \"$PROJECT_DIR/_support/lib/libopus.a\" ]; then\n#    make_libopus; cd $PROJECT_DIR;\n#fi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
+			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=\"j$BUILD_NUMBER\"\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"m$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
 		};
 		F553FAFB18DCF3AF00CBA532 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -907,6 +953,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5EA627C19563327002479EE /* SCFeedbackController.m in Sources */,
 				F5F8AA0718F21887000C57EB /* SCBuddyListManager.m in Sources */,
 				F543BE3718E12994004C70D3 /* SCMainWindowController.m in Sources */,
 				F5F41C7718F1BC61009CD9D6 /* SCEditingField.m in Sources */,
@@ -1035,6 +1082,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -1075,6 +1123,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
@@ -1082,6 +1131,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tox.entitlements;
 				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1114,7 +1164,10 @@
 				);
 				PRODUCT_NAME = Tox;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Werror";
+				WARNING_CFLAGS = (
+					"-Werror",
+					"-Wno-error=#warnings",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1123,6 +1176,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tox.entitlements;
 				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1151,7 +1205,10 @@
 				);
 				PRODUCT_NAME = Tox;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Werror";
+				WARNING_CFLAGS = (
+					"-Werror",
+					"-Wno-error=#warnings",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

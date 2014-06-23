@@ -1,6 +1,7 @@
 #import "ObjectiveTox-Private.h"
 
-static inline DESEventType _DESExtendedGroupChatChangeTypeToDESEventType(uint8_t changeType) {
+/*
+static inline DESEventType _DESExtendedGroupChatChangeTypeToDESEventType(TOX_CHAT_CHANGE changeType) {
     switch (changeType) {
         case TOX_CHAT_CHANGE_PEER_ADD:
             return DESEventTypeGroupUserJoined;
@@ -8,12 +9,11 @@ static inline DESEventType _DESExtendedGroupChatChangeTypeToDESEventType(uint8_t
             return DESEventTypeGroupUserLeft;
         case TOX_CHAT_CHANGE_PEER_NAME:
             return DESEventTypeGroupUserNameChanged;
-        default:
-            return 0;
     }
 }
+ */
 
-void _DESCallbackFriendRequest(Tox *tox, uint8_t *from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
+void _DESCallbackFriendRequest(Tox *tox, const uint8_t *from, const uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
     while (payloadLength > 0 && payload[payloadLength - 1] == 0) {
         --payloadLength;
     }
@@ -146,7 +146,7 @@ void _DESCallbackFriendConnectionStatus(Tox *tox, int32_t from, uint8_t on_off, 
 /* MESSAGES */
 
 void _DESCallbackFriendMessage(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
-    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, payload, payloadLength, DESMessageTypeAction);
+    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, payload, payloadLength, DESMessageTypeText);
 }
 
 void _DESCallbackFriendAction(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
@@ -169,9 +169,28 @@ void _DESCallbackFMGeneric(DESToxConnection *conn, int32_t from, uint8_t *payloa
     });
 }
 
+void _DESCallbackReadReceipt(Tox *tox, int32_t from, uint32_t messageid, void *dtcInstance) {
+    DESConversation *f = (DESConversation *)[(__bridge DESToxConnection *)dtcInstance friendWithID:from];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([f.delegate respondsToSelector:@selector(conversation:didReceiveDeliveryNotificationForMessageID:)])
+            [f.delegate conversation:f didReceiveDeliveryNotificationForMessageID:messageid];
+    });
+}
+
+int _DESCallbackControlMessage(void *desfriend, uint8_t *payload, uint32_t length) {
+    DESFriend *f = (__bridge DESFriend *)desfriend;
+    DESToxConnection *c = f.connection;
+    NSData *payload_ = [NSData dataWithBytes:payload + 1 length:length - 1];
+    if ([c.delegate respondsToSelector:@selector(didReceiveControlMessage:ofType:fromFriend:)]) {
+        [c.delegate didReceiveControlMessage:payload_ ofType:payload[0] fromFriend:f];
+    }
+    return 0;
+}
+
 /* GROUP CHATS */
 
+/*
 void _DESCallbackExtendedGroupChatNameListDidChange(Tox *tox, int group, int peernum, uint8_t changeType, void *dtcInstance) {
     DESToxConnection *connection = (__bridge DESToxConnection*)dtcInstance;
     DESGroupChat *applyGC = (DESGroupChat *)[connection groupChatWithID:group];
-}
+}*/

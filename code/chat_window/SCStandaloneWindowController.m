@@ -30,6 +30,9 @@
         _chatView = [[SCChatViewController alloc] initWithNibName:@"ChatPanel" bundle:[NSBundle mainBundle]];
         [_chatView loadView];
         _chatView.view.frame = [self.window.contentView bounds];
+        if (conv.type != DESConversationTypeGroup)
+            _chatView.showsUserList = NO;
+        _chatView.showsVideoPane = NO;
         [self.window.contentView addSubview:_chatView.view];
         [self addKVOHandlers];
     }

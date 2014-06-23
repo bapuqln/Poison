@@ -23,6 +23,12 @@
         SCWidgetedWindow *window = [[SCWidgetedWindow alloc] initWithContentRect:CGRectCentreInRect(SCBuddyListDefaultWindowFrame, [NSScreen mainScreen].visibleFrame) styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
         window.restorable = NO;
         window.minSize = SCBuddyListMinimumSize;
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+        if (SCIsYosemiteOrHigher()) {
+            window.titlebarAppearsTransparent = YES;
+            window.titleVisibility = NSWindowTitleHidden;
+        }
+#endif
         [window setFrameUsingName:@"MainWindow"];
         window.frameAutosaveName = @"MainWindow";
         window.title = [NSString stringWithFormat:NSLocalizedString(@"%@ \u2014 Friends", @"friends list window title"), SCApplicationInfoDictKey(@"CFBundleName")];

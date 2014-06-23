@@ -101,7 +101,7 @@ uint32_t _txd_load_friends_block(uint8_t *buf, uint32_t block_size, txd_intermed
     gettimeofday(&today, NULL); /* FIXME: standardise to UTC */
 
     struct txd_friend *friends = calloc(sizeof(struct txd_friend), friend_count);
-    int i, j;
+    unsigned int i, j;
 
     for (i = 0; i < friend_count; ++i) {
         struct txd_friend *f = &(friends[i]);
@@ -143,17 +143,20 @@ uint32_t _txd_load_friends_block(uint8_t *buf, uint32_t block_size, txd_intermed
         if (guaranteed_size + nl + dl + (fex_count * 6) > block_size)
             goto kill;
 
-        int k;
+        unsigned int k;
 
         for (k = 0; k < fex_count; ++k) {
-            txd_twocc_t fex_key = ntohs(*(txd_twocc_t*)pos);
+            void *_block = pos;
+            txd_twocc_t fex_key = ntohs(*(txd_twocc_t*)_block);
             uint32_t fex_data_length = _txd_read_int_32(pos + 2);
             pos += 6;
             switch (fex_key) {
                 case TXD_FEX_LASTSEEN: {
                     uint64_t ls = _txd_read_int_64(pos);
                     /* bad time? */
-                    if (ls > today.tv_sec)
+                    /* note: cast to int64_t to fix warning
+                     * i don't think it will affect anything for a long time */
+                    if ((int64_t)ls > today.tv_sec)
                         ls = 0;
                     f -> txd_lastseen = ls;
                     break;
@@ -204,7 +207,7 @@ uint32_t _txd_load_dht_block(uint8_t *buf, uint32_t block_size, txd_intermediate
         return TXD_ERR_SIZE_MISMATCH;
 
     struct txd_dhtlite *dhtlites = calloc(sizeof(struct txd_dhtlite), dht_count);
-    int i;
+    unsigned int i;
 
     for (i = 0; i < dht_count; ++i) {
         struct txd_dhtlite *cur = &(dhtlites[i]);
@@ -265,7 +268,7 @@ uint64_t txd_get_size_of_intermediate_ex(txd_intermediate_t im, uint32_t arc_blo
         running_total += 12; /* friend count */
         uint32_t friend_count = txd_get_number_of_friends(im);
         running_total += (9 + 14 + TOX_FRIEND_ADDRESS_SIZE) * friend_count;
-        int i;
+        unsigned int i;
 
         for (i = 0; i < friend_count; ++i) {
             running_total += txd_get_length_of_friend_name(im, i);
@@ -302,7 +305,7 @@ uint32_t txd_export_to_buf_ex(txd_intermediate_t im, uint8_t **buf,
         return TXD_ERR_SUCCESS;
 
     uint8_t *rbuf = malloc(block_size);
-    uint32_t save_ret = txd_export_to_buf_prealloc(im, rbuf, block_size, arc_blocks);
+    int32_t save_ret = txd_export_to_buf_prealloc(im, rbuf, block_size, arc_blocks);
 
     if (save_ret != TXD_ERR_SUCCESS) {
         _txd_kill_memory(rbuf, block_size);
@@ -374,7 +377,7 @@ uint32_t txd_export_to_buf_prealloc(txd_intermediate_t im, uint8_t *buf,
         uint32_t friend_count = txd_get_number_of_friends(im);
         _txd_write_int_32(friend_count, pos);
         pos += 4;
-        int i;
+        unsigned int i;
 
         for (i = 0; i < friend_count; ++i) {
             *pos = im -> txd_friends[i].txd_flags;
@@ -424,7 +427,7 @@ uint32_t txd_export_to_buf_prealloc(txd_intermediate_t im, uint8_t *buf,
         uint32_t node_count = txd_get_number_of_dht_nodes(im);
         _txd_write_int_32(node_count, pos);
         pos += 4;
-        int i;
+        unsigned int i;
 
         for (i = 0; i < node_count; ++i) {
             txd_copy_dht_client_id(im, i, pos);
@@ -497,7 +500,7 @@ uint32_t txd_intermediate_from_buf(uint8_t *buf, uint64_t size,
             return TXD_ERR_SIZE_MISMATCH;
         }
 
-        uint32_t delegation_ret = 0;
+        int32_t delegation_ret = 0;
 
         switch (b_magic) {
             case TXD_BLOCK_SELF:

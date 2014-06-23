@@ -17,14 +17,19 @@ NSError *SCLocalizedErrorWithTXDReturnValue(int32_t retv) {
     return [NSError errorWithDomain:@"TXDErrorDomain" code:retv userInfo:userInfo];
 }
 
+static SCProfileManager *_currentProfile = nil;
+
 @interface SCAppDelegate ()
 - (NSString *)profileName;
 - (NSString *)profilePass;
 @end
 
-static BOOL SCPrivateSettingsNeedCommit = NO;
-
-@implementation SCProfileManager
+@implementation SCProfileManager {
+    NSString *_identifier;
+    NSMutableDictionary *_privateSettings;
+    BOOL _settingsNeedCommit;
+    NSRecursiveLock *_fileIOLock;
+}
 
 + (NSDictionary *)manifest {
     static NSDictionary *manifest = nil;
@@ -153,79 +158,94 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
     return YES;
 }
 
-+ (NSString *)currentProfileIdentifier {
-    NSString *name = ((SCAppDelegate *)[NSApp delegate]).profileName;
-    if (!name)
-        return nil;
-    return (NSString *)self.manifest[name];
++ (instancetype)currentProfile {
+    if (!_currentProfile) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSString *name = ((SCAppDelegate *)[NSApp delegate]).profileName;
+            if (!name)
+                return;
+
+            NSString *identifier = self.manifest[name];
+            _currentProfile = [[SCProfileManager alloc] init];
+            _currentProfile->_identifier = identifier;
+            _currentProfile->_fileIOLock = [[NSRecursiveLock alloc] init];
+        });
+    }
+    return _currentProfile;
 }
 
-+ (NSMutableDictionary *)_privateSettings:(BOOL)purge {
-    static NSMutableDictionary *ps = nil;
-    if (![self currentProfileIdentifier])
-        return nil;
-    if (purge) {
-        ps = nil;
-        return nil;
-    }
-    if (!ps) {
-        NSURL *profileHome = [self.profileDirectory URLByAppendingPathComponent:self.currentProfileIdentifier isDirectory:YES];
-        NSURL *psFile = [profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSDictionary *attrs = [fileManager attributesOfItemAtPath:psFile.path error:nil];
-        if (!attrs) {
-            ps = [NSMutableDictionary dictionary];
-            NSLog(@"note: private store missing");
-            return ps;
-        }
-        NSString *pass = ((SCAppDelegate *)[NSApp delegate]).profilePass;
-        uint64_t pl = [pass lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-        NSData *encryptedBlob = [NSData dataWithContentsOfURL:psFile];
-        uint8_t *buf = NULL;
-        uint64_t size = 0;
-        int err = txd_decrypt_buf((uint8_t *)[pass UTF8String], pl, encryptedBlob.bytes,
-                                  encryptedBlob.length, &buf, &size);
-        if (err != TXD_ERR_SUCCESS) {
-            NSLog(@"yikes! txd_decrypt_buf failed with code %d", err);
-            ps = [NSMutableDictionary dictionary];
-            return ps;
-        }
-        NSData *rawPS = [[NSData alloc] initWithBytesNoCopy:buf length:size freeWhenDone:NO];
-        //ps = [NSJSONSerialization JSONObjectWithData:hopefullyJSONData options:NSJSONReadingMutableContainers error:nil];
-        //ps = [NSPropertyListSerialization propertyListFromData:rawPS mutabilityOption:NSPropertyListMutableContainers format:NULL errorDescription:&loadError];
-        @try {
-            ps = [NSKeyedUnarchiver unarchiveObjectWithData:rawPS];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"bad private store: %@; continuing with a blank one", exception);
-            ps = nil;
-        }
-        if (![ps isKindOfClass:[NSMutableDictionary class]]) {
-            ps = [NSMutableDictionary dictionary];
-        }
-        rawPS = nil;
-        _txd_kill_memory(buf, size);
-        free(buf);
++ (void)purgeCurrentProfile {
+    _currentProfile = nil;
+}
+
+- (NSString *)identifier {
+    return _identifier;
+}
+
+- (void)loadPrivateSettings {
+    NSURL *profileHome = [[SCProfileManager profileDirectory] URLByAppendingPathComponent:_identifier isDirectory:YES];
+    NSURL *psFile = [profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:psFile.path]) {
+        _privateSettings = [NSMutableDictionary dictionary];
+        _settingsNeedCommit = YES;
+        NSLog(@"note: private store missing");
+        return;
     }
 
-    return ps;
+    NSString *pass = ((SCAppDelegate *)[NSApp delegate]).profilePass;
+    uint64_t pl = [pass lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSData *encryptedBlob = [NSData dataWithContentsOfURL:psFile];
+    uint8_t *buf = NULL;
+    uint64_t size = 0;
+    int err = txd_decrypt_buf((uint8_t *)[pass UTF8String], pl, encryptedBlob.bytes,
+                              encryptedBlob.length, &buf, &size);
+    if (err != TXD_ERR_SUCCESS) {
+        NSLog(@"err: yikes! txd_decrypt_buf failed with code %d", err);
+        _privateSettings = [NSMutableDictionary dictionary];
+        _settingsNeedCommit = YES;
+        return;
+    }
+
+    NSData *rawPS = [[NSData alloc] initWithBytesNoCopy:buf length:size freeWhenDone:NO];
+    @try {
+        _privateSettings = [NSKeyedUnarchiver unarchiveObjectWithData:rawPS];
+        _settingsNeedCommit = NO;
+    } @catch (NSException *exception) {
+        NSLog(@"bad private store: %@; continuing with a blank one", exception);
+        _privateSettings = nil;
+    }
+    if (![_privateSettings isKindOfClass:[NSMutableDictionary class]]) {
+        _privateSettings = [NSMutableDictionary dictionary];
+        _settingsNeedCommit = YES;
+    }
+
+    _txd_kill_memory(buf, size);
+    free(buf);
 }
 
-+ (NSDictionary *)privateSettings {
-    return [self _privateSettings:NO];
+- (NSDictionary *)privateSettings {
+    if (!_identifier)
+        return nil;
+
+    if (!_privateSettings) {
+        [self loadPrivateSettings];
+    }
+
+    return _privateSettings;
 }
 
-+ (void)commitPrivateSettings {
-    if (!SCPrivateSettingsNeedCommit)
+- (NSMutableDictionary *)privateSettingsMutable {
+    return (NSMutableDictionary *)self.privateSettings;
+}
+
+- (void)commitPrivateSettings {
+    if (_settingsNeedCommit)
         return;
     NSLog(@"notice: commitPrivateSettings");
-    static NSRecursiveLock *lock = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        lock = [[NSRecursiveLock alloc] init];
-    });
 
-    [lock lock];
+    [_fileIOLock lock];
 
     NSData *buf = [NSKeyedArchiver archivedDataWithRootObject:self.privateSettings];
     if (!buf) {
@@ -245,7 +265,7 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
                     &e, &es, [comment UTF8String], 0);
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *profileHome = [self.profileDirectory URLByAppendingPathComponent:self.currentProfileIdentifier isDirectory:YES];
+    NSURL *profileHome = [[SCProfileManager profileDirectory] URLByAppendingPathComponent:_identifier isDirectory:YES];
     [fileManager createDirectoryAtURL:profileHome withIntermediateDirectories:YES attributes:nil error:nil];
     NSData *blob = [NSData dataWithBytesNoCopy:e length:es freeWhenDone:YES];
     NSURL *dest = [profileHome URLByAppendingPathComponent:@"private_store.txd" isDirectory:NO];
@@ -253,22 +273,18 @@ static BOOL SCPrivateSettingsNeedCommit = NO;
         NSFilePosixPermissions: @(0600)
     }];
 
-    SCPrivateSettingsNeedCommit = NO;
+    _settingsNeedCommit = NO;
 
-    [lock unlock];
+    [_fileIOLock unlock];
 }
 
-+ (void)purgePrivateSettingsFromMemory {
-    [self _privateSettings:YES];
+- (id)privateSettingForKey:(id<NSCopying>)k {
+    return self.privateSettingsMutable[k];
 }
 
-+ (id)privateSettingForKey:(id<NSCopying>)k {
-    return self.privateSettings[k];
-}
-
-+ (void)setPrivateSetting:(id)val forKey:(id<NSCopying>)k {
-    [self _privateSettings:NO][k] = val;
-    SCPrivateSettingsNeedCommit = YES;
+- (void)setPrivateSetting:(id)val forKey:(id<NSCopying>)k {
+    self.privateSettingsMutable[k] = val;
+    _settingsNeedCommit = YES;
 }
 
 @end

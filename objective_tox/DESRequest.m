@@ -1,6 +1,7 @@
 #import "ObjectiveTox-Private.h"
 
 @implementation DESRequest
+@dynamic connection, message, senderName;
 - (void)accept { DESAbstractWarning; }
 - (void)decline { DESAbstractWarning; }
 @end
@@ -10,6 +11,10 @@
     NSString *_message;
     DESToxConnection *__weak _connection;
 }
+@synthesize senderName = _senderName;
+@synthesize message = _message;
+@synthesize connection = _connection;
+@synthesize senderPublicKey = _senderPublicKey;
 
 - (instancetype)initWithSenderKey:(const uint8_t *)sender
                           message:(const uint8_t *)message
@@ -26,20 +31,8 @@
     return self;
 }
 
-- (NSString *)senderName {
-    return _senderName;
-}
-
-- (NSString *)message {
-    return _message;
-}
-
-- (DESToxConnection *)connection {
-    return _connection;
-}
-
 - (void)accept {
-    [_connection addFriendPublicKeyWithoutRequest:DESConvertPublicKeyToString(self.senderPublicKey)];
+    [self.connection addFriendPublicKeyWithoutRequest:DESConvertPublicKeyToString(self.senderPublicKey)];
 }
 
 - (void)decline {
@@ -57,6 +50,11 @@
     NSString *_message;
     DESToxConnection *__weak _connection;
 }
+@synthesize senderName = _senderName;
+@synthesize message = _message;
+@synthesize connection = _connection;
+@synthesize senderNo = _senderNo;
+@synthesize groupKey = _groupKey;
 
 - (instancetype)initWithSenderNo:(int32_t)sender
                             name:(NSString *)name
@@ -73,23 +71,11 @@
     return self;
 }
 
-- (NSString *)senderName {
-    return _senderName;
-}
-
-- (NSString *)message {
-    return _message;
-}
-
-- (DESToxConnection *)connection {
-    return _connection;
-}
-
 - (void)accept {
-    int32_t groupnum = tox_join_groupchat(_connection._core,
+    int32_t groupnum = tox_join_groupchat(self.connection._core,
                                           self.senderNo, self.groupKey);
-    DESConversation *gc = [[DESGroupChat alloc] initWithNumber:groupnum onConnection:_connection];
-    [_connection addGroup:gc];
+    DESConversation *gc = [[DESGroupChat alloc] initWithNumber:groupnum onConnection:self.connection];
+    [self.connection addGroup:gc];
 }
 
 - (void)decline {

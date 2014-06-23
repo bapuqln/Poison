@@ -16,14 +16,21 @@
 - (id)initWithFrame:(NSRect)frameRect {
     self = [super initWithFrame:frameRect];
     if (self) {
-        _grad = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]
-                                              endingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:0.5]];
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+        if ([NSVisualEffectView class])
+            _grad = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.1 alpha:0.7]
+                                                  endingColor:[NSColor colorWithCalibratedWhite:0.1 alpha:0.7]];
+        else
+#endif
+            _grad = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]
+                                                  endingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:0.5]];
     }
     return self;
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-    [_grad drawInRect:(CGRect){{dirtyRect.origin.x, 0}, {dirtyRect.size.width, self.frame.size.height}} angle:90.0];
+    if (self.isFloating)
+        [_grad drawInRect:(CGRect){{dirtyRect.origin.x, 0}, {dirtyRect.size.width, self.frame.size.height}} angle:90.0];
 }
 
 @end
@@ -44,12 +51,17 @@
 //        [bodyGrad drawInBezierPath:[NSBezierPath bezierPathWithRect:NSMakeRect(-2, 2, self.bounds.size.width + 2, self.bounds.size.height - 4)] angle:-90.0];
 //    }
     if (self.isSelected) {
-        if (!_shadow)
-            _shadow = [[NSGradient alloc] initWithStartingColor:[NSColor clearColor] endingColor:[NSColor colorWithCalibratedWhite:0.071 alpha:0.3]];
-        [[NSColor colorWithCalibratedWhite:0.118 alpha:1.0] set];
-        NSRectFill(dirtyRect);
-        [_shadow drawInBezierPath:[NSBezierPath bezierPathWithOvalInRect:NSMakeRect(0, -4, self.bounds.size.width, 8)] angle:-90.0];
-        [_shadow drawInBezierPath:[NSBezierPath bezierPathWithOvalInRect:NSMakeRect(0, self.bounds.size.height - 4, self.bounds.size.width, 8)] angle:90.0];
+        if (!SCIsYosemiteOrHigher()) {
+            if (!_shadow)
+                _shadow = [[NSGradient alloc] initWithStartingColor:[NSColor clearColor] endingColor:[NSColor colorWithCalibratedWhite:0.071 alpha:0.3]];
+            [[NSColor colorWithCalibratedWhite:0.118 alpha:1.0] set];
+            NSRectFill(dirtyRect);
+            [_shadow drawInBezierPath:[NSBezierPath bezierPathWithOvalInRect:NSMakeRect(0, -4, self.bounds.size.width, 8)] angle:-90.0];
+            [_shadow drawInBezierPath:[NSBezierPath bezierPathWithOvalInRect:NSMakeRect(0, self.bounds.size.height - 4, self.bounds.size.width, 8)] angle:90.0];
+        } else {
+            [[NSColor colorWithCalibratedWhite:0.2 alpha:0.8] set];
+            NSRectFill(dirtyRect);
+        }
     }
 }
 

@@ -46,9 +46,9 @@ txd_intermediate_t txd_intermediate_from_tox(Tox *tox)
 
     uint32_t numfriends = tox_count_friendlist(tox);
     struct txd_friend *friends = malloc(numfriends * sizeof(struct txd_friend));
-    int32_t toxfl[numfriends];
+    int32_t *toxfl = malloc(numfriends * sizeof(int32_t));
     tox_get_friendlist(tox, toxfl, numfriends);
-    int i;
+    unsigned int i;
 
     for (i = 0; i < numfriends; ++i) {
         int32_t f_n = toxfl[i];
@@ -150,7 +150,7 @@ int txd_restore_intermediate(txd_intermediate_t interm, Tox *tox)
            interm -> txd_nospam, sizeof(uint32_t));
 
     struct txd_friend *friend = NULL;
-    int i;
+    unsigned int i;
 
     for (i = 0; i < interm -> txd_friends_length; ++i) {
         friend = &(interm -> txd_friends[i]);
@@ -175,7 +175,7 @@ int txd_restore_intermediate(txd_intermediate_t interm, Tox *tox)
 
     struct txd_dhtlite *server = NULL; /* lu stqism :^) */
 
-    int j;
+    unsigned int j;
 
     for (j = 0; j < interm -> txd_dhtlite_length; ++j) {
         server = &(interm -> txd_dhtlite[j]);
@@ -218,7 +218,7 @@ void txd_intermediate_free(txd_intermediate_t interm)
     free(interm -> txd_status);
 
     struct txd_friend *friend = NULL;
-    int i;
+    unsigned int i;
 
     for (i = 0; i < interm -> txd_friends_length; ++i) {
         friend = &(interm -> txd_friends[i]);

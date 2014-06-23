@@ -26,34 +26,36 @@
 - (void)friend:(DESFriend *)friend userStatusDidChange:(DESFriendStatus)newStatus onConnection:(DESToxConnection *)connection;
 - (void)friend:(DESFriend *)friend statusMessageDidChange:(NSString *)newStatusMessage onConnection:(DESToxConnection *)connection;
 - (void)friend:(DESFriend *)friend nameDidChange:(NSString *)newName onConnection:(DESToxConnection *)connection;
+
+- (void)didReceiveControlMessage:(NSData *)payload ofType:(uint8_t)pkt fromFriend:(DESFriend *)friend;
 @end
 
 @interface DESToxConnection : NSObject <DESFriend>
-@property (readonly, getter = isActive) BOOL active;
-@property (readwrite, strong) NSString *name;
-@property (readwrite, strong) NSString *statusMessage;
-@property DESFriendStatus status;
+@property (atomic, readonly, getter = isActive) BOOL active;
+@property (nonatomic, readwrite, strong) NSString *name;
+@property (nonatomic, readwrite, strong) NSString *statusMessage;
+@property (atomic) DESFriendStatus status;
 /**
  * Actually, settable using -setPublicKey:privateKey:
  */
-@property (readonly) NSString *privateKey;
-@property (readonly) NSString *friendAddress;
+@property (nonatomic, readonly) NSString *privateKey;
+@property (nonatomic, readonly) NSString *friendAddress;
 @property (nonatomic, readonly) NSUInteger closeNodesCount;
 @property (weak) id<DESToxConnectionDelegate> delegate;
 
 /**
  * Set of friends. All objects conform to <DESFriend>.
  */
-@property (readonly) NSSet *friends;
+@property (nonatomic, readonly) NSSet *friends;
 /**
  * Set of groups. All objects conform to <DESConversation>.
  */
-@property (readonly) NSSet *groups;
+@property (nonatomic, readonly) NSSet *groups;
 /**
  * An object conforming to DESFriend representing the current user.
  * Attempts to send messages will fail.
  */
-@property (readonly) DESFriend *me;
+@property (atomic, readonly) DESFriend *me;
 /**
  * Starts the connection run loop.
  */
@@ -74,6 +76,12 @@
 - (DESFriend *)friendWithID:(int32_t)num;
 - (DESFriend *)friendWithKey:(NSString *)pk;
 - (void)leaveGroup:(DESConversation *)group;
+
+- (NSString *)PIN;
+- (void)setPIN:(NSData *)fourBytes;
+
+- (void)registerForControlMessagesOfType:(uint8_t)pkt fromFriend:(DESFriend *)f;
+- (void)unregisterForControlMessagesOfType:(uint8_t)pkt fromFriend:(DESFriend *)f;
 
 - (txd_intermediate_t)createTXDIntermediate;
 - (void)restoreDataFromTXDIntermediate:(txd_intermediate_t)txd;

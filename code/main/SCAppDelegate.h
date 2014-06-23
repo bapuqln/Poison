@@ -3,12 +3,22 @@
 #import <Cocoa/Cocoa.h>
 #import "ObjectiveTox.h"
 #import "SCMainWindowing.h"
-#include "tox.h"
 
-@class SCStandaloneWindowController, SCFriendRequest, SCConversationManager;
+/* Avatar information packet sent to friends on connection */
+#define DESControlMessageAvatarAnnounce (160)
+/* Packet to request an avatar transfer. */
+#define DESControlMessageAvatarRequest  (161)
+/* Do we allow coloured messages to be sent? (reserved) */
+#define DESControlMessageMessageColourEnabled   (162)
+
+@class SCStandaloneWindowController, SCFriendRequest, SCConversationManager,
+       SCMediaCall, SCAudioVideoRecorder;
 @interface SCAppDelegate : NSObject <NSApplicationDelegate, DESToxConnectionDelegate>
 @property (strong, nonatomic) NSWindowController *mainWindowController;
 @property (strong) SCConversationManager *conversationManager;
+
+@property (strong) SCMediaCall *avCall;
+@property (strong) SCAudioVideoRecorder *avSource;
 
 - (void)makeApplicationReadyForToxing:(txd_intermediate_t)userProfile
                                  name:(NSString *)profileName

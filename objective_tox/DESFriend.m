@@ -20,7 +20,7 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
 - (NSSet *)participants { DESAbstractWarning; return nil; }
 - (id<DESConversationDelegate>)delegate { DESAbstractWarning; return nil; }
 - (void)setDelegate:(id<DESConversationDelegate>)delegate { DESAbstractWarning; }
-- (DESConversationType)type { DESAbstractWarning; return 255; }
+- (DESConversationType)type { DESAbstractWarning; return 0; }
 
 - (uint32_t)sendAction:(NSString *)action { DESAbstractWarning; return 0; }
 - (uint32_t)sendMessage:(NSString *)message { DESAbstractWarning; return 0; }
@@ -146,18 +146,19 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
         NSUInteger mlen = [message lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
         uint32_t ret = 0;
         if (mlen <= DESMaximumMessageLength) {
-            ret = tox_send_message_withid(_connection._core, _peerNumber, mid, (uint8_t*)[message UTF8String], (uint32_t)mlen);
+            ret = tox_send_message_withid(self->_connection._core, self->_peerNumber, mid, (uint8_t*)[message UTF8String], (uint32_t)mlen);
         }
         if (ret == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([self.delegate respondsToSelector:@selector(conversation:didFailToSendMessageWithID:ofType:)])
                     [self.delegate conversation:(DESConversation*)self didFailToSendMessageWithID:mid ofType:DESMessageTypeText];
             });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([self.delegate respondsToSelector:@selector(conversation:didSendMessageWithID:ofType:)])
+                    [self.delegate conversation:(DESConversation*)self didSendMessageWithID:mid ofType:DESMessageTypeText];
+            });
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.delegate respondsToSelector:@selector(conversation:didReceiveMessage:ofType:fromSender:)])
-                [self.delegate conversation:(DESConversation*)self didReceiveMessage:message ofType:DESMessageTypeText fromSender:_connection.me];
-        });
     });
     return mid;
 }
@@ -171,18 +172,19 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
         NSUInteger mlen = [action lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
         uint32_t ret = 0;
         if (mlen <= DESMaximumMessageLength) {
-            ret = tox_send_action_withid(_connection._core, _peerNumber, mid, (uint8_t*)[action UTF8String], (uint32_t)mlen);
+            ret = tox_send_action_withid(self->_connection._core, self->_peerNumber, mid, (uint8_t*)[action UTF8String], (uint32_t)mlen);
         }
-        if (ret == 0 || mlen > DESMaximumMessageLength) {
+        if (ret == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([self.delegate respondsToSelector:@selector(conversation:didFailToSendMessageWithID:ofType:)])
-                    [self.delegate conversation:(DESConversation*)self didFailToSendMessageWithID:mid ofType:DESMessageTypeAction];
+                [self.delegate conversation:(DESConversation*)self didFailToSendMessageWithID:mid ofType:DESMessageTypeAction];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([self.delegate respondsToSelector:@selector(conversation:didSendMessageWithID:ofType:)])
+                [self.delegate conversation:(DESConversation*)self didSendMessageWithID:mid ofType:DESMessageTypeAction];
             });
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.delegate respondsToSelector:@selector(conversation:didReceiveMessage:ofType:fromSender:)])
-                [self.delegate conversation:(DESConversation*)self didReceiveMessage:action ofType:DESMessageTypeAction fromSender:_connection.me];
-        });
     });
     return mid;
 }

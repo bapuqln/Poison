@@ -33,7 +33,13 @@
 - (instancetype)initWithDESConnection:(DESToxConnection *)tox {
     self = [super initWithDESConnection:tox];
     if (self) {
-        SCWidgetedWindow *window = [[SCWidgetedWindow alloc] initWithContentRect:CGRectCentreInRect(SCUnifiedDefaultWindowFrame, [NSScreen mainScreen].visibleFrame) styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
+        SCWidgetedWindow *window = [[SCWidgetedWindow alloc] initWithContentRect:CGRectCentreInRect(SCUnifiedDefaultWindowFrame, [NSScreen mainScreen].visibleFrame) styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask backing:NSBackingStoreBuffered defer:YES];
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+        if (SCIsYosemiteOrHigher()) {
+            window.titlebarAppearsTransparent = YES;
+            window.titleVisibility = NSWindowTitleHidden;
+        }
+#endif
         window.restorable = NO;
         window.minSize = SCUnifiedMinimumSize;
         [window setFrameUsingName:@"UnifiedWindow"];
@@ -67,7 +73,7 @@
 
     self.chatViewCont = [[SCChatViewController alloc] initWithNibName:@"ChatPanel" bundle:[NSBundle mainBundle]];
     [self.chatViewCont loadView];
-    self.chatViewCont.showsVideoPane = NO;
+    self.chatViewCont.showsVideoPane = YES;
     self.chatViewCont.showsUserList = NO;
     [root addSubview:self.chatViewCont.view];
     [root adjustSubviews];
@@ -120,6 +126,8 @@
     } else {
         self.window.representedURL = nil;
     }
+
+    [self.chatViewCont.nextResponder becomeFirstResponder];
 }
 
 #pragma mark - indicator(s)

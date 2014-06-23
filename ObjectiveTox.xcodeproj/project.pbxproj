@@ -64,6 +64,13 @@
 		F558579E18D6179C0053DD52 /* data_export.c in Sources */ = {isa = PBXBuildFile; fileRef = F558579D18D6179C0053DD52 /* data_export.c */; };
 		F55857A818D6633D0053DD52 /* txdplus_private.h in Headers */ = {isa = PBXBuildFile; fileRef = F55857A718D6633D0053DD52 /* txdplus_private.h */; };
 		F5688A8918EA40FB001F45E6 /* libObjectiveTox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F50F9C0618C3AAD800D06A0F /* libObjectiveTox.a */; };
+		F5903867194CF1E20010D64F /* toxdns.c in Sources */ = {isa = PBXBuildFile; fileRef = F5903864194CF1E20010D64F /* toxdns.c */; };
+		F5903868194CF1E20010D64F /* toxdns.h in Headers */ = {isa = PBXBuildFile; fileRef = F5903865194CF1E20010D64F /* toxdns.h */; };
+		F5903869194D06B40010D64F /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C1B18C3AB5000D06A0F /* event.c */; };
+		F590386B194D06B40010D64F /* media.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C1D18C3AB5000D06A0F /* media.c */; };
+		F590386D194D06B40010D64F /* msi.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C1F18C3AB5000D06A0F /* msi.c */; settings = {COMPILER_FLAGS = "-Wno-return-type"; }; };
+		F590386F194D06B40010D64F /* rtp.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2118C3AB5000D06A0F /* rtp.c */; };
+		F5903871194D06B40010D64F /* toxav.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C2318C3AB5000D06A0F /* toxav.c */; };
 		F5A163C418EB9FC000A28D61 /* dns.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A163C318EB9FC000A28D61 /* dns.a */; };
 		F5A163CB18EBA09D00A28D61 /* alloc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A163C518EBA09D00A28D61 /* alloc.a */; };
 		F5A163CC18EBA09D00A28D61 /* buffer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A163C618EBA09D00A28D61 /* buffer.a */; };
@@ -238,6 +245,8 @@
 		F55857A718D6633D0053DD52 /* txdplus_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = txdplus_private.h; sourceTree = "<group>"; };
 		F55857A918D6800B0053DD52 /* txdplus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = txdplus.h; sourceTree = "<group>"; };
 		F58EE9AE18C598170033F2D4 /* ObjectiveTox-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectiveTox-Private.h"; sourceTree = "<group>"; };
+		F5903864194CF1E20010D64F /* toxdns.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = toxdns.c; sourceTree = "<group>"; };
+		F5903865194CF1E20010D64F /* toxdns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toxdns.h; sourceTree = "<group>"; };
 		F5A163C318EB9FC000A28D61 /* dns.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = dns.a; path = _support/lib/dns.a; sourceTree = "<group>"; };
 		F5A163C518EBA09D00A28D61 /* alloc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = alloc.a; path = _support/lib/alloc.a; sourceTree = "<group>"; };
 		F5A163C618EBA09D00A28D61 /* buffer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = buffer.a; path = _support/lib/buffer.a; sourceTree = "<group>"; };
@@ -425,6 +434,7 @@
 		F50F9C4618C3AB5000D06A0F /* tox_core */ = {
 			isa = PBXGroup;
 			children = (
+				F5903862194CF1E20010D64F /* toxdns */,
 				F50F9C2518C3AB5000D06A0F /* toxav */,
 				F50F9C4518C3AB5000D06A0F /* toxcore */,
 			);
@@ -481,6 +491,15 @@
 			path = objective_tox/testing;
 			sourceTree = "<group>";
 		};
+		F5903862194CF1E20010D64F /* toxdns */ = {
+			isa = PBXGroup;
+			children = (
+				F5903864194CF1E20010D64F /* toxdns.c */,
+				F5903865194CF1E20010D64F /* toxdns.h */,
+			);
+			path = toxdns;
+			sourceTree = "<group>";
+		};
 		F5BA234218E74C6600C85A49 /* desobserver */ = {
 			isa = PBXGroup;
 			children = (
@@ -505,6 +524,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5F9F70B192D8D7C00BE247F /* list.h in Headers */,
+				F5903868194CF1E20010D64F /* toxdns.h in Headers */,
 				F535D93119297388004C46AB /* crypto_core.h in Headers */,
 				F535D93719297388004C46AB /* TCP_server.h in Headers */,
 				F535D93519297388004C46AB /* TCP_client.h in Headers */,
@@ -632,7 +652,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"DES build: checking your dependencies!\"\n\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libsodium() {\n    echo \"Need to build libsodium. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libsodium\n    git clone \"https://github.com/jedisct1/libsodium\" libsodium && cd libsodium\n    ./autogen.sh > /dev/null 2>&1\n    ./configure \"--prefix=$PROJECT_DIR/_support\" \\\n    > \"$WORKSPACE/../libsodium.configure.log\" 2>&1\n    make -j$NPROC \\\n    > \"$WORKSPACE/../libsodium.make.log\" 2>&1 && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libsodium.configure.log\" \"$WORKSPACE/../libsodium.make.log\"\n}\nmake_djbdns() {\n    echo \"Need to build djbdns. This will take almost no time at all.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"djbdns-1.05\"\n    curl -o djbdns.tar.gz \"http://cr.yp.to/djbdns/djbdns-1.05.tar.gz\"\n    tar -xzf \"djbdns.tar.gz\" && cd \"djbdns-1.05\"\n    make -j$NPROC\n    cp *.a \"$WORKSPACE/../lib/\"\n    cp *.h \"$WORKSPACE/../include/\"\n    sed -i .orig -e \"s/#include \\\"uint64.h\\\"//\" \"$WORKSPACE/../include/tai.h\"\n    cp iopause.o \"$WORKSPACE/../lib/\"\n    echo \"OK.\"\n}\nif [ ! -f \"$PROJECT_DIR/_support/lib/libsodium.a\" ]; then\n    make_libsodium\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/dns.a\" ]; then\n    make_djbdns\nfi";
+			shellScript = "echo \"DES build: checking your dependencies!\"\n\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\nmake_libvpx() {\n    echo \"Need to build libvpx. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libvpx\n    git clone \"https://chromium.googlesource.com/webm/libvpx\" libvpx && cd libvpx\n    git checkout \"v1.3.0\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libvpx.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libvpx.configure.log\"\n}\nmake_libopus() {\n    echo \"Need to build libopus. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"opus-1.0.3\" \"libopus.tar.gz\"\n    curl -o \"libopus.tar.gz\" \"http://downloads.xiph.org/releases/opus/opus-1.0.3.tar.gz\"\n    tar -xzf \"libopus.tar.gz\" && cd \"opus-1.0.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libopus.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libopus.configure.log\"\n}\nmake_libsodium() {\n    echo \"Need to build libsodium. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libsodium\n    git clone \"https://github.com/jedisct1/libsodium\" libsodium && cd libsodium\n    ./autogen.sh > /dev/null 2>&1\n    ./configure \"--prefix=$PROJECT_DIR/_support\" \\\n    > \"$WORKSPACE/../libsodium.configure.log\" 2>&1\n    make -j$NPROC \\\n    > \"$WORKSPACE/../libsodium.make.log\" 2>&1 && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libsodium.configure.log\" \"$WORKSPACE/../libsodium.make.log\"\n}\nmake_djbdns() {\n    echo \"Need to build djbdns. This will take almost no time at all.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"djbdns-1.05\"\n    curl -o djbdns.tar.gz \"http://cr.yp.to/djbdns/djbdns-1.05.tar.gz\"\n    tar -xzf \"djbdns.tar.gz\" && cd \"djbdns-1.05\"\n    make -j$NPROC\n    cp *.a \"$WORKSPACE/../lib/\"\n    cp *.h \"$WORKSPACE/../include/\"\n    sed -i .orig -e \"s/#include \\\"uint64.h\\\"//\" \"$WORKSPACE/../include/tai.h\"\n    cp iopause.o \"$WORKSPACE/../lib/\"\n    echo \"OK.\"\n}\nif [ ! -f \"$PROJECT_DIR/_support/lib/libsodium.a\" ]; then\n    make_libsodium\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/dns.a\" ]; then\n    make_djbdns\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libvpx.a\" ]; then\n    make_libvpx; cd $PROJECT_DIR;\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libopus.a\" ]; then\n    make_libopus; cd $PROJECT_DIR;\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -641,6 +661,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5903869194D06B40010D64F /* event.c in Sources */,
+				F590386B194D06B40010D64F /* media.c in Sources */,
+				F590386D194D06B40010D64F /* msi.c in Sources */,
+				F590386F194D06B40010D64F /* rtp.c in Sources */,
+				F5903871194D06B40010D64F /* toxav.c in Sources */,
 				F54180F018C3ACD500AB220E /* txdplus_crypto.c in Sources */,
 				F5F9F70A192D8D7C00BE247F /* list.c in Sources */,
 				F535D93219297388004C46AB /* ping_array.c in Sources */,
@@ -659,6 +684,7 @@
 				F50F9C5218C3AB7D00D06A0F /* assoc.c in Sources */,
 				F50F9C5318C3AB7D00D06A0F /* friend_requests.c in Sources */,
 				F535D93619297388004C46AB /* TCP_server.c in Sources */,
+				F5903867194CF1E20010D64F /* toxdns.c in Sources */,
 				F50F9C5418C3AB7D00D06A0F /* group_chats.c in Sources */,
 				F558579918D608AD0053DD52 /* data_intermediate.c in Sources */,
 				F50F9C5518C3AB7D00D06A0F /* net_crypto.c in Sources */,
@@ -777,6 +803,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -816,6 +843,7 @@
 				LIBRARY_SEARCH_PATHS = "${PROJECT_DIR}/_support/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
@@ -831,6 +859,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DES_DEBUG=1",
 					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/_support/include",
+					"${PROJECT_DIR}/_support/include/opus",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -857,6 +891,12 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/_support/include",
+					"${PROJECT_DIR}/_support/include/opus",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Volumes/stal/Projects/Atroquinine/_support/lib,

@@ -31,8 +31,8 @@ typedef NS_ENUM(uint8_t, DESConversationType) {
 };
 
 typedef NS_ENUM(uint8_t, DESMessageType) {
-    DESMessageTypeText,
-    DESMessageTypeAction,
+    DESMessageTypeText = 1,
+    DESMessageTypeAction = 2,
 };
 
 typedef NS_ENUM(uint8_t, DESEventType) {

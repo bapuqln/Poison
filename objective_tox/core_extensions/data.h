@@ -114,7 +114,6 @@ int txd_restore_intermediate(txd_intermediate_t interm, Tox *tox);
  * this function returns, interm shall be an invalid pointer.
  * @param interm The intermediate structure to destroy. It must not
  *               be NULL.
- * @return nothing.
  */
 void txd_intermediate_free(txd_intermediate_t interm);
 

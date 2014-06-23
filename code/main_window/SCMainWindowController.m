@@ -105,12 +105,13 @@ void *const SCAddFriendSheetContext = (void *)1;
         NSString *proposedName = self.addPanel.proposedName;
 
         if (proposedName) {
-            NSMutableDictionary *map = [[SCProfileManager privateSettingForKey:@"nicknames"] mutableCopy]?
+            SCProfileManager *p = [SCProfileManager currentProfile];
+            NSMutableDictionary *map = [[p privateSettingForKey:@"nicknames"] mutableCopy]?
                                         : [NSMutableDictionary dictionary];
             map[[id_ substringToIndex:DESPublicKeySize * 2]] = proposedName;
-            [SCProfileManager setPrivateSetting:map forKey:@"nicknames"];
+            [p setPrivateSetting:map forKey:@"nicknames"];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                [SCProfileManager commitPrivateSettings];
+                [p commitPrivateSettings];
             });
         }
 

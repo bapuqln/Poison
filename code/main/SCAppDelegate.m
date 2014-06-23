@@ -12,6 +12,7 @@
 #import "SCResourceBundle.h"
 #import "SCMenuStatusView.h"
 #import "SCFriendRequest.h"
+#import "SCFeedbackController.h"
 #import "SCStandaloneWindowController.h"
 #import "DESConversation+Poison_CustomName.h"
 #import "SCConversationManager.h"
@@ -168,7 +169,7 @@
 
 - (void)prepareFriendRequests {
     [self willChangeValueForKey:@"requests"];
-    NSArray *presRequests = [SCProfileManager privateSettingForKey:@"friendRequests"];
+    NSArray *presRequests = [[SCProfileManager currentProfile] privateSettingForKey:@"friendRequests"];
     if (!presRequests || ![presRequests isKindOfClass:[NSArray class]]) {
         _requests = [[NSMutableDictionary alloc] init];
     } else {
@@ -183,9 +184,10 @@
 }
 
 - (void)archiveFriendRequests {
-    [SCProfileManager setPrivateSetting:[_requests allValues] forKey:@"friendRequests"];
+    SCProfileManager *p = [SCProfileManager currentProfile];
+    [p setPrivateSetting:[_requests allValues] forKey:@"friendRequests"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [SCProfileManager commitPrivateSettings];
+        [p commitPrivateSettings];
     });
 }
 
@@ -297,8 +299,8 @@
     [[NSProcessInfo processInfo] endActivity:self.activityToken];
     self.activityToken = nil;
     [self saveProfile];
-    [SCProfileManager commitPrivateSettings];
-    [SCProfileManager purgePrivateSettingsFromMemory];
+    [[SCProfileManager currentProfile] commitPrivateSettings];
+    [SCProfileManager purgeCurrentProfile];
     [connection removeObserver:self forKeyPath:@"name"];
     [connection removeObserver:self forKeyPath:@"statusMessage"];
     
@@ -327,6 +329,8 @@
 }
 
 - (void)didAddFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
+    [connection registerForControlMessagesOfType:DESControlMessageAvatarAnnounce fromFriend:friend];
+    [connection registerForControlMessagesOfType:DESControlMessageAvatarRequest fromFriend:friend];
     [self.conversationManager addConversation:friend];
     if (_requests[friend.publicKey] != nil) {
         [self willChangeValueForKey:@"requests"];
@@ -344,11 +348,12 @@
     if (wc)
         [self removeAuxWindowFromService:wc];
 
-    NSMutableDictionary *map = [[SCProfileManager privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
+    SCProfileManager *p = [SCProfileManager currentProfile];
+    NSMutableDictionary *map = [[p privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
     [map removeObjectForKey:friend.publicKey];
-    [SCProfileManager setPrivateSetting:map forKey:@"nicknames"];
+    [p setPrivateSetting:map forKey:@"nicknames"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [SCProfileManager commitPrivateSettings];
+        [p commitPrivateSettings];
     });
     [self saveProfile];
 }
@@ -383,6 +388,19 @@
     [a beginSheetModalForWindow:self.mainWindowController.window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 }
 
+- (void)didReceiveControlMessage:(NSData *)payload ofType:(uint8_t)pkt fromFriend:(DESFriend *)friend {
+    switch (pkt) {
+        case DESControlMessageAvatarAnnounce:
+            /* check cache and fire request */
+            break;
+        case DESControlMessageAvatarRequest:
+            /*send avatar*/
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)logOut {
     [self.toxConnection stop];
 }
@@ -414,6 +432,7 @@
     NSButton *checkbox = [[NSButton alloc] initWithFrame:CGRectZero];
     checkbox.buttonType = NSSwitchButton;
     checkbox.title = NSLocalizedString(@"Don't ask me whether to remove friends again", nil);
+    checkbox.font = [NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:NSRegularControlSize]];
     [checkbox sizeToFit];
     confirmation.accessoryView = checkbox;
     [confirmation addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
@@ -552,6 +571,13 @@
 
 - (IBAction)showDataExportWindow:(id)sender {
 
+}
+
+#pragma mark - Feedback
+
+- (IBAction)sendFeedback:(id)sender {
+    SCFeedbackController *fbc = [[SCFeedbackController alloc] initWithWindowNibName:@"Feedback"];
+    [[NSApplication sharedApplication] runModalForWindow:fbc.window];
 }
 
 @end

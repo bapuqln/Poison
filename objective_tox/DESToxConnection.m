@@ -10,6 +10,31 @@ const uint32_t DESMaximumStatusMessageLength = TOX_MAX_STATUSMESSAGE_LENGTH;
 
 NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 
+NSString *DESCreateBase64String(NSData *bytes) {
+    CFDataRef input = (__bridge CFDataRef)bytes;
+    SecTransformRef transform = SecEncodeTransformCreate(kSecBase64Encoding, NULL);
+    SecTransformSetAttribute(transform, kSecTransformInputAttributeName,
+                             input, NULL);
+    CFDataRef encoded = SecTransformExecute(transform, NULL);
+    NSString *ret = [[NSString alloc] initWithBytes:CFDataGetBytePtr(encoded)
+                                             length:CFDataGetLength(encoded)
+                                           encoding:NSASCIIStringEncoding];
+    CFRelease(transform);
+    CFRelease(encoded);
+    return ret;
+}
+
+NSData *DESDecodeBase64String(NSString *enc) {
+    CFDataRef input = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, (uint8_t *)enc.UTF8String, [enc lengthOfBytesUsingEncoding:NSUTF8StringEncoding], kCFAllocatorNull);
+    SecTransformRef transform = SecDecodeTransformCreate(kSecBase64Encoding, NULL);
+    SecTransformSetAttribute(transform, kSecTransformInputAttributeName,
+                             input, NULL);
+    CFDataRef encoded = SecTransformExecute(transform, NULL);
+    CFRelease(input);
+    CFRelease(transform);
+    return (__bridge NSData *)encoded;
+}
+
 @interface DESToxConnection ()
 @property dispatch_queue_t messengerQueue;
 @property BOOL isMessengerLoopStopping;
@@ -21,9 +46,14 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
     NSMutableDictionary *_groupMapping;
     NSMutableDictionary *_friendMapping;
 }
+@synthesize tox = _tox;
+@synthesize messengerQueue = _messengerQueue;
+@synthesize isMessengerLoopStopping = _isMessengerLoopStopping;
+@synthesize closeNodesCount = _closeNodesCount;
+@synthesize delegate = _delegate;
 
 - (instancetype)init {
-    if (self = [super init]) {
+    if ((self = [super init])) {
         self.messengerQueue = dispatch_queue_create("ca.kirara.DES2RunLoop", DISPATCH_QUEUE_SERIAL);
         self.tox = tox_new(1);
         _friendMapping = [[NSMutableDictionary alloc] init];
@@ -39,6 +69,7 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         tox_callback_connection_status(self.tox, _DESCallbackFriendConnectionStatus, (__bridge void*)self);
         tox_callback_friend_message(self.tox, _DESCallbackFriendMessage, (__bridge void*)self);
         tox_callback_friend_action(self.tox, _DESCallbackFriendAction, (__bridge void*)self);
+        tox_callback_read_receipt(self.tox, _DESCallbackReadReceipt, (__bridge void*)self);
     }
     return self;
 }
@@ -201,7 +232,7 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
     /* TODO: Fix usage of private API */
     //tox_get_self_keys(self.tox, NULL, buf);
     Messenger *private = (Messenger*)self.tox;
-    NSString *ret = DESConvertPublicKeyToString(private->net_crypto->self_secret_key);
+    NSString *ret = DESConvertPrivateKeyToString(private->net_crypto->self_secret_key);
     //NSString *ret = DESConvertPrivateKeyToString(buf);
     //free(buf);
     return ret;
@@ -262,6 +293,19 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 
 - (uint16_t)port {
     return 0;
+}
+
+#pragma mark - Nospam
+
+- (NSString *)PIN {
+    uint32_t nospam = tox_get_nospam(self.tox);
+    NSData *bytes = [[NSData alloc] initWithBytes:&nospam length:4];
+    return [DESCreateBase64String(bytes) stringByTrimmingCharactersInSet:
+            [NSCharacterSet characterSetWithCharactersInString:@"="]];
+}
+
+- (void)setPIN:(NSData *)fourBytes {
+    tox_set_nospam(self.tox, *(uint32_t *)fourBytes.bytes);
 }
 
 #pragma mark - Friends
@@ -326,11 +370,11 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         });
 }
 
-- (id<DESConversation>)groupChatWithID:(int32_t)num {
+- (DESConversation *)groupChatWithID:(int32_t)num {
     return _groupMapping[@(num)];
 }
 
-- (id<DESFriend>)friendWithID:(int32_t)num {
+- (DESFriend *)friendWithID:(int32_t)num {
     uint8_t *pk = malloc(DESPublicKeySize);
     int ret = tox_get_client_id(self.tox, num, pk);
     if (ret == -1) {
@@ -343,7 +387,7 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
     }
 }
 
-- (id<DESFriend>)friendWithKey:(NSString *)pk {
+- (DESFriend *)friendWithKey:(NSString *)pk {
     return _friendMapping[pk];
 }
 
@@ -352,7 +396,7 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         if (!tox_del_groupchat(self.tox, group.peerNumber)) {
             NSSet *changeSet = [NSSet setWithObject:group];
             [self willChangeValueForKey:@"groups" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changeSet];
-            [_groupMapping removeObjectForKey:@(group.peerNumber)];
+            [self->_groupMapping removeObjectForKey:@(group.peerNumber)];
             [self didChangeValueForKey:@"groups" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changeSet];
         } else {
             DESWarn(@"group chat %d is not valid", group.peerNumber);
@@ -366,7 +410,7 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
         if (!tox_del_friend(self.tox, friend.peerNumber)) {
             NSSet *changeSet = [NSSet setWithObject:friend];
             [self willChangeValueForKey:@"friends" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changeSet];
-            [_friendMapping removeObjectForKey:pk];
+            [self->_friendMapping removeObjectForKey:pk];
             [self didChangeValueForKey:@"friends" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changeSet];
             if ([self.delegate respondsToSelector:@selector(didRemoveFriend:onConnection:)])
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -389,11 +433,12 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
     [self didChangeValueForKey:@"groups" withSetMutation:NSKeyValueMinusSetMutation usingObjects:mutationG];
 
     uint32_t friend_count = tox_count_friendlist(self.tox);
-    int32_t numbers[friend_count];
+    int32_t *numbers = calloc(friend_count, sizeof(int32_t));
     tox_get_friendlist(self.tox, numbers, friend_count);
-    for (int i = 0; i < friend_count; ++i) {
+    for (uint32_t i = 0; i < friend_count; ++i) {
         [self addFriendTriggeringKVO:numbers[i]];
     }
+    free(numbers);
 }
 
 - (void)syncPeerNumbers_Friends {
@@ -415,6 +460,16 @@ NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
 
 - (NSSet *)groups {
     return [NSSet setWithArray:[_groupMapping allValues]];
+}
+
+#pragma mark - Tox Core control messages
+
+- (void)registerForControlMessagesOfType:(uint8_t)pkt fromFriend:(DESFriend *)f {
+    custom_lossless_packet_registerhandler((Messenger *)self.tox, f.peerNumber, pkt, _DESCallbackControlMessage, (__bridge void *)f);
+}
+
+- (void)unregisterForControlMessagesOfType:(uint8_t)pkt fromFriend:(DESFriend *)f {
+    custom_lossless_packet_registerhandler((Messenger *)self.tox, f.peerNumber, pkt, NULL, NULL);
 }
 
 #pragma mark - TXD

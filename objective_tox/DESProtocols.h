@@ -15,9 +15,20 @@
         didFailToSendMessageWithID:(uint32_t)messageID
               ofType:(DESMessageType)type_;
 
+/* Called after -[DESConversation sendMessage:]. */
+
+- (void)conversation:(DESConversation *)con
+didSendMessageWithID:(uint32_t)messageID
+              ofType:(DESMessageType)type_;
+
+/* Called when a delivery notification is received. */
+
 - (void)conversation:(DESConversation *)con
         didReceiveDeliveryNotificationForMessageID:(uint32_t)messageID;
 
+- (void)conversation:(DESConversation *)con
+        typingStatusDidChange:(BOOL)isTyping
+      forParticipant:(DESFriend *)f;
 @end
 
 @protocol DESConversation <NSObject>
@@ -28,14 +39,15 @@
 @property (readonly) int32_t peerNumber;
 @property (readonly) DESConversationType type;
 @property (weak) id<DESConversationDelegate> delegate;
+@property (readonly, weak) DESToxConnection *connection;
 
 - (uint32_t)sendMessage:(NSString *)message;
 - (uint32_t)sendAction:(NSString *)action;
 @end
 
 @protocol DESFriend <NSObject>
-@property (readonly) NSString *name;
-@property (readonly) NSString *statusMessage;
+@property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) NSString *statusMessage;
 @property (readonly) DESFriendStatus status;
 /* Not Key-Value-Observable. */
 @property (readonly) NSString *publicKey;

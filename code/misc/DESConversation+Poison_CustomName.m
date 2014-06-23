@@ -12,7 +12,7 @@
 }
 
 - (NSString *)_lookupCustomNameForID:(NSString *)id_ {
-    NSDictionary *map = [SCProfileManager privateSettingForKey:@"nicknames"];
+    NSDictionary *map = [[SCProfileManager currentProfile] privateSettingForKey:@"nicknames"];
     return map[id_];
 }
 

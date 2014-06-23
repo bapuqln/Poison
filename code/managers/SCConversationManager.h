@@ -4,17 +4,22 @@
 #import "ObjectiveTox.h"
 #import "SCChatViewController.h"
 
-@interface SCConversation : NSObject
+@interface SCConversation : NSObject <DESConversationDelegate>
 @property (strong, readonly) DESConversation *underlyingConversation;
 @property (strong, readonly) NSArray *log;
 @property (strong) NSDate *lastAlive;
-@property (strong) NSOrderedSet *completionOrder;
-@property (strong) NSArray *offlineSendQueue;
+@property (strong, nonatomic, readonly) NSOrderedSet *completionOrder;
 
-@property (weak) SCChatViewController *container;
+- (void)addContainer:(SCChatViewController *)container;
+- (void)removeContainer:(SCChatViewController *)container;
+- (BOOL)containsContainer:(SCChatViewController *)container;
+
+- (void)sendMessage:(NSString *)message;
+- (void)sendAction:(NSString *)message;
+- (void)replayHistoryIntoContainer:(SCChatViewController *)container;
 @end
 
-@interface SCConversationManager : NSObject <DESConversationDelegate>
+@interface SCConversationManager : NSObject
 - (void)addConversation:(DESConversation *)conv;
 - (void)deleteConversation:(DESConversation *)conv;
 - (SCConversation *)conversationFor:(DESConversation *)llconv;

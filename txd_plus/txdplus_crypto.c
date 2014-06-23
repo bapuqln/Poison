@@ -3,6 +3,7 @@
 #include "scrypt-jane.h"
 #include "tox.h"
 #include "data.h"
+#include "txdplus.h"
 #include "txdplus_private.h"
 
 #define HASHED_LEN (crypto_secretbox_KEYBYTES) // Length of our scrypted key

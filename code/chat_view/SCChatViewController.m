@@ -6,6 +6,7 @@
 #import "SCThemeManager.h"
 #import "SCFillingView.h"
 #import "SCConversationManager.h"
+#import "SCTextField.h"
 #import <WebKit/WebKit.h>
 
 NS_INLINE NSColor *SCCreateDarkenedColor(NSColor *color, CGFloat factor) {
@@ -35,18 +36,35 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     return (NSString*)out_;
 }
 
+@interface SCResponderProxyView : SCFillingView
+@property (weak) SCTextField *responder;
+@end
+
+@implementation SCResponderProxyView
+
+- (void)keyDown:(NSEvent *)theEvent {
+    if (!self.responder) {
+        [super keyDown:theEvent];
+    } else {
+        [self.responder becomeFirstResponder];
+        [self.responder restoreSelection];
+        [[NSApplication sharedApplication] postEvent:theEvent atStart:YES];
+    }
+}
+
+@end
+
 @interface SCChatViewController ()
 @property (strong) IBOutlet NSSplitView *transcriptSplitView;
 @property (strong) IBOutlet NSSplitView *splitView;
-@property (strong) IBOutlet SCGradientView *statusBar;
 @property (strong) IBOutlet WebView *webView;
 @property (strong) IBOutlet NSView *transcriptView;
 @property (strong) IBOutlet SCDraggingView *chatEntryView;
-@property (strong) IBOutlet NSTextField *chatTitle;
 @property (strong) IBOutlet SCGradientView *videoBackground;
 @property (strong) IBOutlet NSScrollView *userListContainer;
 @property (strong) IBOutlet NSTableView *userList;
-@property (strong) IBOutlet NSTextField *textField;
+@property (strong) IBOutlet SCTextField *textField;
+@property (strong) IBOutlet SCResponderProxyView *webSuperview;
 
 @property (strong) NSCache *nameCompletionCache;
 @property NSInteger userListRememberedSplitPosition; /* from the right */
@@ -72,6 +90,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 }
 
 - (void)awakeFromNib {
+    self.webSuperview.responder = self.textField;
     self.splitView.delegate = self;
     [self.view setFrameSize:(NSSize){
         MAX(self.splitView.frame.size.width, self.chatEntryView.frame.size.width),
@@ -101,13 +120,6 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (void)reloadTheme {
     SCThemeManager *tm = [SCThemeManager sharedManager];
-    self.statusBar.topColor = [tm barTopColorOfCurrentTheme];
-    self.statusBar.bottomColor = [tm barBottomColorOfCurrentTheme];
-    self.statusBar.shadowColor = [tm barHighlightColorOfCurrentTheme];
-    self.statusBar.borderColor = [tm barBorderColorOfCurrentTheme];
-    self.statusBar.dragsWindow = YES;
-    self.chatTitle.textColor = [tm barTextColorOfCurrentTheme];
-    
     ((SCFillingView*)self.webView.superview).drawColor = [tm backgroundColorOfCurrentTheme];
     self.userList.backgroundColor = [tm backgroundColorOfCurrentTheme];
     self.videoBackground.topColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.10);
@@ -158,19 +170,11 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     _showsVideoPane = showsVideoPane;
 }
 
-- (IBAction)_testTogglingUserList:(id)sender {
-    self.showsUserList = self.showsUserList ? NO: YES;
-}
-
-- (IBAction)_testTogglingVideoList:(id)sender {
-    self.showsVideoPane = self.showsVideoPane ? NO: YES;
-}
-
 #pragma mark - splitview
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex {
     if (splitView == self.splitView)
-        return 150;
+        return 32;
     else
         return splitView.frame.size.width - 200;
 }
@@ -180,6 +184,17 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
         return self.splitView.frame.size.height - 150;
     else
         return splitView.frame.size.width - 100;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex {
+    if (splitView != self.splitView)
+        return proposedPosition;
+
+    if (proposedPosition < 130) {
+        return 32;
+    } else {
+        return MAX(150, proposedPosition);
+    }
 }
 
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -210,16 +225,27 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     mainScrollView.verticalScrollElasticity = NSScrollElasticityAllowed;
     mainScrollView.horizontalScrollElasticity = NSScrollElasticityNone;
     [self injectThemeLib];
+    [self.webView.mainFrame.windowObject setValue:_conversation forKey:@"Conversation"];
+    [_conversation replayHistoryIntoContainer:self];
 }
 
 - (void)injectThemeLib {
     NSString *base = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"themelib" ofType:@"js"]
                                                encoding:NSUTF8StringEncoding error:nil];
-    if (base)
+    if (base) {
         [self.webView.mainFrame.windowObject evaluateWebScript:base];
+    }
+}
+
+- (void)throwEvent:(NSString *)eventName withObject:(id)object {
+    [self.webView.mainFrame.windowObject callWebScriptMethod:@"__SCPostEvent" withArguments:@[eventName, object]];
 }
 
 #pragma mark - textfield delegate
+
+/*- (NSResponder *)nextResponder {
+    return self.textField;
+}*/
 
 - (NSArray *)candidatesForTabCompletion:(NSString *)s {
     NSString *fragment = [s lowercaseString];
@@ -270,11 +296,17 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     if (sel_isEqual(commandSelector, @selector(noop:))) {
     #pragma clang diagnostic pop
         if ([NSEvent modifierFlags] & NSCommandKeyMask) {
-            NSLog(@"textfield:cmd-enter");
+            [self sendMessage:(NSTextField *)control];
             return YES;
         }
     } else if (commandSelector == @selector(insertTab:)) {
         NSRange selRange = textView.selectedRange;
+
+        if ([textView.string isEqualToString:@""]) {
+            [textView insertTab:self];
+            return YES;
+        }
+
         NSUInteger psUpperBound = selRange.location + selRange.length;
         [textView selectWord:self];
         NSUInteger newSelRangeLoc = textView.selectedRange.location;
@@ -321,6 +353,28 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     _completeIndex = 0;
 }
 
+- (void)controlTextDidEndEditing:(NSNotification *)obj {
+    [self.textField saveSelection];
+}
+
+- (IBAction)sendMessageFromButton:(id)sender {
+    [self sendMessage:self.textField];
+}
+
+- (IBAction)sendMessage:(NSTextField *)sender {
+    if ([sender.stringValue isEqualToString:@""]) {
+        NSBeep();
+        return;
+    }
+
+    if ([NSEvent modifierFlags] & NSCommandKeyMask)
+        [self.conversation sendAction:sender.stringValue];
+    else
+        [self.conversation sendMessage:sender.stringValue];
+    sender.stringValue = @"";
+    [self adjustEntryBounds];
+}
+
 - (void)textFieldDidResize:(NSNotification *)obj {
     [self adjustEntryBounds];
 }
@@ -351,52 +405,21 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
                                         actualHeight + 6};
     self.chatEntryView.frameSize = (CGSize){self.chatEntryView.frame.size.width,
         newHeight};
+
+    //[self.webView.mainFrame.frameView.documentView.enclosingScrollView scroll:self];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self removeKVOHandlers];
 }
 
 #pragma mark - chat stuff
 
 - (void)setConversation:(SCConversation *)conversation {
-    if (_conversation)
-        [self removeKVOHandlers];
+    [_conversation removeContainer:self];
     _conversation = conversation;
-    _conversation.container = self;
-    [self addKVOHandlers];
-    [self updateHeader];
-}
-
-- (void)addKVOHandlers {
-    [_conversation.underlyingConversation addObserver:self
-                                           forKeyPath:@"presentableTitle"
-                                              options:NSKeyValueObservingOptionNew
-                                              context:NULL];
-    [_conversation.underlyingConversation addObserver:self
-                                           forKeyPath:@"presentableSubtitle"
-                                              options:NSKeyValueObservingOptionNew
-                                              context:NULL];
-}
-
-- (void)removeKVOHandlers {
-    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableTitle"];
-    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableSubtitle"];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    [self updateHeader];
-}
-
-- (void)updateHeader {
-    NSMutableAttributedString *header;
-    header = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", _conversation.underlyingConversation.presentableTitle]];
-    NSAttributedString *sub;
-    sub = [[NSMutableAttributedString alloc] initWithString:_conversation.underlyingConversation.presentableSubtitle
-                                                 attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:11]}];
-    [header appendAttributedString:sub];
-    self.chatTitle.attributedStringValue = header;
+    [conversation addContainer:self];
+    [self.webView reload:self];
 }
 
 @end

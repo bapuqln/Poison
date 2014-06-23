@@ -15,6 +15,12 @@ extern NSString *const DESUserDiscoveryVersionKey;
 extern NSString *const DESUserDiscoveryRecVersion1;
 extern NSString *const DESUserDiscoveryRecVersion2;
 
+typedef NS_ENUM(NSInteger, DESUserDiscoveryTrustLevel) {
+    DESUserDiscoveryUntrusted,
+    DESUserDiscoveryUndecided,
+    DESUserDiscoveryTrusted,
+};
+
 typedef void(^DESUserDiscoveryCallback)(NSDictionary *result, NSError *error);
 
 /**

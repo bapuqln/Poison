@@ -8,7 +8,7 @@ const uint32_t DESFriendAddressSize = TOX_FRIEND_ADDRESS_SIZE;
 
 BOOL DESHexStringIsValid(NSString *hex) {
     NSCharacterSet *validSet = [NSCharacterSet characterSetWithCharactersInString:@"abcdefABCDEF1234567890"];
-    int i = 0;
+    unsigned int i = 0;
     while(i < [hex length]) {
         if (![validSet characterIsMember:[hex characterAtIndex:i]]) {
             return NO;
@@ -47,7 +47,7 @@ BOOL DESFriendAddressIsValid(NSString *theAddr) {
 
 void DESConvertHexToBytes(NSString *theString, uint8_t *theOutput) {
     const char *chars = [theString UTF8String];
-    int i = 0, j = 0;
+    unsigned int i = 0, j = 0;
     NSUInteger len = [theString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     char byteChars[3] = {'\0','\0','\0'};
     unsigned long wholeByte = 0;

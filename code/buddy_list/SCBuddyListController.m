@@ -11,6 +11,7 @@
 #import "SCBuddyListManager.h"
 #import "DESConversation+Poison_CustomName.h"
 #import "SCRequestDialogController.h"
+#import "SCFillingView.h"
 #import <Quartz/Quartz.h>
 
 #define SC_MAX_CACHED_ROW_COUNT (50)
@@ -116,25 +117,85 @@
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)loadView {
+    [super loadView];
+    NSView *backing;
+
+    SCFillingView *b = [[SCFillingView alloc] initWithFrame:self.view.bounds];
+    b.wantsLayer = YES;
+    b.drawColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+    b.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+    backing = b;
+    [backing addSubview:self.view];
+    self.view = backing;
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+    if ([NSVisualEffectView class]) {
+        NSView *realView = b.subviews[0];
+        [realView removeFromSuperviewWithoutNeedingDisplay];
+        realView.autoresizesSubviews = NO;
+        CGSize newSize = (CGSize){realView.frame.size.width, realView.frame.size.height + 22};
+        realView.frameSize = newSize;
+        b.frameSize = newSize;
+        self.userInfo.frameSize = (CGSize){self.userInfo.frame.size.width, self.userInfo.frame.size.height + 22};
+        [b addSubview:realView];
+        realView.autoresizesSubviews = YES;
+
+        NSVisualEffectView *blurView = [[NSVisualEffectView alloc] initWithFrame:b.bounds];
+        blurView.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
+        [blurView addSubview:b];
+        b.drawColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
+        self.view = blurView;
+    }
+#endif
+}
+
+- (void)applyColoursBelowYosemite {
     self.userInfo.topColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
     self.userInfo.bottomColor = [NSColor colorWithCalibratedWhite:0.09 alpha:1.0];
     self.userInfo.shadowColor = [NSColor colorWithCalibratedWhite:0.6 alpha:1.0];
-    self.userInfo.dragsWindow = YES;
+
     self.toolbar.topColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
     self.toolbar.bottomColor = [NSColor colorWithCalibratedWhite:0.15 alpha:1.0];
     self.toolbar.shadowColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
-    self.toolbar.dragsWindow = YES;
+
     self.auxiliaryView.topColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     self.auxiliaryView.bottomColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
     self.auxiliaryView.borderColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     self.auxiliaryView.shadowColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+}
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+- (void)applyColoursAboveYosemite {
+    self.userInfo.topColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.7];
+    self.userInfo.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.4];
+
+    self.toolbar.topColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.0];
+    self.toolbar.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
+
+    self.auxiliaryView.topColor = nil;
+    self.auxiliaryView.bottomColor = nil;
+    self.filterField.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
+}
+#endif
+
+- (void)awakeFromNib {
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+    if ([NSVisualEffectView class])
+        [self applyColoursAboveYosemite];
+    else
+#endif
+        [self applyColoursBelowYosemite];
+
+    self.userInfo.dragsWindow = YES;
+    self.toolbar.dragsWindow = YES;
     self.auxiliaryView.dragsWindow = YES;
     self.filterField.delegate = self;
 
     self.friendListView.target = self;
     self.friendListView.doubleAction = @selector(openAuxiliaryWindowForSelectedRow:);
     self.friendListView.action = @selector(didClickButNotSelect:);
+    self.selfMenu.delegate = self;
 }
 
 - (void)detachHandlersFromConnection {
@@ -391,9 +452,13 @@
 }
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
-    NSUInteger ci = ((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow;
-    DESConversation *conv = [_dataSource objectAtRowIndex:ci];
-    [menu itemAtIndex:0].title = conv.preferredUIName;
+    if (menu == self.selfMenu) {
+        [[menu itemAtIndex:0] setTitle:[NSString stringWithFormat:@"PIN: %@", _watchingConnection.PIN]];
+    } else {
+        NSUInteger ci = ((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow;
+        DESConversation *conv = [_dataSource objectAtRowIndex:ci];
+        [menu itemAtIndex:0].title = conv.preferredUIName;
+    }
 }
 
 #pragma mark - cell server
@@ -416,6 +481,14 @@
 }
 
 #pragma mark - misc menus
+- (IBAction)confirmRandomizeNospam:(id)sender {
+    NSAlert *prompt = [[NSAlert alloc] init];
+    prompt.messageText = NSLocalizedString(@"Change PIN", nil);
+    prompt.informativeText = NSLocalizedString(@"People will no longer be able to add you using your current ID. However, friends that you have already confirmed will not be affected. Are you sure you want to do this?", nil);
+    [prompt addButtonWithTitle:NSLocalizedString(@"Change", nil)];
+    [prompt addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+    [prompt beginSheetModalForWindow:self.view.window modalDelegate:self didEndSelector:@selector(commitChangingNospam:returnCode:userInfo:) contextInfo:NULL];
+}
 
 - (IBAction)showAddFriend:(id)sender {
     [(SCAppDelegate *)[NSApp delegate] addFriend:self];
@@ -426,7 +499,7 @@
 }
 
 - (IBAction)removeFriendConfirm:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow];
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).selectedRow];
     if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
     [(SCAppDelegate *)[NSApp delegate] deleteFriend:f confirmingInWindow:self.view.window];
@@ -462,6 +535,7 @@
     DESFriend *f = (__bridge DESFriend *)friend;
     NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSString *dn = [self.nicknameField.stringValue stringByTrimmingCharactersInSet:cs];
+    SCProfileManager *p = [SCProfileManager currentProfile];
 
     if (ret == 0) {
         [sheet orderOut:self];
@@ -469,21 +543,29 @@
         return;
     }
 
-    NSMutableDictionary *map = [[SCProfileManager privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
+    NSMutableDictionary *map = [[p privateSettingForKey:@"nicknames"] mutableCopy] ?: [NSMutableDictionary dictionary];
     if (ret == 2 || [dn isEqualToString:@""]) {
         [map removeObjectForKey:f.publicKey];
     } else if (ret == 1) {
         map[f.publicKey] = dn;
     }
 
-    [SCProfileManager setPrivateSetting:map forKey:@"nicknames"];
+    [p setPrivateSetting:map forKey:@"nicknames"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [SCProfileManager commitPrivateSettings];
+        [p commitPrivateSettings];
     });
 
     self.nicknameField.stringValue = @"";
     [sheet orderOut:self];
     [self.friendListView reloadData];
+}
+
+- (void)commitChangingNospam:(NSWindow *)sheet returnCode:(NSInteger)ret userInfo:(void *)unused {
+    if (ret == NSAlertFirstButtonReturn) {
+        uint8_t newpin[4];
+        arc4random_buf(&newpin, 4);
+        [_watchingConnection setPIN:[NSData dataWithBytes:newpin length:4]];
+    }
 }
 
 #pragma mark - searching

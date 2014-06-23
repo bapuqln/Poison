@@ -36,7 +36,7 @@
 /**
  * Connection that the request originated from.
  */
-@property (readonly) DESToxConnection *connection;
+@property (weak, readonly) DESToxConnection *connection;
 /**
  * Accept this request and join the group chat/add the friend.
  */
