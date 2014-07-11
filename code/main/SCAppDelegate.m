@@ -439,12 +439,17 @@
 
 - (void)sendAvatarPacket:(DESFriend *)friend {
     SCAvatar *a = [SCProfileManager currentProfile].avatar;
+
     uint8_t *packet = malloc(DESAvatarAnnounceSize); /* 70 */
     uint16_t pixels = htons(a.size);
     uint32_t bytes = htonl(a.byteSize);
     memcpy(packet, &pixels, 2);
     memcpy(packet + 2, &bytes, 4);
-    memcpy(packet + 6, a.digest, crypto_hash_BYTES);
+
+    /* for null avatar, it's valid for the digest part to be uninitialized
+     * (as long as the size part is 0) */
+    if (a.digest)
+        memcpy(packet + 6, a.digest, crypto_hash_BYTES);
 
     NSData *payload = [NSData dataWithBytesNoCopy:packet length:DESAvatarAnnounceSize freeWhenDone:YES];
     if (friend) {
