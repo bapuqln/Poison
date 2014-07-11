@@ -14,25 +14,27 @@
 
 - (void)awakeFromNib {
     _nameAttrs = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:14]};
-    _smsgAttrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14]};
+    _smsgAttrs = @{NSFontAttributeName: [NSFont menuFontOfSize:14]};
 }
 
 - (void)setName:(NSString *)name {
-    self.nameDisplay.stringValue = name;
+    if (name)
+        self.nameDisplay.stringValue = [name copy];
     [self adjustSize];
 }
 
 - (void)setStatusMessage:(NSString *)statusMessage {
-    self.statusDisplay.stringValue = statusMessage;
+    if (statusMessage)
+        self.statusDisplay.stringValue = [statusMessage copy];
     [self adjustSize];
 }
 
 - (void)adjustSize {
-    NSSize nsize = [self.nameDisplay.stringValue sizeWithAttributes:_nameAttrs];
-    NSSize ssize = [self.statusDisplay.stringValue sizeWithAttributes:_smsgAttrs];
-    CGFloat requiredWidth = MAX(nsize.width, ssize.width);
-    self.nameDisplay.frameSize = (NSSize){requiredWidth, self.nameDisplay.frame.size.height};
-    self.statusDisplay.frameSize = (NSSize){requiredWidth, self.statusDisplay.frame.size.height};
+    NSLog(@"%@ %@", self.nameDisplay.stringValue, self.statusDisplay.stringValue);
+    [self.nameDisplay sizeToFit];
+    [self.statusDisplay sizeToFit];
+    CGFloat requiredWidth = MAX(self.nameDisplay.frame.size.width, self.statusDisplay.frame.size.width);
+    NSLog(@"requiredWidth: %lf", requiredWidth);
     self.frameSize = (CGSize){requiredWidth + (self.nameDisplay.frame.origin.x * 2), self.frame.size.height};
 }
 

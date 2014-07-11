@@ -13,6 +13,7 @@
 - (void)displayAddFriendWithToxSchemeURL:(NSURL *)url;
 
 - (SCBuddyListController *)buddyListController;
+- (void)updateKeyViewAndRepostTypingEvent:(NSEvent *)event;
 
 @optional
 - (void)conversationDidBecomeFocused:(DESConversation *)conversation;

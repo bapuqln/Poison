@@ -5,6 +5,8 @@
 #import "data_private.h"
 #import "txdplus.h"
 
+NSString *const SCSelfSenderUID = @"--self--";
+
 NSError *SCLocalizedErrorWithTXDReturnValue(int32_t retv) {
     NSDictionary *userInfo = nil;
     if (retv == TXD_ERR_BAD_BLOCK || retv == TXD_ERR_SIZE_MISMATCH) {
@@ -29,6 +31,9 @@ static SCProfileManager *_currentProfile = nil;
     NSMutableDictionary *_privateSettings;
     BOOL _settingsNeedCommit;
     NSRecursiveLock *_fileIOLock;
+
+    SCAvatar *_avatar;
+    NSCache *_othersAvatarCache;
 }
 
 + (NSDictionary *)manifest {
@@ -117,7 +122,7 @@ static SCProfileManager *_currentProfile = nil;
     return NULL;
 }
 
-+ (BOOL)saveProfile:(txd_intermediate_t)aProfile name:(NSString *)name password:(NSString *)password {
++ (NSURL *)savePrologue:(NSString *)name {
     NSURL *profiles = [self profileDirectory];
     NSMutableDictionary *manifest = [[self manifest] mutableCopy];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -134,6 +139,11 @@ static SCProfileManager *_currentProfile = nil;
         datadir = [profiles URLByAppendingPathComponent:manifest[name]];
     }
     [fileManager createDirectoryAtURL:datadir withIntermediateDirectories:YES attributes:nil error:nil];
+    return datadir;
+}
+
++ (BOOL)saveProfile:(txd_intermediate_t)aProfile name:(NSString *)name password:(NSString *)password {
+    NSURL *datadir = [self savePrologue:name];
     uint8_t *buf = NULL, *enc = NULL;
     uint64_t size = 0, encsize = 0;
     uint32_t result_code = txd_export_to_buf(aProfile, &buf, &size);
@@ -144,14 +154,49 @@ static SCProfileManager *_currentProfile = nil;
     NSString *comment = [NSString stringWithFormat:@"Name: %@\nExported by %@ %@", name,
                          SCApplicationInfoDictKey(@"CFBundleName"),
                          SCApplicationInfoDictKey(@"CFBundleShortVersionString")];
+
     /* write nico-files for muh security */
-    txd_encrypt_buf(pass, passlen, buf, size, &enc, &encsize, comment.UTF8String, TXD_BIT_PADDED_FILE);
+    int err = txd_encrypt_buf(pass, passlen, buf, size, &enc, &encsize, comment.UTF8String, TXD_BIT_PADDED_FILE);
+    if (err != 0) {
+        NSLog(@"error: txd_encrypt_buf returned %d", err);
+        return NO;
+    }
     _txd_kill_memory(buf, size);
     free(buf);
     NSData *contents = [[NSData alloc] initWithBytesNoCopy:enc length:encsize freeWhenDone:YES];
     NSURL *dest = [datadir URLByAppendingPathComponent:@"data.txd" isDirectory:NO];
     @synchronized (self) {
-        [fileManager createFileAtPath:dest.path contents:contents attributes:@{
+        [[NSFileManager defaultManager] createFileAtPath:dest.path contents:contents attributes:@{
+            NSFilePosixPermissions: @(0600)
+        }];
+    }
+    return YES;
+}
+
++ (BOOL)saveProfile:(txd_intermediate_t)aProfile name:(NSString *)name fast:(txd_fast_t)password {
+    NSURL *datadir = [self savePrologue:name];
+    uint8_t *buf = NULL, *enc = NULL;
+    uint64_t size = 0, encsize = 0;
+    uint32_t result_code = txd_export_to_buf(aProfile, &buf, &size);
+    if (result_code != TXD_ERR_SUCCESS)
+        return NO;
+    NSString *comment = [NSString stringWithFormat:@"Name: %@\nExported by %@ %@", name,
+                         SCApplicationInfoDictKey(@"CFBundleName"),
+                         SCApplicationInfoDictKey(@"CFBundleShortVersionString")];
+
+    /* write nico-files for muh security */
+    int err = txd_encrypt_buf_fast(password, buf, size, &enc, &encsize,
+                                   comment.UTF8String, TXD_BIT_PADDED_FILE);
+    if (err != 0) {
+        NSLog(@"error: txd_encrypt_buf returned %d", err);
+        return NO;
+    }
+    _txd_kill_memory(buf, size);
+    free(buf);
+    NSData *contents = [[NSData alloc] initWithBytesNoCopy:enc length:encsize freeWhenDone:YES];
+    NSURL *dest = [datadir URLByAppendingPathComponent:@"data.txd" isDirectory:NO];
+    @synchronized (self) {
+        [[NSFileManager defaultManager] createFileAtPath:dest.path contents:contents attributes:@{
             NSFilePosixPermissions: @(0600)
         }];
     }
@@ -160,17 +205,26 @@ static SCProfileManager *_currentProfile = nil;
 
 + (instancetype)currentProfile {
     if (!_currentProfile) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            NSString *name = ((SCAppDelegate *)[NSApp delegate]).profileName;
-            if (!name)
-                return;
+        NSString *name = ((SCAppDelegate *)[NSApp delegate]).profileName;
+        if (!name)
+            return nil;
 
-            NSString *identifier = self.manifest[name];
-            _currentProfile = [[SCProfileManager alloc] init];
-            _currentProfile->_identifier = identifier;
-            _currentProfile->_fileIOLock = [[NSRecursiveLock alloc] init];
-        });
+        NSString *identifier = self.manifest[name];
+        if (!identifier) {
+            NSMutableDictionary *m = [self.manifest mutableCopy];
+            CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+            CFStringRef uuidString = CFUUIDCreateString(kCFAllocatorDefault, uuid);
+            m[name] = [(__bridge NSString*)uuidString copy];
+            CFRelease(uuidString);
+            CFRelease(uuid);
+            [m writeToURL:[self.profileDirectory URLByAppendingPathComponent:@"Manifest.plist" isDirectory:NO] atomically:YES];
+            identifier = m[name];
+        }
+
+        _currentProfile = [[SCProfileManager alloc] init];
+        _currentProfile->_identifier = identifier;
+        _currentProfile->_fileIOLock = [[NSRecursiveLock alloc] init];
+        _currentProfile->_othersAvatarCache = [[NSCache alloc] init];
     }
     return _currentProfile;
 }
@@ -285,6 +339,47 @@ static SCProfileManager *_currentProfile = nil;
 - (void)setPrivateSetting:(id)val forKey:(id<NSCopying>)k {
     self.privateSettingsMutable[k] = val;
     _settingsNeedCommit = YES;
+}
+
+- (SCAvatar *)avatar {
+    NSURL *profileHome = [[SCProfileManager profileDirectory] URLByAppendingPathComponent:_identifier isDirectory:YES];
+    NSURL *imageURL = [profileHome URLByAppendingPathComponent:@"avatar.png"];
+
+    if (!_avatar) {
+        [_fileIOLock lock];
+        _avatar = [[SCAvatar alloc] initWithURL:imageURL] ?: [SCAvatar placeholderAvatar];
+        [_fileIOLock unlock];
+    }
+
+    return _avatar;
+}
+
+- (void)setAvatar:(NSImage *)image {
+    CGImageRef bitmap = [image CGImageForProposedRect:nil context:nil hints:nil];
+    CFMutableDataRef pngData = CFDataCreateMutable(kCFAllocatorDefault, 0);
+    CGImageDestinationRef png = CGImageDestinationCreateWithData(pngData, kUTTypePNG, 1, NULL);
+    CGImageDestinationAddImage(png, bitmap, NULL);
+    CGImageDestinationFinalize(png);
+
+    NSURL *profileHome = [[SCProfileManager profileDirectory] URLByAppendingPathComponent:_identifier isDirectory:YES];
+    NSURL *imageURL = [profileHome URLByAppendingPathComponent:@"avatar.png"];
+    [_fileIOLock lock];
+    [(__bridge NSData *)pngData writeToURL:imageURL atomically:YES];
+    _avatar = [[SCAvatar alloc] initWithData:(__bridge NSData *)pngData url:imageURL];
+    [_fileIOLock unlock];
+    CFRelease(pngData);
+    CFRelease(png);
+}
+
+- (SCAvatar *)avatarForUID:(NSString *)uid {
+    if ([uid isEqualToString:SCSelfSenderUID])
+        return [self avatar];
+    else
+        return [SCAvatar placeholderAvatar];
+}
+
+- (NSURL *)profileDirectory {
+    return [[SCProfileManager profileDirectory] URLByAppendingPathComponent:_identifier isDirectory:YES];
 }
 
 @end

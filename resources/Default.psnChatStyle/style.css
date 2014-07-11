@@ -94,6 +94,7 @@ div.context.message {
     border-radius:4px;
     padding:3px 10px 4px 10px;
     vertical-align:bottom;
+    white-space: pre-wrap;
 }
 
 .message_action {

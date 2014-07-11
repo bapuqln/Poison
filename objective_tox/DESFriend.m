@@ -1,29 +1,18 @@
 #import "ObjectiveTox-Private.h"
+#import "Messenger.h"
 
 const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
 
 @implementation DESFriend
-- (NSString *)name { DESAbstractWarning; return nil; }
-- (NSString *)statusMessage { DESAbstractWarning; return nil; }
-- (DESFriendStatus)status { DESAbstractWarning; return 0; }
-- (NSString *)publicKey { DESAbstractWarning; return nil; }
-- (DESConversation *)conversation { DESAbstractWarning; return nil; }
-- (DESToxConnection *)connection { DESAbstractWarning; return nil; }
-- (int32_t)peerNumber { DESAbstractWarning; return -1; }
-- (BOOL)isTyping { DESAbstractWarning; return -1; }
-- (NSDate *)lastSeen { DESAbstractWarning; return nil; }
-- (NSString *)address { DESAbstractWarning; return nil; }
-- (uint16_t)port { DESAbstractWarning; return 0; }
-
-- (NSString *)presentableTitle { DESAbstractWarning; return nil; }
-- (NSString *)presentableSubtitle { DESAbstractWarning; return nil; }
-- (NSSet *)participants { DESAbstractWarning; return nil; }
-- (id<DESConversationDelegate>)delegate { DESAbstractWarning; return nil; }
-- (void)setDelegate:(id<DESConversationDelegate>)delegate { DESAbstractWarning; }
-- (DESConversationType)type { DESAbstractWarning; return 0; }
+@dynamic name, statusMessage, status, publicKey, conversation, connection,
+         peerNumber, isTyping, lastSeen, address, port;
+@dynamic presentableTitle, presentableSubtitle, participants, delegate, type;
+@dynamic transfers;
 
 - (uint32_t)sendAction:(NSString *)action { DESAbstractWarning; return 0; }
 - (uint32_t)sendMessage:(NSString *)message { DESAbstractWarning; return 0; }
+- (DESFileTransfer *)requestFileTransferWithInput:(NSInputStream *)stream filename:(NSData *)filename size:(uint64_t)length { DESAbstractWarning; return nil; }
+- (void)sendControlMessage:(NSData *)msg ofType:(uint8_t)packet { DESAbstractWarning; return; }
 @end
 
 @implementation DESConcreteFriend {
@@ -187,6 +176,33 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
         }
     });
     return mid;
+}
+
+- (void)sendControlMessage:(NSData *)msg ofType:(uint8_t)packet {
+    uint8_t *payload = malloc(msg.length + 1);
+    payload[0] = packet;
+    memcpy(payload + 1, msg.bytes, msg.length);
+
+    dispatch_async(_connection._messengerQueue, ^{
+        Messenger *m = (Messenger *)self.connection._core;
+        send_custom_lossless_packet(m, self.peerNumber, payload, msg.length + 1);
+        free(payload);
+    });
+}
+
+#pragma mark - DESFileTransferring
+
+- (DESFileTransfer *)requestFileTransferWithInput:(NSInputStream *)stream
+                                         filename:(NSData *)filename
+                                             size:(uint64_t)length {
+    int filenum = tox_new_file_sender(_connection._core, self.peerNumber,
+                                      length, (uint8_t *)filename.bytes,
+                                      filename.length);
+    if (filenum == -1)
+        return nil;
+    DESFileTransfer *tr = [[DESOutgoingFileTransfer alloc] initWithSenderNumber:filenum onConversation:self filename:filename size:length];
+    [_connection addTransferTriggeringKVO:tr];
+    return tr;
 }
 
 #pragma mark - private

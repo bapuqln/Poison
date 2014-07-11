@@ -3,7 +3,7 @@
 #import "SCFriendRequest.h"
 #import "SCAppDelegate.h"
 
-@interface SCAppDelegate (SCFriendRequest_Private)
+@interface SCAppDelegate ()
 - (DESToxConnection *)toxConnection;
 @end
 

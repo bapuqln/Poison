@@ -83,6 +83,8 @@ txd_intermediate_t txd_intermediate_from_tox(Tox *tox)
                &(tox_ -> friendlist[f_n].friendrequest_nospam), sizeof(uint32_t));
     }
 
+    free(toxfl);
+
     /* something to think about: can we prevent ourselves from allocating
      * more memory than we actually need here? */
     struct txd_dhtlite *dht_save = calloc(sizeof(struct txd_dhtlite), LCLIENT_LIST);

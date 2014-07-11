@@ -22,21 +22,7 @@
     [self setupUI];
 }
 
-- (void)applyMaskIfRequired {
-    if (self.avatarView.wantsLayer)
-        return;
-    self.avatarView.wantsLayer = YES;
-    NSImage *mask = SCAvatarMaskImage();
-    CALayer *maskLayer = [CALayer layer];
-    [CATransaction begin];
-    maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
-    maskLayer.contents = (id)mask;
-    self.avatarView.layer.mask = maskLayer;
-    [CATransaction commit];
-}
-
 - (void)setupUI {
-    [self applyMaskIfRequired];
     self.keyField.stringValue = self.request.senderName;
     self.textView.string = self.request.message;
     [self.textView.layoutManager glyphRangeForTextContainer:self.textView.textContainer];

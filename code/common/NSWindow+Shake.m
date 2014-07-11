@@ -3,6 +3,8 @@
 #import "NSWindow+Shake.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+
 @implementation NSWindow (Shake)
 
 - (void)shakeWindow:(void (^)(void))completionHandler {

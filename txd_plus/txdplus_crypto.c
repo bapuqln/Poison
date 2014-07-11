@@ -1,7 +1,6 @@
 #include <string.h>
 #include <sodium.h>
 #include "scrypt-jane.h"
-#include "tox.h"
 #include "data.h"
 #include "txdplus.h"
 #include "txdplus_private.h"
@@ -12,6 +11,7 @@
 #define FOUR_MEGABYTES (4194304)
 
 const int32_t TXD_ERR_DECRYPT_FAILED = -2059;
+const int32_t TXD_ERR_BAD_KEY = -2060;
 
 /* Defines MAGIC for a non-size-obfuscated TXD envelope. */
 static txd_fourcc_t TXD_ENVELOPE_MAGIC_N = 'MAKi';
@@ -31,6 +31,28 @@ static inline uint64_t _txd_get_size_of_next_4(uint64_t i) {
     return ret;
 }
 
+txd_fast_t txd_fast_alloc(const uint8_t *password, uint64_t passlen) {
+    txd_fast_t blk = malloc(sizeof(struct __txd_fast));
+    if (!blk)
+        return NULL;
+
+    blk -> N = SCRYPT_N;
+    blk -> r = SCRYPT_r;
+    blk -> p = SCRYPT_p;
+
+    randombytes_buf(blk -> salt, 24);
+
+    scrypt(password, passlen, blk -> salt, 24, SCRYPT_N, SCRYPT_r, SCRYPT_p,
+           blk -> key, crypto_secretbox_KEYBYTES);
+
+    return blk;
+}
+
+void txd_fast_release(const txd_fast_t obj) {
+    _txd_kill_memory(obj, sizeof(struct __txd_fast));
+    free(obj);
+}
+
 /* TXD envelope functions. This is supposedly better than the core
  * tox_save_encrypted. */
 
@@ -38,6 +60,19 @@ int txd_encrypt_buf(const uint8_t *password, uint64_t passlen,
                     const uint8_t *clear_in, uint64_t clear_len,
                     uint8_t **out, uint64_t *out_size,
                     const char *comment, uint32_t flags) {
+    txd_fast_t pass_t = txd_fast_alloc(password, passlen);
+    int ret = txd_encrypt_buf_fast(pass_t, clear_in, clear_len, out, out_size, comment, flags);
+    txd_fast_release(pass_t);
+    return ret;
+}
+
+int txd_encrypt_buf_fast(const txd_fast_t precomputed,
+                         const uint8_t *clear_in, uint64_t clear_len,
+                         uint8_t **out, uint64_t *out_size,
+                         const char *comment, uint32_t flags) {
+    if (!precomputed)
+        return TXD_ERR_BAD_KEY;
+
     uint32_t magic = (flags & TXD_BIT_PADDED_FILE)? TXD_ENVELOPE_MAGIC_P : TXD_ENVELOPE_MAGIC_N;
     /* decide whether the file is encrypted or not. */
     unsigned long comment_size = strlen(comment);
@@ -57,10 +92,8 @@ int txd_encrypt_buf(const uint8_t *password, uint64_t passlen,
     if (!out)
         return 0;
     
-    uint8_t *hashed_pass = malloc(HASHED_LEN + SALT_LEN);
-    uint8_t *salt = hashed_pass + HASHED_LEN;
-    randombytes_buf(salt, SALT_LEN);
-    
+    uint8_t *hashed_pass = precomputed -> key;
+    uint8_t *salt = precomputed -> salt;
     uint8_t *encrypt_buffer = calloc(encrypted_length, 1);
 
     if (flags & TXD_BIT_PADDED_FILE) {
@@ -75,8 +108,7 @@ int txd_encrypt_buf(const uint8_t *password, uint64_t passlen,
     _txd_write_int_32(magic, eblock_pos);                 eblock_pos += sizeof(magic);
     
     _txd_write_int_32(actual_comment_length, eblock_pos); eblock_pos += sizeof(actual_comment_length);
-    memcpy(eblock_pos, comment,
-           actual_comment_length);                        eblock_pos += actual_comment_length;
+    memcpy(eblock_pos, comment, actual_comment_length);   eblock_pos += actual_comment_length;
     
     _txd_write_int_64(SCRYPT_N, eblock_pos);              eblock_pos += sizeof(SCRYPT_N);
     _txd_write_int_32(SCRYPT_r, eblock_pos);              eblock_pos += sizeof(SCRYPT_r);
@@ -84,11 +116,9 @@ int txd_encrypt_buf(const uint8_t *password, uint64_t passlen,
     memcpy(eblock_pos, salt, SALT_LEN);                   eblock_pos += SALT_LEN;
     _txd_write_int_64(encrypted_length, eblock_pos);      eblock_pos += sizeof(encrypted_length);
     
-    scrypt(password, passlen, salt, 24, SCRYPT_N, SCRYPT_r, SCRYPT_p, hashed_pass, HASHED_LEN);
     crypto_secretbox(eblock_pos, encrypt_buffer, encrypted_length, salt + 24, hashed_pass);
     _txd_kill_memory(encrypt_buffer, encrypted_length);
-    _txd_kill_memory(hashed_pass, HASHED_LEN + SALT_LEN);
-    free(encrypt_buffer); free(hashed_pass);
+    free(encrypt_buffer);
     
     if (out)
         *out = eblock;
@@ -105,10 +135,9 @@ int txd_decrypt_buf(const uint8_t *password, uint64_t passlen,
         return TXD_ERR_BAD_BLOCK;
 
     uint32_t magic = _txd_read_int_32(encr_in);
-    if (magic != TXD_ENVELOPE_MAGIC_N && magic != TXD_ENVELOPE_MAGIC_P) {
+    if (magic != TXD_ENVELOPE_MAGIC_N && magic != TXD_ENVELOPE_MAGIC_P)
         return TXD_ERR_BAD_BLOCK;
-    }
-    
+
     uint8_t *encr_pos = (uint8_t *)encr_in + sizeof(TXD_ENVELOPE_MAGIC_N);
     uint32_t comment_len = _txd_read_int_32(encr_pos);  encr_pos += sizeof(uint32_t);
     if (comment_len > encr_len - 8)
@@ -130,6 +159,7 @@ int txd_decrypt_buf(const uint8_t *password, uint64_t passlen,
     memcpy(salt, encr_pos, SALT_LEN);                   encr_pos += sizeof(encb_len) + SALT_LEN;
     scrypt(password, passlen, salt, 24, N, r, p, hashed_pass, HASHED_LEN);
     int err = crypto_secretbox_open(out_buf, encr_pos, encb_len, salt + 24, hashed_pass);
+    
     if (err == -1) {
         _txd_kill_memory(hashed_pass, HASHED_LEN + SALT_LEN);
         _txd_kill_memory(out_buf, encb_len);
@@ -140,6 +170,7 @@ int txd_decrypt_buf(const uint8_t *password, uint64_t passlen,
 
     uint64_t actual_bsize = 0;
     uint8_t *data_ptr = NULL;
+
     if (magic == TXD_ENVELOPE_MAGIC_P) {
         uint64_t rlen = _txd_read_int_64(out_buf + crypto_secretbox_ZEROBYTES);
         if (rlen > encr_len - 8)
@@ -150,11 +181,13 @@ int txd_decrypt_buf(const uint8_t *password, uint64_t passlen,
         actual_bsize = encb_len - crypto_secretbox_ZEROBYTES;
         data_ptr = out_buf + crypto_secretbox_ZEROBYTES;
     }
+
     if (out) {
         uint8_t *actual_out_buf = calloc(actual_bsize, 1);
         memcpy(actual_out_buf, data_ptr, actual_bsize);
         *out = actual_out_buf;
     }
+
     if (out_size)
         *out_size = actual_bsize;
     _txd_kill_memory(hashed_pass, HASHED_LEN + SALT_LEN);

@@ -149,19 +149,6 @@
     }
 }
 
-- (void)applyMaskIfRequired {
-    if (self.avatarView.wantsLayer)
-        return;
-    self.avatarView.wantsLayer = YES;
-    NSImage *mask = SCAvatarMaskImage();
-    CALayer *maskLayer = [CALayer layer];
-    [CATransaction begin];
-    maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
-    maskLayer.contents = (id)mask;
-    self.avatarView.layer.mask = maskLayer;
-    [CATransaction commit];
-}
-
 - (void)setObjectValue:(id)objectValue {
     [self removeKVOHandlers];
     _watchingFriend = objectValue;
@@ -188,19 +175,9 @@
     NSTrackingArea *_tracking;
 }
 
-- (void)applyMaskIfRequired {
-    if (self.avatarView.wantsLayer)
-        return;
+- (void)awakeFromNib {
     self.accessoryView.wantsLayer = YES;
     self.accessoryView.alphaValue = 0.0;
-    self.avatarView.wantsLayer = YES;
-    NSImage *mask = SCAvatarMaskImage();
-    CALayer *maskLayer = [CALayer layer];
-    [CATransaction begin];
-    maskLayer.frame = (CGRect){CGPointZero, self.avatarView.frame.size};
-    maskLayer.contents = (id)mask;
-    self.avatarView.layer.mask = maskLayer;
-    [CATransaction commit];
 }
 
 - (void)updateTrackingAreas {

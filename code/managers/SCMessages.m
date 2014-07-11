@@ -1,6 +1,7 @@
 #include "Copyright.h"
 
 #import "SCMessages.h"
+#import "SCProfileManager.h"
 
 static NSDateFormatter *SCMessagesDateFormatter;
 
@@ -43,7 +44,12 @@ static NSDateFormatter *SCMessagesDateFormatter;
         self.isSelf = (sender.peerNumber == -1);
         /* DESToxConnection has peerNumber hardcoded to -1 */
         self.senderName = sender.name;
-        self.senderUID = sender.publicKey;
+        if (self.isSelf)
+            self.senderUID = SCSelfSenderUID;
+        else
+            self.senderUID = sender.publicKey;
+        /* DES: group senders will probably get their own "public keys".
+         * which are UUIDs in disguise. */
         self.messageID = id_;
         self.datePosted = [NSDate date];
         _chatMessageType = type;
@@ -77,13 +83,51 @@ static NSDateFormatter *SCMessagesDateFormatter;
 
 @end
 
-/*@implementation SCAttributeChangeMessage {
-    NSDate *_date;
+@implementation SCAttributeMessage {
+    SCAttributeChange _attribute;
+    NSString *_attrStringValue;
 }
+@dynamic stringValue;
 @synthesize senderUID = _senderUID;
 @synthesize senderName = _senderName;
-@synthesize stringValue = _stringValue;
 @synthesize isSelf = _isSelf;
+@synthesize datePosted = _datePosted;
+
++ (BOOL)isKeyExcludedFromWebScript:(const char *)name {
+    return NO;
+}
+
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)selector {
+    return NO;
+}
+
+- (instancetype)initWithOldValue:(NSString *)s sender:(DESFriend *)sender attribute:(SCAttributeChange)attr {
+    self = [super init];
+    if (self) {
+        _attribute = attr;
+        self.isSelf = (sender.peerNumber == -1);
+        if (attr == SCAttributeName) {
+            self.senderName = s;
+            _attrStringValue = sender.name;
+        } else {
+            self.senderName = sender.name;
+            _attrStringValue = sender.statusMessage;
+        }
+        self.senderUID = sender.publicKey;
+        self.datePosted = [NSDate date];
+    }
+    return self;
+}
+
+- (NSString *)stringValue {
+    if (self.attribute == SCAttributeName) {
+        return [NSString stringWithFormat:NSLocalizedString(@"%@ changed their name to %@.", nil),
+                self.senderName, _attrStringValue];
+    } else {
+        return [NSString stringWithFormat:NSLocalizedString(@"%@ is now %@.", nil),
+                self.senderName, _attrStringValue];
+    }
+}
 
 - (NSString *)localizedTimestamp {
     if (!SCMessagesDateFormatter) {
@@ -94,12 +138,24 @@ static NSDateFormatter *SCMessagesDateFormatter;
             SCMessagesDateFormatter.timeStyle = NSDateFormatterMediumStyle;
         });
     }
-    return [SCMessagesDateFormatter stringFromDate:_date];
+    return [SCMessagesDateFormatter stringFromDate:self.datePosted];
+}
+
+- (SCAttributeChange)attribute {
+    return _attribute;
+}
+
+- (NSString *)valueAfter {
+    return _attrStringValue;
+}
+
+- (int64_t)unixTimestamp {
+    return (int64_t)[_datePosted timeIntervalSince1970];
 }
 
 - (SCMessageType)type {
-    return SCAttributeChangeMessageType;
+    return SCAttributeMessageType;
 }
 
-@end*/
+@end
 

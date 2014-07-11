@@ -40,11 +40,12 @@
         window.widgetView = _dhtCount;
         self.window = window;
         self.tox = tox;
+
         self.friendsListCont = [[SCBuddyListController alloc] initWithNibName:@"FriendsPanel" bundle:[NSBundle mainBundle]];
         [self.friendsListCont loadView];
         [self.friendsListCont attachKVOHandlersToConnection:tox];
         self.friendsListCont.view.frame = ((NSView*)window.contentView).frame;
-        self.window.contentView = self.friendsListCont.view;
+        [self.window.contentView addSubview:self.friendsListCont.view];
     }
     return self;
 }

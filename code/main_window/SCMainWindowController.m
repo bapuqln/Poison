@@ -46,6 +46,10 @@ void *const SCAddFriendSheetContext = (void *)1;
     return ret;
 }
 
+- (void)updateKeyViewAndRepostTypingEvent:(NSEvent *)event {
+    return;
+}
+
 #pragma mark - sheets
 
 - (void)displayQRCode {

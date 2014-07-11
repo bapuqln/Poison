@@ -149,8 +149,11 @@ window.deliverMessage = function(event) {
                 break;
             }
             case window.SCInformationalMessageType: {
-                window.postInformational(cevent);
+                window.appendInformational(cevent.stringValue());
                 break;
+            }
+            case window.SCAttributeMessageType: {
+                window.appendInformational(cevent.stringValue());
             }
         }
     }

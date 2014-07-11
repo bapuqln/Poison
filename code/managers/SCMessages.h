@@ -7,10 +7,15 @@
 typedef NS_ENUM(NSInteger, SCMessageType) {
     SCChatMessageType = 1,
     SCInformationalMessageType = 2,
+    SCAttributeMessageType = 3,
+};
+
+typedef NS_ENUM(NSInteger, SCAttributeChange) {
+    SCAttributeName = 1,
+    SCAttributeStatusMessage = 2,
 };
 
 @protocol SCMessage <NSObject>
-
 @property (strong) NSString *senderUID;
 @property (strong) NSString *senderName;
 @property (strong) NSString *stringValue;
@@ -18,7 +23,6 @@ typedef NS_ENUM(NSInteger, SCMessageType) {
 @property (strong, readonly) NSString *localizedTimestamp;
 @property (readonly) SCMessageType type;
 @property BOOL isSelf;
-
 @end
 
 @interface SCPendingMessage : NSObject
@@ -38,6 +42,8 @@ typedef NS_ENUM(NSInteger, SCMessageType) {
 - (instancetype)initWithString:(NSString *)s type:(DESMessageType)type sender:(DESFriend *)sender id:(uint32_t)id_;
 @end
 
-/*@interface SCAttributeChangeMessage : NSObject <SCMessage>
-@property (strong) NSNumber *wrappedColour;
-@end*/
+@interface SCAttributeMessage : NSObject <SCMessage>
+- (instancetype)initWithOldValue:(NSString *)s sender:(DESFriend *)sender attribute:(SCAttributeChange)attr;
+- (SCAttributeChange)attribute;
+- (NSString *)valueAfter;
+@end

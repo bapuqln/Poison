@@ -57,4 +57,18 @@ typedef NS_ENUM(NSInteger, DESFriendAddErrorCode) {
     DESFriendAddMemoryFailure = -8
 };
 
+typedef NS_ENUM(NSInteger, DESTransferDirection) {
+    DESTransferDirectionOut,
+    DESTransferDirectionIn,
+};
+
+typedef NS_ENUM(NSInteger, DESTransferState) {
+    DESTransferStateStalled,
+    DESTransferStateUserPaused,
+    DESTransferStateWaiting,
+    DESTransferStateActive,
+    DESTransferStateInvalid,
+    DESTransferStateCompleted,
+};
+
 #endif

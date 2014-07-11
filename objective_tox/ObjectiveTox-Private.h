@@ -7,6 +7,9 @@
 - (Tox *)_core;
 - (dispatch_queue_t)_messengerQueue;
 - (void)addGroup:(id<DESConversation>)conversation;
+- (NSMutableSet *)unsafeTransfers;
+- (void)addTransferTriggeringKVO:(DESFileTransfer *)transfer;
+- (void)removeTransferTriggeringKVO:(DESFileTransfer *)transfer;
 @end
 
 #pragma mark - Base64
@@ -18,10 +21,10 @@ NSData *DESDecodeBase64String(NSString *enc);
 
 void _DESCallbackFriendRequest(Tox *tox, const uint8_t *from, const uint8_t *payload,
                                uint16_t payloadLength, void *dtcInstance);
-void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, uint8_t *payload,
+void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, const uint8_t *payload,
                                      uint16_t payloadLength, void *dtcInstance);
 void _DESCallbackFriendStatusMessageDidChange(Tox *tox, int32_t from,
-                                              uint8_t *payload,
+                                              const uint8_t *payload,
                                               uint16_t payloadLength,
                                               void *dtcInstance);
 void _DESCallbackFriendUserStatus(Tox *tox, int32_t from, uint8_t on_off,
@@ -30,16 +33,29 @@ void _DESCallbackFriendTypingStatus(Tox *tox, int32_t from, uint8_t on_off,
                                     void *dtcInstance);
 void _DESCallbackFriendConnectionStatus(Tox *tox, int32_t from, uint8_t on_off,
                                         void *dtcInstance);
-void _DESCallbackFriendMessage(Tox *tox, int32_t from, uint8_t *payload,
+void _DESCallbackFriendMessage(Tox *tox, int32_t from, const uint8_t *payload,
                                uint16_t payloadLength, void *dtcInstance);
-void _DESCallbackFriendAction(Tox *tox, int32_t from, uint8_t *payload,
+void _DESCallbackFriendAction(Tox *tox, int32_t from, const uint8_t *payload,
                               uint16_t payloadLength, void *dtcInstance);
 void _DESCallbackFMGeneric(DESToxConnection *conn, int32_t from,
                            uint8_t *payload, uint16_t payloadLength,
                            DESMessageType mtyp);
 void _DESCallbackReadReceipt(Tox *tox, int32_t from, uint32_t messageid,
                              void *dtcInstance);
-int _DESCallbackControlMessage(void *desfriend, uint8_t *payload, uint32_t length);
+int _DESCallbackControlMessage(void *desfriend, const uint8_t *payload, uint32_t length);
+
+void _DESCallbackFileRequest(Tox *m, int32_t friend, uint8_t file_num,
+                             uint64_t size, const uint8_t *name, uint16_t namelen,
+                             void *connection);
+void _DESCallbackFileControl(Tox *m, int32_t friend, uint8_t is_send,
+                             uint8_t file_num, uint8_t control_id,
+                             const uint8_t *data, uint16_t length, void *connection);
+void _DESCallbackFileData(Tox *m, int32_t friend, uint8_t file_num,
+                          const uint8_t *data, uint16_t length, void *connection);
+
+#pragma mark - A/V callbacks
+
+void DESOrangeDidRequestCall(int32_t cid, void *arg);
 
 #pragma mark - DESRequest concrete subclasses
 
@@ -106,6 +122,21 @@ NS_INLINE TOX_USERSTATUS DESFriendStatusToTox(DESFriendStatus status) {
 - (instancetype)initWithNumber:(int32_t)groupNum
                   onConnection:(DESToxConnection *)connection;
 
+@end
+
+@interface DESFileTransfer ()
+- (int)sender;
+- (void)finish;
+- (void)tryToWritePacks;
+@end
+
+@interface DESIncomingFileTransfer : DESFileTransfer
+- (instancetype)initWithSenderNumber:(int)sender onConversation:(DESConversation<DESFileTransferring> *)conv filename:(NSData *)filename size:(uint64_t)size;
+- (void)didReceiveData:(uint8_t *)buf ofLength:(uint16_t)size;
+@end
+
+@interface DESOutgoingFileTransfer : DESFileTransfer
+- (instancetype)initWithSenderNumber:(int)sender onConversation:(DESConversation<DESFileTransferring> *)conv filename:(NSData *)filename size:(uint64_t)size;
 @end
 
 #pragma mark - Extensions to Core

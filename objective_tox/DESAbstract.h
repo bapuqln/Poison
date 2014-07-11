@@ -13,7 +13,7 @@
  * DESFriend is an abstract class that implements the
  * DESFriend and DESConversation protocols.
  */
-@interface DESFriend : DESConversation <DESFriend>
+@interface DESFriend : DESConversation <DESFriend, DESFileTransferring>
 @end
 
 /**
@@ -45,6 +45,35 @@
  * Declines this request. Currently, it just gets ignored.
  */
 - (void)decline;
+@end
+
+@interface DESFileTransfer : NSObject
+@property (weak, readonly) DESConversation<DESFileTransferring> *associatedConversation;
+
+/* Bytes/sec. calculated internally. */
+@property (readonly) NSUInteger transferSpeed;
+
+/* Progress (0..1) */
+@property (readonly) double progress;
+
+/* Up or down */
+@property (readonly) DESTransferDirection direction;
+
+/* Input or output stream. One of these will be nil depending on direction */
+@property (strong, readonly) NSInputStream *inStream;
+@property (strong, readonly) NSOutputStream *outStream;
+
+@property (strong, readonly) NSData *proposedFilename;
+@property (strong, readonly) NSString *proposedFilenameString;
+
+/* Incoming only */
+- (void)acceptFileTransferIntoStream:(NSOutputStream *)stream;
+- (void)acceptFileTransferIntoFile:(NSString *)file append:(BOOL)append;
+
+- (void)pause;
+- (void)cancel;
+
+@property (readonly) DESTransferState state;
 @end
 
 #endif

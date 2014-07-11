@@ -17,6 +17,9 @@
 - (void)sendMessage:(NSString *)message;
 - (void)sendAction:(NSString *)message;
 - (void)replayHistoryIntoContainer:(SCChatViewController *)container;
+
+- (void)noteNameChanged:(NSString *)newValue;
+- (void)noteStatusMessageChanged:(NSString *)newValue;
 @end
 
 @interface SCConversationManager : NSObject

@@ -7,6 +7,7 @@
 @interface SCChatViewController : NSViewController <SCNonGarbageSplitViewDelegate, NSTextFieldDelegate>
 @property (nonatomic) BOOL showsVideoPane;
 @property (nonatomic) BOOL showsUserList;
+@property (strong) IBOutlet NSMenu *secretActionMenu;
 
 @property (nonatomic) SCConversation *conversation;
 

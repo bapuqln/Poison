@@ -10,6 +10,7 @@
 #define SCApplicationInfoDictKey(k) ([NSBundle mainBundle].infoDictionary[k])
 #define SCStringPreference(k) ([[NSUserDefaults standardUserDefaults] stringForKey:k])
 #define SCBoolPreference(k) ([[NSUserDefaults standardUserDefaults] boolForKey:k])
+#define SCIntegerPreference(k) ([[NSUserDefaults standardUserDefaults] integerForKey:k])
 
 #define SCCodeSigningStatusNoSign  (0)
 #define SCCodeSigningStatusOK      (1)

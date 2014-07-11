@@ -12,11 +12,12 @@
 #import "DESConversation+Poison_CustomName.h"
 #import "SCRequestDialogController.h"
 #import "SCFillingView.h"
+#import "SCAvatarView.h"
 #import <Quartz/Quartz.h>
 
 #define SC_MAX_CACHED_ROW_COUNT (50)
 
-@interface SCDoubleClickingImageView : NSImageView
+@interface SCDoubleClickingImageView : SCAvatarView
 
 @end
 
@@ -26,15 +27,8 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     [self updateTrackingAreas];
-    self.wantsLayer = YES;
-    NSImage *mask = SCAvatarMaskImage();
-    CALayer *maskLayer = [CALayer layer];
-    [CATransaction begin];
-    maskLayer.frame = (CGRect){CGPointZero, self.frame.size};
-    maskLayer.contents = (id)mask;
-    self.layer.mask = maskLayer;
-    [CATransaction commit];
 }
 
 - (void)updateTrackingAreas {
@@ -137,14 +131,17 @@
         CGSize newSize = (CGSize){realView.frame.size.width, realView.frame.size.height + 22};
         realView.frameSize = newSize;
         b.frameSize = newSize;
+        self.userInfo.isFlushWithTitlebar = YES;
         self.userInfo.frameSize = (CGSize){self.userInfo.frame.size.width, self.userInfo.frame.size.height + 22};
         [b addSubview:realView];
         realView.autoresizesSubviews = YES;
 
         NSVisualEffectView *blurView = [[NSVisualEffectView alloc] initWithFrame:b.bounds];
         blurView.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
+        blurView.state = NSVisualEffectStateActive;
+        
         [blurView addSubview:b];
-        b.drawColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
+        b.drawColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.2];
         self.view = blurView;
     }
 #endif
@@ -196,6 +193,9 @@
     self.friendListView.doubleAction = @selector(openAuxiliaryWindowForSelectedRow:);
     self.friendListView.action = @selector(didClickButNotSelect:);
     self.selfMenu.delegate = self;
+
+    SCAvatar *avatar = [SCProfileManager currentProfile].avatar;
+    self.avatarView.image = avatar.rep;
 }
 
 - (void)detachHandlersFromConnection {
@@ -389,7 +389,6 @@
             ((SCRequestCellView *)dequeued).declineButton.target = self;
             ((SCRequestCellView *)dequeued).declineButton.action = @selector(declineRequestFromCell:);
         }
-        [dequeued applyMaskIfRequired];
         return dequeued;
     }
 }
@@ -593,8 +592,11 @@
 
 - (void)pictureTakerDidEnd:(IKPictureTaker *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
     if (returnCode == NSOKButton) {
-        self.avatarView.image = sheet.outputImage;
-        // commit avatar change...
+        NSImage *im = sheet.outputImage;
+        SCProfileManager *profile = [SCProfileManager currentProfile];
+        profile.avatar = im;
+        self.avatarView.image = profile.avatar.rep;
+        [(SCAppDelegate *)[NSApplication sharedApplication].delegate sendAvatarPacket:nil];
     }
 }
 

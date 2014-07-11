@@ -1,16 +1,8 @@
 #import "ObjectiveTox-Private.h"
 
 @implementation DESConversation
-
-- (NSString *)presentableTitle { DESAbstractWarning; return nil; }
-- (NSString *)presentableSubtitle { DESAbstractWarning; return nil; }
-- (NSSet *)participants { DESAbstractWarning; return nil; }
-- (NSString *)publicKey { DESAbstractWarning; return nil; }
-- (int32_t)peerNumber { DESAbstractWarning; return 0; }
-- (id<DESConversationDelegate>)delegate { DESAbstractWarning; return nil; }
-- (void)setDelegate:(id<DESConversationDelegate>)delegate { DESAbstractWarning; }
-- (DESConversationType)type { DESAbstractWarning; return 0; }
-- (DESToxConnection *)connection { DESAbstractWarning; return nil; }
+@dynamic presentableTitle, presentableSubtitle, participants, delegate, type,
+         connection, peerNumber, publicKey;
 
 - (uint32_t)sendAction:(NSString *)action { DESAbstractWarning; return 0; }
 - (uint32_t)sendMessage:(NSString *)message { DESAbstractWarning; return 0; }

@@ -33,7 +33,7 @@ void _DESCallbackFriendRequest(Tox *tox, const uint8_t *from, const uint8_t *pay
 
 /* ATTRIBUTES */
 
-void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
+void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, const uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
     DESToxConnection *connection = (__bridge DESToxConnection*)dtcInstance;
     DESConcreteFriend *f = (DESConcreteFriend *)[connection friendWithID:from];
     while (payloadLength > 0 && payload[payloadLength - 1] == 0) {
@@ -42,6 +42,7 @@ void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, uint8_t *payload, u
     if (payloadLength == 0)
         return;
     NSString *name = [[NSString alloc] initWithBytes:payload length:payloadLength encoding:NSUTF8StringEncoding];
+    NSString *old = f.name;
     [f willChangeValueForKey:@"name"];
     [f willChangeValueForKey:@"presentableTitle"];
     dispatch_async(connection._messengerQueue, ^{
@@ -50,13 +51,13 @@ void _DESCallbackFriendNameDidChange(Tox *tox, int32_t from, uint8_t *payload, u
         [f didChangeValueForKey:@"name"];
         [f didChangeValueForKey:@"presentableTitle"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([connection.delegate respondsToSelector:@selector(friend:nameDidChange:onConnection:)])
-                [connection.delegate friend:f nameDidChange:name onConnection:connection];
+            if ([connection.delegate respondsToSelector:@selector(friend:nameDidChangeTo:from:onConnection:)])
+                [connection.delegate friend:f nameDidChangeTo:name from:old onConnection:connection];
         });
     });
 }
 
-void _DESCallbackFriendStatusMessageDidChange(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
+void _DESCallbackFriendStatusMessageDidChange(Tox *tox, int32_t from, const uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
     DESToxConnection *connection = (__bridge DESToxConnection*)dtcInstance;
     DESConcreteFriend *f = (DESConcreteFriend *)[connection friendWithID:from];
     while (payloadLength > 0 && payload[payloadLength - 1] == 0) {
@@ -65,6 +66,7 @@ void _DESCallbackFriendStatusMessageDidChange(Tox *tox, int32_t from, uint8_t *p
     if (payloadLength == 0)
         return;
     NSString *smg = [[NSString alloc] initWithBytes:payload length:payloadLength encoding:NSUTF8StringEncoding];
+    NSString *old = f.statusMessage;
     [f willChangeValueForKey:@"statusMessage"];
     [f willChangeValueForKey:@"presentableSubtitle"];
     dispatch_async(connection._messengerQueue, ^{
@@ -73,8 +75,8 @@ void _DESCallbackFriendStatusMessageDidChange(Tox *tox, int32_t from, uint8_t *p
         [f didChangeValueForKey:@"statusMessage"];
         [f didChangeValueForKey:@"presentableSubtitle"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([connection.delegate respondsToSelector:@selector(friend:statusMessageDidChange:onConnection:)])
-                [connection.delegate friend:f statusMessageDidChange:smg onConnection:connection];
+            if ([connection.delegate respondsToSelector:@selector(friend:statusMessageDidChangeTo:from:onConnection:)])
+                [connection.delegate friend:f statusMessageDidChangeTo:smg from:old onConnection:connection];
         });
     });
 }
@@ -145,12 +147,12 @@ void _DESCallbackFriendConnectionStatus(Tox *tox, int32_t from, uint8_t on_off, 
 
 /* MESSAGES */
 
-void _DESCallbackFriendMessage(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
-    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, payload, payloadLength, DESMessageTypeText);
+void _DESCallbackFriendMessage(Tox *tox, int32_t from, const uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
+    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, (uint8_t *)payload, payloadLength, DESMessageTypeText);
 }
 
-void _DESCallbackFriendAction(Tox *tox, int32_t from, uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
-    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, payload, payloadLength, DESMessageTypeAction);
+void _DESCallbackFriendAction(Tox *tox, int32_t from, const uint8_t *payload, uint16_t payloadLength, void *dtcInstance) {
+    _DESCallbackFMGeneric((__bridge DESToxConnection *)dtcInstance, from, (uint8_t *)payload, payloadLength, DESMessageTypeAction);
 }
 
 void _DESCallbackFMGeneric(DESToxConnection *conn, int32_t from, uint8_t *payload, uint16_t payloadLength, DESMessageType mtyp) {
@@ -177,7 +179,7 @@ void _DESCallbackReadReceipt(Tox *tox, int32_t from, uint32_t messageid, void *d
     });
 }
 
-int _DESCallbackControlMessage(void *desfriend, uint8_t *payload, uint32_t length) {
+int _DESCallbackControlMessage(void *desfriend, const uint8_t *payload, uint32_t length) {
     DESFriend *f = (__bridge DESFriend *)desfriend;
     DESToxConnection *c = f.connection;
     NSData *payload_ = [NSData dataWithBytes:payload + 1 length:length - 1];
@@ -185,6 +187,69 @@ int _DESCallbackControlMessage(void *desfriend, uint8_t *payload, uint32_t lengt
         [c.delegate didReceiveControlMessage:payload_ ofType:payload[0] fromFriend:f];
     }
     return 0;
+}
+
+/* FILE TRANSFER */
+
+void _DESCallbackFileRequest(Tox *m, int32_t friend, uint8_t file_num,
+                             uint64_t size, const uint8_t *name, uint16_t namelen,
+                             void *connection) {
+    DESConversation<DESFileTransferring> *conv = [(__bridge DESToxConnection *)connection friendWithID:friend];
+    NSData *boxedname = [[NSData alloc] initWithBytes:name length:namelen];
+    DESFileTransfer *tr = [[DESIncomingFileTransfer alloc] initWithSenderNumber:file_num
+                                                                 onConversation:conv
+                                                                       filename:boxedname
+                                                                           size:size];
+    [(__bridge DESToxConnection *)connection addTransferTriggeringKVO:tr];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [conv.delegate conversation:conv didReceiveFileTransferRequest:tr];
+    });
+}
+
+void _DESCallbackFileControl(Tox *m, int32_t friend, uint8_t is_send,
+                             uint8_t file_num, uint8_t control_id,
+                             const uint8_t *data, uint16_t length, void *connection) {
+    DESToxConnection *c = (__bridge DESToxConnection *)connection;
+    DESConversation *searchConv = [c friendWithID:friend];
+    DESTransferDirection dir = is_send? DESTransferDirectionOut : DESTransferDirectionIn;
+    DESFileTransfer *tr = nil;
+
+    for (DESFileTransfer *transfer in c.unsafeTransfers) {
+        if (transfer.associatedConversation == searchConv &&
+            transfer.direction == dir &&
+            transfer.sender == file_num) {
+            tr = transfer;
+            break;
+        }
+    }
+
+    switch (control_id) {
+        case TOX_FILECONTROL_FINISHED: {
+            [(DESIncomingFileTransfer *)tr finish];
+            break;
+        }
+        case TOX_FILECONTROL_ACCEPT: {
+
+        }
+            
+
+        default:
+            break;
+    }
+}
+
+void _DESCallbackFileData(Tox *m, int32_t friend, uint8_t file_num,
+                          const uint8_t *data, uint16_t length, void *connection) {
+    DESToxConnection *c = (__bridge DESToxConnection *)connection;
+    DESConversation *searchConv = [c friendWithID:friend];
+    for (DESFileTransfer *transfer in c.unsafeTransfers) {
+        if (transfer.associatedConversation == searchConv &&
+            transfer.direction == DESTransferDirectionIn &&
+            transfer.sender == file_num) {
+            [(DESIncomingFileTransfer *)transfer didReceiveData:(uint8_t *)data ofLength:length];
+            break;
+        }
+    }
 }
 
 /* GROUP CHATS */

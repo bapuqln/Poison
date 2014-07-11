@@ -90,6 +90,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 }
 
 - (void)awakeFromNib {
+    self.nextResponder = self.textField;
     self.webSuperview.responder = self.textField;
     self.splitView.delegate = self;
     [self.view setFrameSize:(NSSize){
@@ -116,6 +117,10 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     [self.view addSubview:self.chatEntryView];
     [self.splitView adjustSubviews];
     [self.transcriptSplitView adjustSubviews];
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
+    if ([NSVisualEffectView class])
+        self.videoBackground.isFlushWithTitlebar = YES;
+#endif
 }
 
 - (void)reloadTheme {
@@ -181,7 +186,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex {
     if (splitView == self.splitView)
-        return self.splitView.frame.size.height - 150;
+        return self.splitView.frame.size.height - 32;
     else
         return splitView.frame.size.width - 100;
 }
@@ -198,24 +203,41 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 }
 
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
-    CGSize deltas = (CGSize){splitView.frame.size.width - oldSize.width, splitView.frame.size.height - oldSize.height};
-    if (splitView == self.splitView) {
-        [self.splitView adjustSubviews];
-    } else if (self.showsUserList) {
-        NSView *expands = (NSView*)splitView.subviews[0];
-        NSView *doesntExpand = (NSView*)splitView.subviews[1];
-        expands.frameSize = (CGSize){expands.frame.size.width + deltas.width, expands.frame.size.height + deltas.height};
-        doesntExpand.frame = (CGRect){{expands.frame.size.width + 1, 0}, {splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height}};
-    } else {
-        [splitView adjustSubviews];
-    }
+    [splitView adjustSubviews];
+    if (splitView.subviews.count < 2)
+        return;
+
+    CGFloat incorrectPos = ((NSView *)splitView.subviews[0]).frame.size.height;
+    CGFloat correctPos = [self splitView:splitView constrainSplitPosition:incorrectPos ofSubviewAt:0];
+    [splitView setPosition:correctPos ofDividerAtIndex:0];
 }
+
+//- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
+//    CGSize deltas = (CGSize){splitView.frame.size.width - oldSize.width, splitView.frame.size.height - oldSize.height};
+//    if (splitView == self.splitView) {
+//        [self.splitView adjustSubviews];
+//    } else if (self.showsUserList) {
+//        NSView *expands = (NSView*)splitView.subviews[0];
+//        NSView *doesntExpand = (NSView*)splitView.subviews[1];
+//        expands.frameSize = (CGSize){expands.frame.size.width + deltas.width, expands.frame.size.height + deltas.height};
+//        doesntExpand.frame = (CGRect){{expands.frame.size.width + 1, 0}, {splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height}};
+//    } else {
+//        [splitView adjustSubviews];
+//    }
+//}
 
 - (NSColor *)dividerColourForSplitView:(SCNonGarbageSplitView *)splitView {
     if (splitView == self.splitView)
         return [NSColor controlDarkShadowColor];
     else
         return [[SCThemeManager sharedManager] barBorderColorOfCurrentTheme];
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)view {
+    if (view == self.videoBackground || view == self.userList)
+        return NO;
+    else
+        return YES;
 }
 
 #pragma mark - webview stuff
@@ -373,6 +395,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
         [self.conversation sendMessage:sender.stringValue];
     sender.stringValue = @"";
     [self adjustEntryBounds];
+    [self layoutSubviews_];
 }
 
 - (void)textFieldDidResize:(NSNotification *)obj {
@@ -420,6 +443,13 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     _conversation = conversation;
     [conversation addContainer:self];
     [self.webView reload:self];
+}
+
+#pragma mark - selecting actions
+
+- (IBAction)doActionFromButtons:(NSSegmentedControl *)sender {
+    NSLog(@"%ld", (long)sender.selectedSegment);
+    [NSMenu popUpContextMenu:self.secretActionMenu withEvent:[[NSApplication sharedApplication] currentEvent] forView:sender];
 }
 
 @end

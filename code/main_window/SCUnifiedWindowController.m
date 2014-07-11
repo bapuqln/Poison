@@ -1,6 +1,5 @@
 #include "Copyright.h"
 
-#import <qrencode.h>
 #import "SCUnifiedWindowController.h"
 #import "SCBuddyListController.h"
 #import "SCChatViewController.h"
@@ -73,6 +72,7 @@
 
     self.chatViewCont = [[SCChatViewController alloc] initWithNibName:@"ChatPanel" bundle:[NSBundle mainBundle]];
     [self.chatViewCont loadView];
+    self.chatViewCont.view.frameSize = (CGSize){300, root.frame.size.height};
     self.chatViewCont.showsVideoPane = YES;
     self.chatViewCont.showsUserList = NO;
     [root addSubview:self.chatViewCont.view];
@@ -103,6 +103,11 @@
     }
 }
 
+- (void)updateKeyViewAndRepostTypingEvent:(NSEvent *)event {
+    [self.chatViewCont.nextResponder becomeFirstResponder];
+    [[NSApplication sharedApplication] postEvent:event atStart:YES];
+}
+
 - (void)conversationDidBecomeFocused:(DESConversation *)conversation {
     [self removeKVOHandlers];
     _watchingConversation = conversation;
@@ -126,8 +131,6 @@
     } else {
         self.window.representedURL = nil;
     }
-
-    [self.chatViewCont.nextResponder becomeFirstResponder];
 }
 
 #pragma mark - indicator(s)
@@ -206,13 +209,20 @@
     return 400;
 }
 
-- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
-    CGSize deltas = (CGSize){splitView.frame.size.width - oldSize.width, splitView.frame.size.height - oldSize.height};
-    NSView *expands = (NSView*)splitView.subviews[1];
-    NSView *doesntExpand = (NSView*)splitView.subviews[0];
-    expands.frame = (CGRect){{doesntExpand.frame.size.width + 1, 0}, {expands.frame.size.width + deltas.width, expands.frame.size.height + deltas.height}};
-    doesntExpand.frameSize = (CGSize){splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height};
+- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)view {
+    if (view == self.buddyListController.view)
+        return NO;
+    else
+        return YES;
 }
+
+//- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
+//    CGSize deltas = (CGSize){splitView.frame.size.width - oldSize.width, splitView.frame.size.height - oldSize.height};
+//    NSView *expands = (NSView*)splitView.subviews[1];
+//    NSView *doesntExpand = (NSView*)splitView.subviews[0];
+//    expands.frame = (CGRect){{doesntExpand.frame.size.width + 1, 0}, {expands.frame.size.width + deltas.width, expands.frame.size.height + deltas.height}};
+//    doesntExpand.frameSize = (CGSize){splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height};
+//}
 
 - (NSColor *)dividerColourForSplitView:(SCNonGarbageSplitView *)splitView {
     return [NSColor controlDarkShadowColor];

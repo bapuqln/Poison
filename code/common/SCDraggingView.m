@@ -14,13 +14,24 @@
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
+    if (self.isFlushWithTitlebar
+        && theEvent.locationInWindow.y > self.window.frame.size.height - 22) {
+        willDrag = NO;
+        return;
+    }
     initialLocation = [theEvent locationInWindow];
     willDrag = YES;
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-    initialLocation = CGPointZero;
-    willDrag = NO;
+    NSLog(@"Preference is %d", CFPreferencesGetAppBooleanValue(CFSTR("AppleMiniaturizeOnDoubleClick"), CFSTR("NSGlobalDomain"), NULL));
+    if (theEvent.clickCount == 2 && self.isFlushWithTitlebar
+        && CFPreferencesGetAppBooleanValue(CFSTR("AppleMiniaturizeOnDoubleClick"), CFSTR("NSGlobalDomain"), NULL)) {
+        [self.window miniaturize:self];
+    } else {
+        initialLocation = CGPointZero;
+        willDrag = NO;
+    }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {

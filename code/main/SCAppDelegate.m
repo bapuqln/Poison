@@ -1,5 +1,6 @@
 #include "Copyright.h"
 
+#import "txdplus.h"
 #import "DESToxConnection.h"
 #import "SCAppDelegate.h"
 #import "SCBuddyListWindowController.h"
@@ -16,6 +17,8 @@
 #import "SCStandaloneWindowController.h"
 #import "DESConversation+Poison_CustomName.h"
 #import "SCConversationManager.h"
+#import "SCPreferencesWindowController.h"
+#import "SCAudioVideoRecorder.h"
 
 /* note: this is hard-coded to make tampering harder. */
 #define SCApplicationDownloadPage (@"http://download.tox.im/")
@@ -24,6 +27,7 @@
 @property (strong) DESToxConnection *toxConnection;
 @property (strong) NSString *profileName;
 @property (strong) NSString *profilePass;
+@property txd_fast_t cachedKey;
 @property (weak) IBOutlet NSMenuItem *akiUserInfoMenuItemPlaceholder;
 @property (weak) IBOutlet SCMenuStatusView *userInfoMenuItem;
 #pragma mark - Tox menu
@@ -45,10 +49,14 @@
 @property (weak) IBOutlet NSTextField *aboutWindowVersionLabel;
 @property (unsafe_unretained) IBOutlet NSWindow *ackWindow;
 @property (unsafe_unretained) IBOutlet NSTextView *ackTextView;
+#pragma mark - Preferences
+@property (strong) SCPreferencesWindowController *preferencesController;
 #pragma mark - Misc. state
 @property (strong) id activityToken;
 @property BOOL userIsWaitingOnApplicationExit;
 @property (strong) NSURL *waitingToxURL;
+@property BOOL isProfileSavingDisabled;
+@property (strong) NSMutableDictionary *friendRateLimits;
 @end
 
 @implementation SCAppDelegate {
@@ -65,7 +73,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"DefaultDefaults" withExtension:@"plist"]];
-    NSLog(@"Default settings loaded: %@", defaults);
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 
     if (SCCodeSigningStatus == SCCodeSigningStatusInvalid) {
@@ -94,7 +101,7 @@
     SCNewUserWindowController *login = [[SCNewUserWindowController alloc] initWithWindowNibName:@"NewUser"];
     [login loadWindow];
     self.mainWindowController = login;
-    if ([SCProfileManager profileNameExists:autologinUsername]) {
+    if ([SCProfileManager profileNameExists:autologinUsername] && !([NSEvent modifierFlags] & NSAlternateKeyMask)) {
         [login tryAutomaticLogin:autologinUsername];
     } else {
         [login showWindow:self];
@@ -116,12 +123,16 @@
 - (void)makeApplicationReadyForToxing:(txd_intermediate_t)userProfile name:(NSString *)profileName password:(NSString *)pass {
     self.profileName = profileName;
     self.profilePass = pass;
+
+    self.avSource = [[SCAudioVideoRecorder alloc] init];
     self.toxConnection = [[DESToxConnection alloc] init];
     self.toxConnection.delegate = self;
-    self.akiUserInfoMenuItemPlaceholder.view = self.userInfoMenuItem;
     self.conversationManager = [[SCConversationManager alloc] init];
+
+    self.friendRateLimits = [NSMutableDictionary dictionary];
     _auxiliaryChatWindows = [[NSMutableDictionary alloc] initWithCapacity:5];
 
+    self.akiUserInfoMenuItemPlaceholder.view = self.userInfoMenuItem;
     [self.dockMenu removeItemAtIndex:0];
     if (!self.dockStatusMenuItem)
         self.dockStatusMenuItem = [[NSMenuItem alloc] init];
@@ -132,7 +143,9 @@
 
     [self.toxConnection addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionNew context:NULL];
     [self.toxConnection addObserver:self forKeyPath:@"statusMessage" options:NSKeyValueObservingOptionNew context:NULL];
+
     if (userProfile) {
+        self.isProfileSavingDisabled = YES;
         [self.toxConnection restoreDataFromTXDIntermediate:userProfile];
         txd_intermediate_free(userProfile);
     } else {
@@ -141,20 +154,28 @@
                                    SCApplicationInfoDictKey(@"SCDevelopmentName"),
                                    SCApplicationInfoDictKey(@"CFBundleShortVersionString")];
         self.toxConnection.statusMessage = defaultStatus;
-        [self saveProfile];
+        self.isProfileSavingDisabled = NO;
+        [self saveProfile:NO];
     }
+
     [self prepareFriendRequests];
     [self.toxConnection start];
     if ([self.mainWindowController isKindOfClass:[SCNewUserWindowController class]])
         [self.mainWindowController close];
-    Class preferredWindowClass = SCBoolPreference(@"forcedMultiWindowUI")?
-        [SCBuddyListWindowController class] : [SCUnifiedWindowController class];
-    self.mainWindowController = [[preferredWindowClass alloc] initWithDESConnection:self.toxConnection];
-    [self.mainWindowController showWindow:self];
+    [self reopenMainWindow];
     if (self.waitingToxURL && [self.mainWindowController conformsToProtocol:@protocol(SCMainWindowing)]) {
         [(id<SCMainWindowing>)self.mainWindowController displayAddFriendWithToxSchemeURL:self.waitingToxURL];
         self.waitingToxURL = nil;
     }
+}
+
+- (void)reopenMainWindow {
+    if (self.mainWindowController.window.isVisible)
+        [self.mainWindowController close];
+    Class preferredWindowClass = SCBoolPreference(@"forcedMultiWindowUI")?
+    [SCBuddyListWindowController class] : [SCUnifiedWindowController class];
+    self.mainWindowController = [[preferredWindowClass alloc] initWithDESConnection:self.toxConnection];
+    [self.mainWindowController showWindow:self];
 }
 
 - (void)removeFriend:(DESFriend *)f {
@@ -246,34 +267,46 @@
 #pragma mark - des delegate
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    change = [change copy];
+    __block NSDictionary *savedChange = [change copy];
     /* safeguard against segfaults due to KVO from foreign thread */
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self saveProfile];
+        [self saveProfile:YES];
         if ([keyPath isEqualToString:@"name"]) {
             NSString *displayStr;
-            if ([change[NSKeyValueChangeNewKey] isEqualToString:self.profileName])
+            if ([savedChange[NSKeyValueChangeNewKey] isEqualToString:self.profileName])
                 displayStr = self.profileName;
             else
                 displayStr = [NSString stringWithFormat:@"%@ (%@)",
-                              self.profileName, change[NSKeyValueChangeNewKey]];
+                              self.profileName, savedChange[NSKeyValueChangeNewKey]];
             self.userInfoMenuItem.name = displayStr;
             self.dockNameMenuItem.title = displayStr;
         } else {
-            self.userInfoMenuItem.statusMessage = change[NSKeyValueChangeNewKey];
-            self.dockStatusMenuItem.title = change[NSKeyValueChangeNewKey];
+            self.userInfoMenuItem.statusMessage = savedChange[NSKeyValueChangeNewKey];
+            self.dockStatusMenuItem.title = savedChange[NSKeyValueChangeNewKey];
         }
     });
 }
 
-- (void)saveProfile {
-    if (!self.toxConnection)
+- (void)saveProfile:(BOOL)quick {
+    if (!self.toxConnection || self.isProfileSavingDisabled)
         return;
+
+    clock_t start = clock();
+
     [[NSProcessInfo processInfo] disableSuddenTermination];
     txd_intermediate_t data = [self.toxConnection createTXDIntermediate];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [SCProfileManager saveProfile:data name:self.profileName password:self.profilePass];
+        if (!self.cachedKey || !quick) {
+            if (self.cachedKey)
+                txd_fast_release(self.cachedKey);
+            self.cachedKey = txd_fast_alloc((const uint8_t *)[self.profilePass UTF8String], [self.profilePass lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+        }
+        [SCProfileManager saveProfile:data name:self.profileName fast:self.cachedKey];
         txd_intermediate_free(data);
+
+        clock_t end = clock() - start;
+        NSLog(@"Profile saved in %lu (quick = %d).", end, quick);
+
         [[NSProcessInfo processInfo] enableSuddenTermination];
     });
 }
@@ -298,7 +331,7 @@
     [[NSProcessInfo processInfo] enableAutomaticTermination:@"DESConnection"];
     [[NSProcessInfo processInfo] endActivity:self.activityToken];
     self.activityToken = nil;
-    [self saveProfile];
+    [self saveProfile:NO];
     [[SCProfileManager currentProfile] commitPrivateSettings];
     [SCProfileManager purgeCurrentProfile];
     [connection removeObserver:self forKeyPath:@"name"];
@@ -328,6 +361,11 @@
     }
 }
 
+- (void)connectionDidFinishRestoringData:(DESToxConnection *)connection {
+    NSLog(@"connection finished restoring, so removing embargo on saving");
+    self.isProfileSavingDisabled = NO;
+}
+
 - (void)didAddFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
     [connection registerForControlMessagesOfType:DESControlMessageAvatarAnnounce fromFriend:friend];
     [connection registerForControlMessagesOfType:DESControlMessageAvatarRequest fromFriend:friend];
@@ -338,7 +376,7 @@
         [self didChangeValueForKey:@"requests"];
         [self archiveFriendRequests];
     }
-    [self saveProfile];
+    [self saveProfile:YES];
 }
 
 - (void)didRemoveFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
@@ -355,11 +393,22 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [p commitPrivateSettings];
     });
-    [self saveProfile];
+    [self saveProfile:YES];
 }
 
-- (void)friend:(DESFriend *)friend nameDidChange:(NSString *)newName onConnection:(DESToxConnection *)connection {
-    [self saveProfile];
+- (void)friend:(DESFriend *)friend nameDidChangeTo:(NSString *)newName from:(NSString *)oldName onConnection:(DESToxConnection *)connection {
+    [self saveProfile:YES];
+    [[self.conversationManager conversationFor:friend] noteNameChanged:oldName];
+}
+
+- (void)friend:(DESFriend *)friend statusMessageDidChangeTo:(NSString *)newStatusMessage from:(NSString *)oldStatusMessage onConnection:(DESToxConnection *)connection {
+    [[self.conversationManager conversationFor:friend] noteStatusMessageChanged:oldStatusMessage];
+}
+
+- (void)friend:(DESFriend *)friend connectionStatusDidChange:(BOOL)newStatus onConnection:(DESToxConnection *)connection {
+    if (newStatus == YES) {
+        [self sendAvatarPacket:friend];
+    }
 }
 
 - (void)didFailToAddFriendWithError:(NSError *)error onConnection:(DESToxConnection *)connection {
@@ -388,7 +437,27 @@
     [a beginSheetModalForWindow:self.mainWindowController.window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 }
 
+- (void)sendAvatarPacket:(DESFriend *)friend {
+    SCAvatar *a = [SCProfileManager currentProfile].avatar;
+    uint8_t *packet = malloc(DESAvatarAnnounceSize); /* 70 */
+    uint16_t pixels = htons(a.size);
+    uint32_t bytes = htonl(a.byteSize);
+    memcpy(packet, &pixels, 2);
+    memcpy(packet + 2, &bytes, 4);
+    memcpy(packet + 6, a.digest, crypto_hash_BYTES);
+
+    NSData *payload = [NSData dataWithBytesNoCopy:packet length:DESAvatarAnnounceSize freeWhenDone:YES];
+    if (friend) {
+        [friend sendControlMessage:payload ofType:DESControlMessageAvatarAnnounce];
+    } else {
+        for (DESFriend *f in self.toxConnection.friends) {
+            [f sendControlMessage:payload ofType:DESControlMessageAvatarAnnounce];
+        }
+    }
+}
+
 - (void)didReceiveControlMessage:(NSData *)payload ofType:(uint8_t)pkt fromFriend:(DESFriend *)friend {
+    NSLog(@"received controlmessage %d from %@ { %@ }", pkt, friend, payload);
     switch (pkt) {
         case DESControlMessageAvatarAnnounce:
             /* check cache and fire request */
@@ -397,8 +466,30 @@
             /*send avatar*/
             break;
         default:
+            NSLog(@"discarding unbound controlmessage -> %d from (%@)", pkt, friend);
             break;
     }
+}
+
+- (void)handleAvatarAnnounce:(NSData *)payload friend:(DESFriend *)friend {
+
+}
+
+- (void)handleAvatarRequest:(NSData *)payload friend:(DESFriend *)friend {
+    if (payload.length > 64) {
+        NSLog(@"handleAvatarRequest is discarding a filename that is too long.");
+        return;
+    }
+
+    SCAvatar *avatar = [SCProfileManager currentProfile].avatar;
+    if (avatar.size == 0) {
+        NSLog(@"not sending our avatar because it was the nilAvatar.");
+        return;
+    }
+
+    NSInputStream *fileData = [NSInputStream inputStreamWithURL:avatar.url];
+    if (fileData)
+        [(id<DESFileTransferring>)friend requestFileTransferWithInput:fileData filename:payload size:avatar.byteSize];
 }
 
 - (void)logOut {
@@ -467,7 +558,9 @@
 }
 
 - (IBAction)showPreferencesWindow:(id)sender {
-    
+    if (!self.preferencesController)
+        self.preferencesController = [[SCPreferencesWindowController alloc] initWithWindowNibName:@"Preferences"];
+    [self.preferencesController.window makeKeyAndOrderFront:self];
 }
 
 - (void)focusWindowForConversation:(DESConversation *)conv {
@@ -570,7 +663,25 @@
 #pragma mark - Data Export
 
 - (IBAction)showDataExportWindow:(id)sender {
+    NSSavePanel *save = [[NSSavePanel alloc] init];
+    save.title = NSLocalizedString(@"Export Data", nil);
+    save.allowedFileTypes = @[@"txd"];
+    save.nameFieldStringValue = [NSString stringWithFormat:@"%@.txd", self.profileName];
 
+    NSPopUpButton *formatSelector = [[NSPopUpButton alloc] initWithFrame:CGRectZero pullsDown:NO];
+    NSArray *items = @[ @"Cherry-flavoured TXD format (.txd)",
+                        @"Padded TXD format (.txd)",
+                        @"Compact TXD format (.txd)" ];
+    for (int i = 0; i < items.count; ++i) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:items[i] action:NULL keyEquivalent:@""];
+        item.tag = i;
+        [formatSelector.menu addItem:item];
+    }
+
+    [formatSelector sizeToFit];
+    save.accessoryView = formatSelector;
+    NSInteger response = [save runModal];
+    NSLog(@"%ld", (long)response);
 }
 
 #pragma mark - Feedback

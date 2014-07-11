@@ -1,8 +1,11 @@
 #include "Copyright.h"
 
+#import "SCAppDelegate.h"
 #import "SCConversationManager.h"
 #import "DESConversation+Poison_CustomName.h"
 #import "SCMessages.h"
+#import "SCProfileManager.h"
+#import "SCDiary.h"
 
 #define MARK_MESSAGE_PLAYBACK_LIMIT (100)
 
@@ -30,7 +33,7 @@
 }
 
 - (NSString *)avatarImageFor:(NSString *)senderuid {
-    return [[NSBundle mainBundle] URLForResource:@"user-icon-default" withExtension:@"tiff"].absoluteString;
+    return [[SCProfileManager currentProfile] avatarForUID:senderuid].url.absoluteString;
 }
 
 #pragma mark - Other stuff
@@ -154,6 +157,46 @@
     }
 }
 
+- (void)conversation:(DESConversation *)con didReceiveFileTransferRequest:(DESFileTransfer *)transferIn {
+    return;
+
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"test_2"];
+    NSLog(@"%@", path);
+    [transferIn acceptFileTransferIntoFile:path append:NO];
+}
+
+- (void)conversation:(DESConversation *)con fileTransfer:(DESFileTransfer *)transfer didChangeState:(DESTransferState)newState {
+    
+}
+
+- (void)noteStatusMessageChanged:(NSString *)oldValue {
+    SCAttributeMessage *msg = [[SCAttributeMessage alloc] initWithOldValue:oldValue
+                                                               sender:(DESFriend *)self.underlyingConversation
+                                                            attribute:SCAttributeStatusMessage];
+    [_chatHistory addObject:msg];
+    [self manageChatHistory];
+    self.lastAlive = [NSDate date];
+    for (SCChatViewController *c in _containerBacking) {
+        [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
+    }
+}
+
+- (void)noteNameChanged:(NSString *)oldValue {
+    if ([oldValue isEqualToString:((DESFriend *)self.underlyingConversation).name]
+        || [oldValue isEqualToString:@""])
+        return;
+
+    SCAttributeMessage *msg = [[SCAttributeMessage alloc] initWithOldValue:oldValue
+                                                               sender:(DESFriend *)self.underlyingConversation
+                                                            attribute:SCAttributeName];
+    [_chatHistory addObject:msg];
+    [self manageChatHistory];
+    self.lastAlive = [NSDate date];
+    for (SCChatViewController *c in _containerBacking) {
+        [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
+    }
+}
+
 - (NSOrderedSet *)completionOrder {
     if (self.underlyingConversation.type == DESConversationTypeFriend) {
         return [NSOrderedSet orderedSetWithObjects:((DESFriend *)self.underlyingConversation).name, nil];
@@ -178,14 +221,24 @@
 
 @end
 
+@interface SCAppDelegate ()
+- (NSString *)profileName;
+- (NSString *)profilePass;
+@end
+
 @implementation SCConversationManager {
     NSMutableDictionary *_conversations;
+    SCDiary *_diary;
 }
 
 - (id)init {
     self = [super init];
     if (self) {
         _conversations = [[NSMutableDictionary alloc] initWithCapacity:10];
+        SCProfileManager *profile = [SCProfileManager currentProfile];
+        NSURL *diaryPath = [profile.profileDirectory URLByAppendingPathComponent:@"diary"];
+        SCAppDelegate *appDelegate = (SCAppDelegate *)[NSApp delegate];
+        _diary = [[SCDiary alloc] initWithURL:diaryPath password:appDelegate.profilePass];
     }
     return self;
 }

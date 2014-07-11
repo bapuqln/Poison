@@ -1,6 +1,7 @@
 #import "DESMacros.h"
 #import "ObjectiveTox-Private.h"
 #import "tox.h"
+#import "toxav.h"
 #import "Messenger.h"
 
 NSString *const DESDefaultNickname = @"Toxicle";
@@ -40,11 +41,13 @@ NSData *DESDecodeBase64String(NSString *enc) {
 @property BOOL isMessengerLoopStopping;
 
 @property Tox *tox;
+@property ToxAv *toxav;
 @end
 
 @implementation DESToxConnection {
     NSMutableDictionary *_groupMapping;
     NSMutableDictionary *_friendMapping;
+    NSMutableSet *_fileSenders;
 }
 @synthesize tox = _tox;
 @synthesize messengerQueue = _messengerQueue;
@@ -58,6 +61,7 @@ NSData *DESDecodeBase64String(NSString *enc) {
         self.tox = tox_new(1);
         _friendMapping = [[NSMutableDictionary alloc] init];
         _groupMapping = [[NSMutableDictionary alloc] init];
+        _fileSenders = [[NSMutableSet alloc] init];
         self.name = DESDefaultNickname;
         self.statusMessage = DESDefaultStatusMessage;
         self.isMessengerLoopStopping = YES;
@@ -70,6 +74,13 @@ NSData *DESDecodeBase64String(NSString *enc) {
         tox_callback_friend_message(self.tox, _DESCallbackFriendMessage, (__bridge void*)self);
         tox_callback_friend_action(self.tox, _DESCallbackFriendAction, (__bridge void*)self);
         tox_callback_read_receipt(self.tox, _DESCallbackReadReceipt, (__bridge void*)self);
+
+        tox_callback_file_control(self.tox, _DESCallbackFileControl, (__bridge void*)self);
+        tox_callback_file_data(self.tox, _DESCallbackFileData, (__bridge void*)self);
+        tox_callback_file_send_request(self.tox, _DESCallbackFileRequest, (__bridge void*)self);
+
+        self.toxav = toxav_new(self.tox, 16);
+        toxav_register_callstate_callback(DESOrangeDidRequestCall, av_OnInvite, (__bridge void*)self);
     }
     return self;
 }
@@ -102,13 +113,19 @@ NSData *DESDecodeBase64String(NSString *enc) {
 
 - (void)_desRunLoopRun {
     tox_do(self.tox);
+    for (DESFileTransfer *ft in _fileSenders) {
+        [ft tryToWritePacks];
+    }
 
     NSInteger previousNodesCount = self.closeNodesCount;
-    self.closeNodesCount = DESCountCloseNodes(self.tox);
-    if (self.closeNodesCount > 0 && previousNodesCount == 0
+    NSInteger currentNodesCount = DESCountCloseNodes(self.tox);
+    if (currentNodesCount != previousNodesCount)
+        self.closeNodesCount = DESCountCloseNodes(self.tox);
+
+    if (currentNodesCount > 0 && previousNodesCount == 0
         && [self.delegate respondsToSelector:@selector(connectionDidBecomeEstablished:)])
         [self.delegate connectionDidBecomeEstablished:self];
-    else if (self.closeNodesCount == 0 && previousNodesCount > 0
+    else if (currentNodesCount == 0 && previousNodesCount > 0
              && [self.delegate respondsToSelector:@selector(connectionDidDisconnect:)])
         [self.delegate connectionDidDisconnect:self];
 
@@ -170,11 +187,10 @@ NSData *DESDecodeBase64String(NSString *enc) {
     return [[NSString alloc] initWithBytesNoCopy:buf length:name_size encoding:NSUTF8StringEncoding freeWhenDone:YES];
 }
 
-/* WARNING: BLOCKING METHOD */
 - (void)setName:(NSString *)name {
     if ([name lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > TOX_MAX_NAME_LENGTH)
         return;
-    dispatch_sync(self.messengerQueue, ^{
+    dispatch_async(self.messengerQueue, ^{
         [self willChangeValueForKey:@"name"];
         tox_set_name(self.tox, (uint8_t*)[name UTF8String],
                      (uint16_t)[name lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
@@ -189,11 +205,10 @@ NSData *DESDecodeBase64String(NSString *enc) {
     return [[NSString alloc] initWithBytesNoCopy:buf length:smsg_size encoding:NSUTF8StringEncoding freeWhenDone:YES];
 }
 
-/* WARNING: BLOCKING METHOD */
 - (void)setStatusMessage:(NSString *)statusMessage {
     if ([statusMessage lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > TOX_MAX_STATUSMESSAGE_LENGTH)
         return;
-    dispatch_sync(self.messengerQueue, ^{
+    dispatch_async(self.messengerQueue, ^{
         [self willChangeValueForKey:@"statusMessage"];
         tox_set_status_message(self.tox, (uint8_t*)[statusMessage UTF8String],
                                (uint16_t)[statusMessage lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
@@ -205,12 +220,11 @@ NSData *DESDecodeBase64String(NSString *enc) {
     return DESToxToFriendStatus(tox_get_self_user_status(self.tox));
 }
 
-/* WARNING: BLOCKING METHOD */
 - (void)setStatus:(DESFriendStatus)status {
     TOX_USERSTATUS bit = DESFriendStatusToTox(status);
     if (bit == TOX_USERSTATUS_INVALID)
         return;
-    dispatch_sync(self.messengerQueue, ^{
+    dispatch_async(self.messengerQueue, ^{
         [self willChangeValueForKey:@"status"];
         tox_set_user_status(self.tox, bit);
         [self didChangeValueForKey:@"status"];
@@ -246,17 +260,17 @@ NSData *DESDecodeBase64String(NSString *enc) {
     return ret;
 }
 
-/* WARNING: BLOCKING METHOD */
 - (void)setPublicKey:(NSString *)publicKey privateKey:(NSString *)privateKey {
     uint8_t *keys = malloc(DESPublicKeySize + DESPrivateKeySize);
     DESConvertPublicKeyToData(publicKey, keys);
     DESConvertPrivateKeyToData(privateKey, keys + DESPublicKeySize);
     if (DESKeyPairIsValid(keys, keys + DESPublicKeySize)) {
-        dispatch_sync(self.messengerQueue, ^{
+        dispatch_async(self.messengerQueue, ^{
             [self willChangeValueForKey:@"publicKey"];
             [self willChangeValueForKey:@"privateKey"];
             [self willChangeValueForKey:@"friendAddress"];
             DESSetKeys(self.tox, keys, keys + DESPublicKeySize);
+            free(keys);
             [self didChangeValueForKey:@"friendAddress"];
             [self didChangeValueForKey:@"privateKey"];
             [self didChangeValueForKey:@"publicKey"];
@@ -264,7 +278,6 @@ NSData *DESDecodeBase64String(NSString *enc) {
     } else {
         DESWarn(@"You tried to set keys that were not valid. Public: %@ Private %@", publicKey, privateKey);
     }
-    free(keys);
 }
 
 - (DESConversation *)conversation {
@@ -293,6 +306,10 @@ NSData *DESDecodeBase64String(NSString *enc) {
 
 - (uint16_t)port {
     return 0;
+}
+
+- (void)sendControlMessage:(NSData *)msg ofType:(uint8_t)packet {
+    return;
 }
 
 #pragma mark - Nospam
@@ -472,6 +489,30 @@ NSData *DESDecodeBase64String(NSString *enc) {
     custom_lossless_packet_registerhandler((Messenger *)self.tox, f.peerNumber, pkt, NULL, NULL);
 }
 
+#pragma mark - Transfers
+
+- (NSMutableSet *)unsafeTransfers {
+    return _fileSenders;
+}
+
+- (void)addTransferTriggeringKVO:(DESFileTransfer *)transfer {
+    NSSet *u = [NSSet setWithObject:transfer];
+    [self willChangeValueForKey:@"fileTransfers" withSetMutation:NSKeyValueUnionSetMutation usingObjects:u];
+    [_fileSenders addObject:transfer];
+    [self didChangeValueForKey:@"fileTransfers" withSetMutation:NSKeyValueUnionSetMutation usingObjects:u];
+}
+
+- (void)removeTransferTriggeringKVO:(DESFileTransfer *)transfer {
+    NSSet *u = [NSSet setWithObject:transfer];
+    [self willChangeValueForKey:@"fileTransfers" withSetMutation:NSKeyValueMinusSetMutation usingObjects:u];
+    [_fileSenders removeObject:transfer];
+    [self didChangeValueForKey:@"fileTransfers" withSetMutation:NSKeyValueMinusSetMutation usingObjects:u];
+}
+
+- (NSSet *)fileTransfers {
+    return [_fileSenders copy];
+}
+
 #pragma mark - TXD
 
 - (txd_intermediate_t)createTXDIntermediate {
@@ -496,6 +537,11 @@ NSData *DESDecodeBase64String(NSString *enc) {
             [self didChangeValueForKey:@"status"];
             [self didChangeValueForKey:@"statusMessage"];
             [self didChangeValueForKey:@"name"];
+
+            if ([self.delegate respondsToSelector:@selector(connectionDidFinishRestoringData:)])
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate connectionDidFinishRestoringData:self];
+                });
         });
     }
 }

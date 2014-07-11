@@ -9,4 +9,8 @@
 
     window.SCChatMessageType = 1;
     window.SCInformationalMessageType = 2;
+    window.SCAttributeMessageType = 3;
+
+    window.SCAttributeName = 1;
+    window.SCAttributeStatusMessage = 2;
 })();
