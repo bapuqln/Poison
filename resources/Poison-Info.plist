@@ -80,7 +80,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>m103</string>
+	<string>m104</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
@@ -100,7 +100,7 @@
 	<key>SCFeedbackURL</key>
 	<string>https://elizabeth.zodiaclabs.org/sys/feedback</string>
 	<key>SCGitRef</key>
-	<string>266c00e</string>
+	<string>f7203e4</string>
 	<key>SCReleaseGroupIdentity</key>
 	<string>Finally A/V!</string>
 	<key>ToxHomepage</key>

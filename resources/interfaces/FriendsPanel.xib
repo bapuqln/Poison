@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6154.17" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6154.17"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SCBuddyListController">
@@ -145,7 +145,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="xCg-uz-hmG" customClass="SCSelectiveMenuTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="250" height="293"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -326,33 +325,6 @@
                         <action selector="presentNicknameEditor:" target="-2" id="z9f-IB-fKw"/>
                     </connections>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="nbA-09-pd9"/>
-                <menuItem title="Send your typing status?" enabled="NO" id="Xjw-un-IwI">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Default (Yes)" state="on" indentationLevel="1" id="al6-An-s7D">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Yes" indentationLevel="1" id="Pqa-aa-w8a">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="No" indentationLevel="1" id="6lt-tR-Q7Z">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="xGX-V6-oTX"/>
-                <menuItem title="Send message delivery notifications?" enabled="NO" id="mOL-7v-G7e">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Default (Yes)" state="on" indentationLevel="1" id="XgU-Sy-cp2">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Yes" indentationLevel="1" id="JPE-Xc-ODG">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="No" indentationLevel="1" id="cJl-e0-8No">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="nFI-cp-PRw"/>
                 <menuItem title="Remove Friend..." id="Tf8-Su-cfv">
                     <string key="keyEquivalent" base64-UTF8="YES">
 CA
