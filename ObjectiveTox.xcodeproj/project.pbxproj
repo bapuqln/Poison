@@ -64,6 +64,7 @@
 		F558579E18D6179C0053DD52 /* data_export.c in Sources */ = {isa = PBXBuildFile; fileRef = F558579D18D6179C0053DD52 /* data_export.c */; };
 		F55857A818D6633D0053DD52 /* txdplus_private.h in Headers */ = {isa = PBXBuildFile; fileRef = F55857A718D6633D0053DD52 /* txdplus_private.h */; };
 		F5688A8918EA40FB001F45E6 /* libObjectiveTox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F50F9C0618C3AAD800D06A0F /* libObjectiveTox.a */; };
+		F56E0128196F7740001FB519 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56E0127196F7740001FB519 /* Security.framework */; };
 		F5903867194CF1E20010D64F /* toxdns.c in Sources */ = {isa = PBXBuildFile; fileRef = F5903864194CF1E20010D64F /* toxdns.c */; };
 		F5903868194CF1E20010D64F /* toxdns.h in Headers */ = {isa = PBXBuildFile; fileRef = F5903865194CF1E20010D64F /* toxdns.h */; };
 		F590386B194D06B40010D64F /* codec.c in Sources */ = {isa = PBXBuildFile; fileRef = F50F9C1D18C3AB5000D06A0F /* codec.c */; };
@@ -245,6 +246,7 @@
 		F558579D18D6179C0053DD52 /* data_export.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = data_export.c; path = ../../core_extensions/data_export.c; sourceTree = "<group>"; };
 		F55857A718D6633D0053DD52 /* txdplus_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = txdplus_private.h; sourceTree = "<group>"; };
 		F55857A918D6800B0053DD52 /* txdplus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = txdplus.h; sourceTree = "<group>"; };
+		F56E0127196F7740001FB519 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F58EE9AE18C598170033F2D4 /* ObjectiveTox-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectiveTox-Private.h"; sourceTree = "<group>"; };
 		F5903864194CF1E20010D64F /* toxdns.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = toxdns.c; sourceTree = "<group>"; };
 		F5903865194CF1E20010D64F /* toxdns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toxdns.h; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F56E0128196F7740001FB519 /* Security.framework in Frameworks */,
 				F554116C18C818DD00CBB9E3 /* libObjectiveTox.a in Frameworks */,
 				F554115C18C8187700CBB9E3 /* Foundation.framework in Frameworks */,
 			);
@@ -478,6 +481,7 @@
 		F554115A18C8187700CBB9E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F56E0127196F7740001FB519 /* Security.framework */,
 				F5CEB01919620A6500673D50 /* libvpx.a */,
 				F5CEB01719620A5300673D50 /* libopus.a */,
 				F5A163D118EBA0D000A28D61 /* env.a */,
