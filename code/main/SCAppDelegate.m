@@ -440,7 +440,7 @@
 - (void)sendAvatarPacket:(DESFriend *)friend {
     SCAvatar *a = [SCProfileManager currentProfile].avatar;
 
-    uint8_t *packet = malloc(DESAvatarAnnounceSize); /* 70 */
+    uint8_t *packet = calloc(DESAvatarAnnounceSize, 1); /* 70 */
     uint16_t pixels = htons(a.size);
     uint32_t bytes = htonl(a.byteSize);
     memcpy(packet, &pixels, 2);
