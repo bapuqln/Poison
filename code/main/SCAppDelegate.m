@@ -288,6 +288,10 @@
 }
 
 - (void)saveProfile:(BOOL)quick {
+    [self saveProfile:quick blocking:NO];
+}
+
+- (void)saveProfile:(BOOL)quick blocking:(BOOL)blocks {
     if (!self.toxConnection || self.isProfileSavingDisabled)
         return;
 
@@ -295,7 +299,7 @@
 
     [[NSProcessInfo processInfo] disableSuddenTermination];
     txd_intermediate_t data = [self.toxConnection createTXDIntermediate];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    void (^work)(void) = ^{
         if (!self.cachedKey || !quick) {
             if (self.cachedKey)
                 txd_fast_release(self.cachedKey);
@@ -308,7 +312,11 @@
         NSLog(@"Profile saved in %lu (quick = %d).", end, quick);
 
         [[NSProcessInfo processInfo] enableSuddenTermination];
-    });
+    };
+    if (!blocks)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), work);
+    else
+        work();
 }
 
 - (void)didReceiveFriendRequest:(DESRequest *)request onConnection:(DESToxConnection *)connection {
@@ -328,15 +336,16 @@
 }
 
 - (void)connectionDidBecomeInactive:(DESToxConnection *)connection {
-    [[NSProcessInfo processInfo] enableAutomaticTermination:@"DESConnection"];
-    [[NSProcessInfo processInfo] endActivity:self.activityToken];
-    self.activityToken = nil;
-    [self saveProfile:NO];
+    [self saveProfile:NO blocking:YES];
     [[SCProfileManager currentProfile] commitPrivateSettings];
     [SCProfileManager purgeCurrentProfile];
     [connection removeObserver:self forKeyPath:@"name"];
     [connection removeObserver:self forKeyPath:@"statusMessage"];
-    
+
+    [[NSProcessInfo processInfo] enableAutomaticTermination:@"DESConnection"];
+    [[NSProcessInfo processInfo] endActivity:self.activityToken];
+    self.activityToken = nil;
+
     self.akiUserInfoMenuItemPlaceholder.view = nil;
 
     [self.dockMenu removeItem:self.dockNameMenuItem];

@@ -80,7 +80,7 @@ NSData *DESDecodeBase64String(NSString *enc) {
         tox_callback_file_send_request(self.tox, _DESCallbackFileRequest, (__bridge void*)self);
 
         self.toxav = toxav_new(self.tox, 16);
-        toxav_register_callstate_callback(DESOrangeDidRequestCall, av_OnInvite, (__bridge void*)self);
+        toxav_register_callstate_callback(self.toxav, DESOrangeDidRequestCall, av_OnInvite, (__bridge void*)self);
     }
     return self;
 }

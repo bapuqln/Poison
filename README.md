@@ -24,18 +24,14 @@ own.
 ![Notification](http://vexx.us/Images/notification-group.png)
 ![Another notification](http://vexx.us/Images/notification-online.png)
 
-## Downloads
+## Build it
 
-You can download nightly versions of Poison, which are automatically built for 
-every commit made [here][jenkins-archive].
-
-Poison can also be built manually.
-```
+```bash
 git submodule update --init --recursive
-xcodebuild -project Poison2x.xcodeproj -target Poison \
-           -configuration Release CODE_SIGN_IDENTITY="" SYMROOT=build/
+./release.sh CODE_SIGN_IDENTITY="Your codesigning certificate"
 ```
-Other dependencies will be pulled in automatically.
+
+**You must have a certificate to build Poison properly.**
 
 ## Contribution Guidelines
 ### Coding
@@ -66,12 +62,6 @@ Other dependencies will be pulled in automatically.
 - Keep word choice consistent (e.g. do not refer to a friend as "Contact" in 
   one window, then "Friend" in another)
 
-## Automatic Bootstrapping
-
-Starting with 1.1.3, Poison has the ability to automagically find the best Tox 
-bootstrap server to connect to. Users still have the option to specify a custom 
-Tox Node.
-
 ## Licensing
 
 * My code is licensed under a BSD 3-clause license. Please see LICENSE.md.
@@ -85,5 +75,4 @@ something: `1N191yTJkwebUxmaNFg9Krb5dN6cqyGavi`
 
 [travis]: https://travis-ci.org/stal888/Poison
 [jenkins]: http://jenkins.tox.im/job/Poison2_OSX/
-[jenkins-archive]: http://jenkins.tox.im/job/Poison2_OSX/lastSuccessfulBuild/artifact/poison/release.zip
 [apple-doc-lang-codes]: https://developer.apple.com/library/mac/documentation/macosx/conceptual/bpinternational/Articles/LanguageDesignations.html

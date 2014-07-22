@@ -6,6 +6,7 @@
 #import "SCBuddyListController.h"
 #import "SCBuddyListManager.h"
 #import "DESConversation+Poison_CustomName.h"
+#import "SCThemeManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 @class SCGroupMarker;
@@ -62,6 +63,15 @@
             [[NSColor colorWithCalibratedWhite:0.2 alpha:0.8] set];
             NSRectFill(dirtyRect);
         }
+
+        [[[SCThemeManager sharedManager] backgroundColorOfCurrentTheme] set];
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        CGRect r = self.bounds;
+        [path moveToPoint:(CGPoint){r.size.width, 1.5}];
+        [path lineToPoint:(CGPoint){r.size.width - 15, r.size.height / 2}];
+        [path lineToPoint:(CGPoint){r.size.width, r.size.height - 1.5}];
+        [path closePath];
+        [path fill];
     }
 }
 

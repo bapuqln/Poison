@@ -42,6 +42,7 @@
 		F521C08F1960E0D000D75598 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F521C08E1960E0D000D75598 /* AVFoundation.framework */; };
 		F521C0911960E0D800D75598 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F521C0901960E0D800D75598 /* CoreVideo.framework */; };
 		F5239AAA190D750B00B06821 /* SCConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5239AA9190D750B00B06821 /* SCConversationManager.m */; };
+		F5245EEF1976EC78001EF7FA /* SCFileListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5245EEE1976EC78001EF7FA /* SCFileListController.m */; };
 		F525114618FCC3BF00BD9EAA /* SCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F525114518FCC3BF00BD9EAA /* SCTextField.m */; };
 		F52714A818DF823400B7E663 /* AddFriend.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A118DF823400B7E663 /* AddFriend.xib */; };
 		F52714A918DF823400B7E663 /* AVAwayViewExperimental.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A218DF823400B7E663 /* AVAwayViewExperimental.xib */; };
@@ -255,6 +256,8 @@
 		F521C0901960E0D800D75598 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		F5239AA8190D750B00B06821 /* SCConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCConversationManager.h; sourceTree = "<group>"; };
 		F5239AA9190D750B00B06821 /* SCConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCConversationManager.m; sourceTree = "<group>"; };
+		F5245EED1976EC78001EF7FA /* SCFileListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFileListController.h; sourceTree = "<group>"; };
+		F5245EEE1976EC78001EF7FA /* SCFileListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFileListController.m; sourceTree = "<group>"; };
 		F525114418FCC3BF00BD9EAA /* SCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCTextField.h; sourceTree = "<group>"; };
 		F525114518FCC3BF00BD9EAA /* SCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCTextField.m; sourceTree = "<group>"; };
 		F52714A118DF823400B7E663 /* AddFriend.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddFriend.xib; sourceTree = "<group>"; };
@@ -265,19 +268,10 @@
 		F52714A618DF823400B7E663 /* NewUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewUser.xib; sourceTree = "<group>"; };
 		F52714A718DF823400B7E663 /* QRSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRSheet.xib; sourceTree = "<group>"; };
 		F527A919195008A5000C4A7F /* DESSignKeybag.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DESSignKeybag.plist; sourceTree = "<group>"; };
-		F52D011518B7CFB70033680F /* icon_group_ignore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_ignore.png; sourceTree = "<group>"; };
-		F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_group_ignore@2x.png"; sourceTree = "<group>"; };
-		F52D011718B7CFB70033680F /* icon_group_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_group_join.png; sourceTree = "<group>"; };
-		F52D011818B7CFB70033680F /* icon_group_join@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_group_join@2x.png"; sourceTree = "<group>"; };
-		F52D011918B7CFB70033680F /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
-		F52D011A18B7CFB70033680F /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
 		F52D011B18B7CFB70033680F /* icon_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_minus.png; sourceTree = "<group>"; };
 		F52D011C18B7CFB70033680F /* icon_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_minus@2x.png"; sourceTree = "<group>"; };
 		F52D011D18B7CFB70033680F /* icon_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_plus.png; sourceTree = "<group>"; };
 		F52D011E18B7CFB70033680F /* icon_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_plus@2x.png"; sourceTree = "<group>"; };
-		F52D011F18B7CFB70033680F /* icon_smiley.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_smiley.png; sourceTree = "<group>"; };
-		F52D012018B7CFB70033680F /* icon-frequests.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-frequests.png"; sourceTree = "<group>"; };
-		F52D012118B7CFB70033680F /* icon-frequests@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-frequests@2x.png"; sourceTree = "<group>"; };
 		F52D012218B7CFB70033680F /* status-light-away.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-light-away.png"; sourceTree = "<group>"; };
 		F52D012318B7CFB70033680F /* status-light-away@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-light-away@2x.png"; sourceTree = "<group>"; };
 		F52D012418B7CFB70033680F /* status-light-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-light-offline.png"; sourceTree = "<group>"; };
@@ -295,8 +289,6 @@
 		F538754118C25DB500AED945 /* SCNewUserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNewUserWindowController.m; sourceTree = "<group>"; };
 		F538754318C2656000AED945 /* SCWidgetedWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWidgetedWindow.h; sourceTree = "<group>"; };
 		F538754418C2656000AED945 /* SCWidgetedWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWidgetedWindow.m; sourceTree = "<group>"; };
-		F538754A18C28B4000AED945 /* titlebar_incoming_files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = titlebar_incoming_files.png; sourceTree = "<group>"; };
-		F538754B18C28B4000AED945 /* titlebar_incoming_files@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "titlebar_incoming_files@2x.png"; sourceTree = "<group>"; };
 		F53D4DB918FA243D0051E2E7 /* ellipsis-overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ellipsis-overlay.png"; sourceTree = "<group>"; };
 		F53D4DBA18FA243D0051E2E7 /* ellipsis-overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ellipsis-overlay@2x.png"; sourceTree = "<group>"; };
 		F53DB88F18B6DD37008D7ED5 /* NSWindow+Shake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Shake.h"; sourceTree = "<group>"; };
@@ -394,7 +386,6 @@
 		F5D1223318F076910075BD10 /* SCSelectiveMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSelectiveMenuTableView.h; sourceTree = "<group>"; };
 		F5D1223418F076910075BD10 /* SCSelectiveMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSelectiveMenuTableView.m; sourceTree = "<group>"; };
 		F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestDialog.xib; sourceTree = "<group>"; };
-		F5DAB46618C962E90046ED96 /* qr-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr-placeholder.png"; sourceTree = "<group>"; };
 		F5DAB46818C970A50046ED96 /* SCQRCodeSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCQRCodeSheetController.h; sourceTree = "<group>"; };
 		F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCQRCodeSheetController.m; sourceTree = "<group>"; };
 		F5DBDC681960B1AE007426B0 /* IdentityPane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdentityPane.xib; sourceTree = "<group>"; };
@@ -511,7 +502,16 @@
 				F521C08B1960E09C00D75598 /* SCAudioVideoRecorder.h */,
 				F521C08C1960E09C00D75598 /* SCAudioVideoRecorder.m */,
 			);
-			name = av;
+			path = av;
+			sourceTree = "<group>";
+		};
+		F5245EE91976EBE5001EF7FA /* file_list */ = {
+			isa = PBXGroup;
+			children = (
+				F5245EED1976EC78001EF7FA /* SCFileListController.h */,
+				F5245EEE1976EC78001EF7FA /* SCFileListController.m */,
+			);
+			path = file_list;
 			sourceTree = "<group>";
 		};
 		F52714AF18DF9D9E00B7E663 /* strings */ = {
@@ -536,19 +536,10 @@
 		F52D011418B7CF5A0033680F /* art */ = {
 			isa = PBXGroup;
 			children = (
-				F52D011518B7CFB70033680F /* icon_group_ignore.png */,
-				F52D011618B7CFB70033680F /* icon_group_ignore@2x.png */,
-				F52D011718B7CFB70033680F /* icon_group_join.png */,
-				F52D011818B7CFB70033680F /* icon_group_join@2x.png */,
-				F52D011918B7CFB70033680F /* icon_info.png */,
-				F52D011A18B7CFB70033680F /* icon_info@2x.png */,
 				F52D011B18B7CFB70033680F /* icon_minus.png */,
 				F52D011C18B7CFB70033680F /* icon_minus@2x.png */,
 				F52D011D18B7CFB70033680F /* icon_plus.png */,
 				F52D011E18B7CFB70033680F /* icon_plus@2x.png */,
-				F52D011F18B7CFB70033680F /* icon_smiley.png */,
-				F52D012018B7CFB70033680F /* icon-frequests.png */,
-				F52D012118B7CFB70033680F /* icon-frequests@2x.png */,
 				F5DCF844195D041B000E067F /* icon_share_more_Template.png */,
 				F5DCF845195D041B000E067F /* icon_share_more_Template@2x.png */,
 				F5DCF848195D058F000E067F /* icon_record_Template@2x.png */,
@@ -567,11 +558,8 @@
 				F5F6D5F118DE5AB200A14557 /* status-light-missing@2x.png */,
 				F52D012818B7CFB70033680F /* tox_logo.png */,
 				F52D012918B7CFB70033680F /* tox_logo@2x.png */,
-				F538754A18C28B4000AED945 /* titlebar_incoming_files.png */,
-				F538754B18C28B4000AED945 /* titlebar_incoming_files@2x.png */,
 				F52D012E18B7CFB70033680F /* user-icon-default.png */,
 				F52D012F18B7CFB70033680F /* user-icon-default@2x.png */,
-				F5DAB46618C962E90046ED96 /* qr-placeholder.png */,
 				F5FFF46318B8283300CD1E43 /* oi.png */,
 				F5FFF46418B8283300CD1E43 /* oi@2x.png */,
 				F56956CA18E884AE00E1EB0D /* avatar-mask-circle@2x.png */,
@@ -742,6 +730,7 @@
 		F5B5422418B6D23C00226CA8 /* code */ = {
 			isa = PBXGroup;
 			children = (
+				F5245EE91976EBE5001EF7FA /* file_list */,
 				F5CAA41D196B75F900828CA5 /* diary */,
 				F521C08A1960E08600D75598 /* av */,
 				F5F6DD37190587B100112A64 /* chat_window */,
@@ -1058,7 +1047,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=\"j$BUILD_NUMBER\"\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"m$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
+			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=$GIT_BUILD_NO\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
 		};
 		F553FAFB18DCF3AF00CBA532 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1103,6 +1092,7 @@
 				F5DCF840195CF838000E067F /* SCAvatarView.m in Sources */,
 				F5084B1C195E5B03008957C3 /* SCPreferencesWindowController.m in Sources */,
 				F5B5423218B6D23C00226CA8 /* SCAppDelegate.m in Sources */,
+				F5245EEF1976EC78001EF7FA /* SCFileListController.m in Sources */,
 				F56956D618E88C4700E1EB0D /* SCBuddyListCells.m in Sources */,
 				F53DB89A18B6DD37008D7ED5 /* SCGradientView.m in Sources */,
 				F5B5422B18B6D23C00226CA8 /* main.m in Sources */,
@@ -1290,6 +1280,7 @@
 					"${PROJECT_DIR}/_support/lib",
 					"$(PROJECT_DIR)/_support/lib",
 				);
+				LLVM_LTO = YES;
 				OTHER_CFLAGS = "-Wno-attributes";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = (
@@ -1333,6 +1324,7 @@
 					"${PROJECT_DIR}/_support/lib",
 					"$(PROJECT_DIR)/_support/lib",
 				);
+				LLVM_LTO = YES;
 				OTHER_CFLAGS = "-Wno-attributes";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = (

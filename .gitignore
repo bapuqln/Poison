@@ -1,11 +1,10 @@
 .DS_Store
-__Xcode
 _support
 *.xccheckout
 xcuserdata
 resources/interfaces/TL/translated
 New poison sounds/
-diskimage_template
-diskimage_helper.sh
 apidoc_ideas
 test_tree/
+build/
+dist/

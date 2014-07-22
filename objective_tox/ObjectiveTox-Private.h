@@ -55,7 +55,7 @@ void _DESCallbackFileData(Tox *m, int32_t friend, uint8_t file_num,
 
 #pragma mark - A/V callbacks
 
-void DESOrangeDidRequestCall(int32_t cid, void *arg);
+void DESOrangeDidRequestCall(void *toxav, int32_t cid, void *arg);
 
 #pragma mark - DESRequest concrete subclasses
 

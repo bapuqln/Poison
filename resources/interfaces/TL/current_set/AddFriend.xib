@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.7"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SCAddFriendSheetController">
@@ -17,8 +16,6 @@
                 <outlet property="messageField" destination="7c4-Hx-A66" id="mO5-u0-zg3"/>
                 <outlet property="methodChooser" destination="0Js-VY-k9C" id="qBF-z5-t0S"/>
                 <outlet property="methodPlaceholder" destination="bef-Iz-vyt" id="9eW-S1-amA"/>
-                <outlet property="pinField" destination="wgT-00-wMm" id="PKk-c6-dcK"/>
-                <outlet property="pinValidationStatusField" destination="XPU-ik-IfB" id="2MY-4T-7QS"/>
                 <outlet property="plainIDMethodView" destination="H76-q5-VQb" id="jdn-GW-vTH"/>
                 <outlet property="window" destination="ZJd-eY-Si5" id="lmd-Q5-Zbj"/>
             </connections>
@@ -92,7 +89,7 @@ Gw
                     <segmentedControl focusRingType="none" verticalHuggingPriority="750" id="0Js-VY-k9C">
                         <rect key="frame" x="22" y="295" width="276" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <segmentedCell key="cell" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectOne" id="kWj-ea-iOE">
+                        <segmentedCell key="cell" borderStyle="border" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectOne" id="kWj-ea-iOE">
                             <font key="font" metaFont="system"/>
                             <segments>
                                 <segment label="Internet Discovery" width="137" selected="YES" tag="1"/>
@@ -142,7 +139,7 @@ Gw
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="hRf-tH-lju">
-                    <rect key="frame" x="20" y="0.0" width="183" height="22"/>
+                    <rect key="frame" x="20" y="0.0" width="280" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="sbs-gX-ny0">
                         <font key="font" metaFont="system"/>
@@ -174,28 +171,8 @@ Gw
                         </allowedInputSourceLocales>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="wgT-00-wMm">
-                    <rect key="frame" x="211" y="0.0" width="67" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="PIN" drawsBackground="YES" id="nKv-k6-l1y">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <allowedInputSourceLocales>
-                            <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                        </allowedInputSourceLocales>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="XPU-ik-IfB">
-                    <rect key="frame" x="279" y="2" width="23" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="✓" id="8O0-aC-ATq">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" red="0.0" green="0.54245552009999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
+            <point key="canvasLocation" x="534" y="17.5"/>
         </customView>
         <drawer trailingOffset="15" id="jEA-Xk-fkH">
             <size key="contentSize" width="100" height="100"/>

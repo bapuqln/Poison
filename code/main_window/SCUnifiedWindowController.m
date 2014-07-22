@@ -12,6 +12,7 @@
 #import "DESConversation+Poison_CustomName.h"
 #import "SCAppDelegate.h"
 #import "SCConversationManager.h"
+#import "SCThemeManager.h"
 
 #define SCUnifiedDefaultWindowFrame ((CGRect){{0, 0}, {700, 400}})
 #define SCUnifiedMinimumSize ((CGSize){700, 400})
@@ -86,6 +87,8 @@
     DESConversation *selected = self.friendsListCont.conversationSelectedInView;
     if (selected)
         self.chatViewCont.conversation = [((SCAppDelegate *)[NSApp delegate]).conversationManager conversationFor:selected];
+    self.friendsListCont.friendListView.superview.postsBoundsChangedNotifications = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(invalidateDivider) name:NSViewBoundsDidChangeNotification object:self.friendsListCont.friendListView.superview];
 }
 
 - (SCBuddyListController *)buddyListController {
@@ -131,6 +134,7 @@
     } else {
         self.window.representedURL = nil;
     }
+    [self invalidateDivider];
 }
 
 #pragma mark - indicator(s)
@@ -224,25 +228,35 @@
 //    doesntExpand.frameSize = (CGSize){splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height};
 //}
 
-- (NSColor *)dividerColourForSplitView:(SCNonGarbageSplitView *)splitView {
-    return [NSColor controlDarkShadowColor];
+- (void)splitView:(SCNonGarbageSplitView *)splitView drawDividerInRect:(NSRect)aRect {
+    [[NSColor controlDarkShadowColor] set];
+    NSRectFill(aRect);
+
+    CGRect selRect = [self.buddyListController positionOfSelectedRow];
+    if (CGRectIsNull(selRect))
+        return;
+    CGRect tableReg = self.buddyListController.friendListView.superview.superview.frame;
+    CGRect tableBoundsInDivider = CGRectMake(aRect.origin.x, aRect.size.height
+                                             - tableReg.origin.y - tableReg.size.height,
+                                             1, tableReg.size.height);
+    [[[SCThemeManager sharedManager] backgroundColorOfCurrentTheme] set];
+    NSRectFill(CGRectIntersection(tableBoundsInDivider,
+                                  CGRectMake(aRect.origin.x, aRect.size.height -
+                                             selRect.origin.y - selRect.size.height,
+                                             1, selRect.size.height)));
 }
 
 #pragma mark - Window delegate
 
-/*- (void)windowDidResize:(NSNotification *)notification {
-    if (self.savedFrame.size.width == ((NSWindow*)notification.object).frame.size.width) {
-        return;
-    } else {
-        CGFloat originalPosition = _friendsListCont.view.frame.size.width;
-        [self.rootView setFrameSize:((NSView*)self.window.contentView).frame.size];
-        [self.rootView setPosition:originalPosition ofDividerAtIndex:0];
-    }
-}*/
+- (void)invalidateDivider {
+
+    [self.rootView setNeedsDisplay:YES];
+}
 
 - (void)dealloc {
     [self removeKVOHandlers];
     [self.tox removeObserver:self forKeyPath:@"closeNodesCount"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

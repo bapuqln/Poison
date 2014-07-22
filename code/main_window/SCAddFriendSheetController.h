@@ -6,6 +6,7 @@ typedef NS_ENUM(NSInteger, SCFriendFindMethod) {
     SCFriendFindMethodDNSDiscovery = 0,
     SCFriendFindMethodPlain = 1,
     // SCFriendFindMethodBonjour,
+    // SCFriendFindMethodMultipeer
 };
 
 @interface SCAddFriendSheetController : NSWindowController <NSTextFieldDelegate>

@@ -85,6 +85,7 @@
 		F5BA234618E74C7F00C85A49 /* observer.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234318E74C6600C85A49 /* observer.m */; };
 		F5BA234718E74C8900C85A49 /* mio.c in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234518E74C6600C85A49 /* mio.c */; };
 		F5BA234A18E7684D00C85A49 /* libObjectiveTox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F50F9C0618C3AAD800D06A0F /* libObjectiveTox.a */; };
+		F5C05438197A10AD003B0C93 /* iopause.o in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C05437197A10AD003B0C93 /* iopause.o */; };
 		F5CEB0161962088B00673D50 /* DESOrangeCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CEB0151962088B00673D50 /* DESOrangeCallbacks.m */; };
 		F5CEB01819620A5300673D50 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CEB01719620A5300673D50 /* libopus.a */; };
 		F5CEB01A19620A6500673D50 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CEB01919620A6500673D50 /* libvpx.a */; };
@@ -268,6 +269,7 @@
 		F5BA233918E74C1900C85A49 /* mio */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mio; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BA234318E74C6600C85A49 /* observer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = observer.m; sourceTree = "<group>"; };
 		F5BA234518E74C6600C85A49 /* mio.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mio.c; sourceTree = "<group>"; };
+		F5C05437197A10AD003B0C93 /* iopause.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = iopause.o; path = _support/lib/iopause.o; sourceTree = "<group>"; };
 		F5CEB0151962088B00673D50 /* DESOrangeCallbacks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DESOrangeCallbacks.m; sourceTree = "<group>"; };
 		F5CEB01719620A5300673D50 /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = _support/lib/libopus.a; sourceTree = "<group>"; };
 		F5CEB01919620A6500673D50 /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = _support/lib/libvpx.a; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5C05438197A10AD003B0C93 /* iopause.o in Frameworks */,
 				F5CEB01A19620A6500673D50 /* libvpx.a in Frameworks */,
 				F5CEB01819620A5300673D50 /* libopus.a in Frameworks */,
 				F5A163D318EBA0D000A28D61 /* env.a in Frameworks */,
@@ -481,6 +484,7 @@
 		F554115A18C8187700CBB9E3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5C05437197A10AD003B0C93 /* iopause.o */,
 				F56E0127196F7740001FB519 /* Security.framework */,
 				F5CEB01919620A6500673D50 /* libvpx.a */,
 				F5CEB01719620A5300673D50 /* libopus.a */,
@@ -683,7 +687,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"DES build: checking your dependencies!\"\n\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\necho \"error: Xcode not present\"\nexit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\nmake_libvpx() {\n    echo \"Need to build libvpx. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libvpx\n    git clone \"https://chromium.googlesource.com/webm/libvpx\" libvpx && cd libvpx\n    git checkout \"v1.3.0\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libvpx.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libvpx.configure.log\"\n}\nmake_libopus() {\n    echo \"Need to build libopus. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"opus-1.0.3\" \"libopus.tar.gz\"\n    curl -o \"libopus.tar.gz\" \"http://downloads.xiph.org/releases/opus/opus-1.0.3.tar.gz\"\n    tar -xzf \"libopus.tar.gz\" && cd \"opus-1.0.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libopus.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libopus.configure.log\"\n}\nmake_libsodium() {\n    echo \"Need to build libsodium. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libsodium\n    git clone \"https://github.com/jedisct1/libsodium\" libsodium && cd libsodium\n    ./autogen.sh > /dev/null 2>&1\n    ./configure \"--prefix=$PROJECT_DIR/_support\" \\\n    > \"$WORKSPACE/../libsodium.configure.log\" 2>&1\n    make -j$NPROC \\\n    > \"$WORKSPACE/../libsodium.make.log\" 2>&1 && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libsodium.configure.log\" \"$WORKSPACE/../libsodium.make.log\"\n}\nmake_djbdns() {\n    echo \"Need to build djbdns. This will take almost no time at all.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"djbdns-1.05\"\n    curl -o djbdns.tar.gz \"http://cr.yp.to/djbdns/djbdns-1.05.tar.gz\"\n    tar -xzf \"djbdns.tar.gz\" && cd \"djbdns-1.05\"\n    make -j$NPROC\n    cp *.a \"$WORKSPACE/../lib/\"\n    cp *.h \"$WORKSPACE/../include/\"\n    sed -i .orig -e \"s/#include \\\"uint64.h\\\"//\" \"$WORKSPACE/../include/tai.h\"\n    cp iopause.o \"$WORKSPACE/../lib/\"\n    echo \"OK.\"\n}\nif [ ! -f \"$PROJECT_DIR/_support/lib/libsodium.a\" ]; then\nmake_libsodium\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/dns.a\" ]; then\nmake_djbdns\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libvpx.a\" ]; then\nmake_libvpx; cd $PROJECT_DIR;\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libopus.a\" ]; then\nmake_libopus; cd $PROJECT_DIR;\nfi";
+			shellScript = "echo \"DES build: checking your dependencies!\"\n\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\necho \"error: Xcode not present\"\nexit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\nmake_libvpx() {\n    echo \"Need to build libvpx. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libvpx\n    git clone \"https://chromium.googlesource.com/webm/libvpx\" libvpx && cd libvpx\n    git checkout \"v1.3.0\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libvpx.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libvpx.configure.log\"\n}\nmake_libopus() {\n    echo \"Need to build libopus. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"opus-1.1\" \"libopus.tar.gz\"\n    curl -o \"libopus.tar.gz\" \"http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz\"\n    tar -xzf \"libopus.tar.gz\" && cd \"opus-1.1\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --disable-shared \\\n    > \"$WORKSPACE/../libopus.configure.log\" 2>&1\n    make -j$NPROC && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libopus.configure.log\"\n}\nmake_libsodium() {\n    echo \"Need to build libsodium. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf libsodium\n    git clone \"https://github.com/jedisct1/libsodium\" libsodium && cd libsodium\n    ./autogen.sh > /dev/null 2>&1\n    ./configure \"--prefix=$PROJECT_DIR/_support\" \\\n    > \"$WORKSPACE/../libsodium.configure.log\" 2>&1\n    make -j$NPROC \\\n    > \"$WORKSPACE/../libsodium.make.log\" 2>&1 && make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libsodium.configure.log\" \"$WORKSPACE/../libsodium.make.log\"\n}\nmake_djbdns() {\n    echo \"Need to build djbdns. This will take almost no time at all.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"djbdns-1.05\"\n    curl -o djbdns.tar.gz \"http://cr.yp.to/djbdns/djbdns-1.05.tar.gz\"\n    tar -xzf \"djbdns.tar.gz\" && cd \"djbdns-1.05\"\n    make -j$NPROC\n    cp *.a \"$WORKSPACE/../lib/\"\n    cp *.h \"$WORKSPACE/../include/\"\n    sed -i .orig -e \"s/#include \\\"uint64.h\\\"//\" \"$WORKSPACE/../include/tai.h\"\n    cp iopause.o \"$WORKSPACE/../lib/\"\n    echo \"OK.\"\n}\nif [ ! -f \"$PROJECT_DIR/_support/lib/libsodium.a\" ]; then\nmake_libsodium\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/dns.a\" ]; then\nmake_djbdns\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libvpx.a\" ]; then\nmake_libvpx; cd $PROJECT_DIR;\nfi\nif [ ! -f \"$PROJECT_DIR/_support/lib/libopus.a\" ]; then\nmake_libopus; cd $PROJECT_DIR;\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -926,6 +930,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/_support/include",
 					"${PROJECT_DIR}/_support/include/opus",

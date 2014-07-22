@@ -7,6 +7,7 @@
 #import "SCFillingView.h"
 #import "SCConversationManager.h"
 #import "SCTextField.h"
+#import "SCFileListController.h"
 #import <WebKit/WebKit.h>
 
 NS_INLINE NSColor *SCCreateDarkenedColor(NSColor *color, CGFloat factor) {
@@ -35,6 +36,10 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     }
     return (NSString*)out_;
 }
+
+@interface NSSegmentedControl (ApplePrivate)
+- (NSRect)rectForSegment:(NSInteger)arg1 inFrame:(NSRect)arg2;
+@end
 
 @interface SCResponderProxyView : SCFillingView
 @property (weak) SCTextField *responder;
@@ -69,6 +74,9 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 @property (strong) NSCache *nameCompletionCache;
 @property NSInteger userListRememberedSplitPosition; /* from the right */
 @property NSInteger videoPaneRememberedSplitPosition; /* from the top */
+
+@property (strong) IBOutlet NSPopover *fileListWindow;
+@property (strong) IBOutlet SCFileListController *fileList;
 
 @end
 
@@ -449,7 +457,25 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (IBAction)doActionFromButtons:(NSSegmentedControl *)sender {
     NSLog(@"%ld", (long)sender.selectedSegment);
-    [NSMenu popUpContextMenu:self.secretActionMenu withEvent:[[NSApplication sharedApplication] currentEvent] forView:sender];
+    switch (sender.selectedSegment) {
+        case 2:
+            if (!self.fileListWindow)
+                self.fileListWindow = [[NSPopover alloc] init];
+            if (!self.fileList) {
+                self.fileList = [[SCFileListController alloc] initWithNibName:@"FileTransfer" bundle:[NSBundle mainBundle]];
+
+                self.fileListWindow.contentViewController = self.fileList;
+                self.fileListWindow.contentSize = self.fileList.view.frame.size;
+                self.fileListWindow.behavior = NSPopoverBehaviorTransient;
+            }
+            [self.fileListWindow showRelativeToRect:[sender.cell rectForSegment:2 inFrame:sender.bounds] ofView:sender preferredEdge:NSMaxYEdge];
+            break;
+        case 3:
+            [NSMenu popUpContextMenu:self.secretActionMenu withEvent:[[NSApplication sharedApplication] currentEvent] forView:sender];
+            break;
+        default:
+            break;
+    }
 }
 
 @end

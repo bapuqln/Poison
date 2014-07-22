@@ -123,6 +123,7 @@ static SCProfileManager *_currentProfile = nil;
 }
 
 + (NSURL *)savePrologue:(NSString *)name {
+    NSLog(@"%@", name);
     NSURL *profiles = [self profileDirectory];
     NSMutableDictionary *manifest = [[self manifest] mutableCopy];
     NSFileManager *fileManager = [NSFileManager defaultManager];

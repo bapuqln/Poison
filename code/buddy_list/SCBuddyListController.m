@@ -13,6 +13,7 @@
 #import "SCRequestDialogController.h"
 #import "SCFillingView.h"
 #import "SCAvatarView.h"
+#import "SCFriendRequest.h"
 #import <Quartz/Quartz.h>
 
 #define SC_MAX_CACHED_ROW_COUNT (50)
@@ -74,7 +75,6 @@
 @property (strong) IBOutlet SCGradientView *userInfo;
 @property (strong) IBOutlet SCGradientView *toolbar;
 @property (strong) IBOutlet SCGradientView *auxiliaryView;
-@property (strong) IBOutlet NSTableView *friendListView;
 @property (strong) IBOutlet NSMenu *friendMenu;
 @property (strong) IBOutlet NSMenu *selfMenu;
 @property (strong) IBOutlet NSSearchField *filterField;
@@ -427,6 +427,9 @@
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row {
     id model = [_dataSource objectAtRowIndex:row];
     if ([model conformsToProtocol:@protocol(DESConversation)]) {
+        if ([self.view.window.windowController respondsToSelector:@selector(conversationDidBecomeFocused:)]) {
+            [self.view.window.windowController conversationDidBecomeFocused:model];
+        }
         return YES;
     }
     return NO;
@@ -443,12 +446,12 @@
     }
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    if ([self.view.window.windowController respondsToSelector:@selector(conversationDidBecomeFocused:)]) {
-        DESConversation *cv = [_dataSource objectAtRowIndex:self.friendListView.selectedRow];
-        [self.view.window.windowController conversationDidBecomeFocused:cv];
-    }
-}
+//- (void)tableViewSelectionDidChange:(NSNotification *)notification {
+//    if ([self.view.window.windowController respondsToSelector:@selector(conversationDidBecomeFocused:)]) {
+//        DESConversation *cv = [_dataSource objectAtRowIndex:self.friendListView.selectedRow];
+//        [self.view.window.windowController conversationDidBecomeFocused:cv];
+//    }
+//}
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
     if (menu == self.selfMenu) {
@@ -458,6 +461,16 @@
         DESConversation *conv = [_dataSource objectAtRowIndex:ci];
         [menu itemAtIndex:0].title = conv.preferredUIName;
     }
+}
+
+- (NSRect)positionOfSelectedRow {
+    if (self.friendListView.selectedRow != -1) {
+        NSView *sel = [self.friendListView viewAtColumn:0 row:self.friendListView.selectedRow makeIfNecessary:NO];
+        if (sel) {
+            return [sel convertRect:sel.bounds toView:self.view];
+        }
+    }
+    return CGRectNull;
 }
 
 #pragma mark - cell server
@@ -614,7 +627,7 @@
 #pragma mark - request cell buttons
 
 - (IBAction)acceptRequestFromCell:(NSView *)sender {
-    DESRequest *model = ((NSTableCellView *)sender.superview.superview).objectValue;
+    SCFriendRequest *model = ((NSTableCellView *)sender.superview.superview).objectValue;
     if (!_requestSheet)
         _requestSheet = [[SCRequestDialogController alloc] initWithWindowNibName:@"RequestDialog"];
     [_requestSheet loadWindow];

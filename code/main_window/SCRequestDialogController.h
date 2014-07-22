@@ -2,7 +2,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class DESRequest;
+@class SCFriendRequest;
 @interface SCRequestDialogController : NSWindowController
-@property (strong, nonatomic) DESRequest *request;
+@property (strong, nonatomic) SCFriendRequest *request;
 @end

@@ -7,7 +7,7 @@
 * Looks like a native Mac citizen <-- DONE (consider yosemite next)
 * One-to-one and group chats
 * Saving and loading of Tox core data <-- DONE
-* Transcript view styled using WebKit
+* Transcript view styled using WebKit <-- DONE
 * Notification Center support
 
 ## Features wanted for Poison 2.0

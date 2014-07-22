@@ -22,8 +22,6 @@
 @property (strong) IBOutlet NSTextField *mailAddressField;
 @property (strong) IBOutlet NSButton *findButton;
 @property (strong) IBOutlet NSTextField *keyPreview;
-@property (strong) IBOutlet NSTextField *pinField;
-@property (strong) IBOutlet NSTextField *pinValidationStatusField;
 
 @property (strong) IBOutlet NSSegmentedControl *methodChooser;
 @property (strong) IBOutlet NSView *methodPlaceholder;
@@ -57,7 +55,6 @@
     self.idField.delegate = self;
     self.messageField.delegate = self;
     self.mailAddressField.delegate = self;
-    self.pinField.delegate = self;
 
     self.keyPreview.font = [NSFont fontWithName:@"Menlo-Regular" size:12];
     self.idField.font = [NSFont fontWithName:@"Menlo-Regular" size:12];
@@ -77,15 +74,7 @@
     if (self.method == SCFriendFindMethodPlain) {
         return self.idField.stringValue;
     } else if (self.method == SCFriendFindMethodDNSDiscovery) {
-        if (_dnsDiscoveryVersion == 1) {
-            return _rec[DESUserDiscoveryIDKey];
-        } else {
-            NSData *bytes = [[self.pinField.stringValue stringByAppendingString:@"=="] substringToIndex:8].dataByDecodingBase64;
-            return [NSString stringWithFormat:@"%@%@%@",
-                    _rec[DESUserDiscoveryPublicKey],
-                    DESConvertBytesToHex(bytes.bytes, (uint32_t)bytes.length),
-                    _rec[DESUserDiscoveryChecksumKey]];
-        }
+        return _rec[DESUserDiscoveryIDKey];
     }
     return nil;
 }
@@ -170,7 +159,6 @@
 
 - (void)resetFields:(BOOL)clearMessage {
     _proposedName = nil;
-    _proposedPIN = nil;
     _rec = nil;
     _dnsDiscoveryVersion = 0;
     self.idField.stringValue = @"";
@@ -181,11 +169,6 @@
         NSLocalizedString(@"james", @"sample name for lookup sheet; lowercase"),
         [[NSUserDefaults standardUserDefaults] stringForKey:@"defaultRegistrationDomain"]];
     self.keyPreview.stringValue = @"";
-    self.pinField.stringValue = @"";
-    [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN", nil)];
-    self.pinField.enabled = NO;
-    self.pinValidationStatusField.stringValue = @"-";
-    self.pinValidationStatusField.textColor = _cachedNeutralColour;
 
     [self validateFields];
     self.idValidationStatusField.stringValue = self.defaultFlavourText;
@@ -221,9 +204,6 @@
         if ([params[@"x-name"] isKindOfClass:[NSString class]]) {
             self.proposedName = params[@"x-name"];
         }
-        if ([params[@"pin"] isKindOfClass:[NSString class]]) {
-            _proposedPIN = params[@"pin"];
-        }
     }
 }
 
@@ -236,8 +216,6 @@
             return;
         case SCFriendFindMethodDNSDiscovery:
             [self validateFieldsID_DNSDiscovery];
-            if (_dnsDiscoveryVersion != 1)
-                [self validateFieldsPIN_DNSDiscovery];
             return;
         default:
             return;
@@ -267,14 +245,8 @@
 - (void)clearDNSDiscoveryInfo {
     self.keyPreview.stringValue = @"";
     [self resizeWindowForPreview];
-    self.pinField.stringValue = @"";
-    self.pinField.enabled = NO;
-    [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN", nil)];
-    self.pinValidationStatusField.stringValue = @"-";
-    self.pinValidationStatusField.textColor = _cachedNeutralColour;
     _dnsDiscoveryVersion = 0;
     _rec = nil;
-    _proposedPIN = nil;
     _proposedName = nil;
     self.continueButton.enabled = NO;
 }
@@ -290,43 +262,6 @@
         self.mailAddressField.textColor = [NSColor controlTextColor];
         self.findButton.enabled = YES;
         self.idValidationStatusField.stringValue = NSLocalizedString(@"Press Return to search for a user at that address.", nil);
-    }
-}
-
-- (BOOL)isPINValid_toxv2:(NSString *)pin64 {
-    if ([pin64 length] != 6)
-        return NO;
-    NSData *bytes = [[[pin64 stringByAppendingString:@"=="] substringToIndex:8] dataByDecodingBase64];
-    if (SCChecksumAddress([_rec[@"__Poison_check_IV"] unsignedShortValue],
-                          (uint8_t *)bytes.bytes, bytes.length)
-        == [_rec[@"__Poison_check_match"] unsignedShortValue])
-        return YES;
-    else
-        return NO;
-}
-
-- (void)validateFieldsPIN_DNSDiscovery {
-    switch (_dnsDiscoveryVersion) {
-        case 1:
-            self.pinValidationStatusField.stringValue = @"\u2713";
-            self.pinValidationStatusField.textColor = _cachedSuccessColour;
-            self.idValidationStatusField.stringValue = NSLocalizedString(@"A PIN isn't required.", nil);
-            [self passedValidation];
-            break;
-        case 2:
-            self.idValidationStatusField.stringValue = NSLocalizedString(@"This type of PIN is 6 characters long.", nil);
-            if ([self isPINValid_toxv2:self.pinField.stringValue]) {
-                self.pinValidationStatusField.stringValue = @"\u2713";
-                self.pinValidationStatusField.textColor = _cachedSuccessColour;
-                [self passedValidation];
-            } else {
-                self.pinValidationStatusField.stringValue = @"\u2715";
-                self.pinValidationStatusField.textColor = _cachedFailureColour;
-                [self failedValidation:NSLocalizedString(@"Did you type the PIN correctly?", nil)];
-            }
-            break;
-        default:
-            break;
     }
 }
 
@@ -372,38 +307,14 @@
                 [self failedValidation:NSLocalizedString(@"The lookup failed due to an unknown error.", nil)];
             [self.mailAddressField becomeFirstResponder];
             [self.mailAddressField selectText:self];
+            return;
         }
 
         NSMutableDictionary *d = [result mutableCopy];
         _rec = d;
-
-        if ([result[DESUserDiscoveryVersionKey] isEqual:DESUserDiscoveryRecVersion1]) {
-            self.keyPreview.stringValue = result[DESUserDiscoveryIDKey];
-            self.pinField.enabled = NO;
-            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"None", nil)];
-            _dnsDiscoveryVersion = 1;
-        } else if ([result[DESUserDiscoveryVersionKey] isEqual:DESUserDiscoveryRecVersion2]) {
-            uint16_t check = 0;
-            DESConvertHexToBytes(d[DESUserDiscoveryChecksumKey], (uint8_t *)&check);
-            d[@"__Poison_check_match"] = @(check);
-
-            uint8_t *pk = malloc(DESPublicKeySize);
-            DESConvertPublicKeyToData(d[DESUserDiscoveryPublicKey], pk);
-            d[@"__Poison_check_IV"] = @(SCChecksumAddress(0, pk, DESPublicKeySize));
-            free(pk);
-
-            self.keyPreview.stringValue = result[DESUserDiscoveryPublicKey];
-            self.pinField.enabled = YES;
-            [self.pinField.cell setPlaceholderString:NSLocalizedString(@"PIN", nil)];
-            if (_proposedPIN && [self isPINValid_toxv2:_proposedPIN])
-                self.pinField.stringValue = _proposedPIN;
-
-            _dnsDiscoveryVersion = 2;
-            [self.pinField becomeFirstResponder];
-        }
+        self.keyPreview.stringValue = result[DESUserDiscoveryIDKey];
+        _dnsDiscoveryVersion = 1;
         [self resizeWindowForPreview];
-
-        [self validateFieldsPIN_DNSDiscovery];
         NSLog(@"%@ %@", result, error);
     });
 }
@@ -416,8 +327,6 @@
     } else if (obj.object == self.mailAddressField) {
         [self clearDNSDiscoveryInfo];
         [self validateFieldsID_DNSDiscovery];
-    } else if (obj.object == self.pinField) {
-        [self validateFieldsPIN_DNSDiscovery];
     }
 }
 

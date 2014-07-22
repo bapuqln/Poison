@@ -146,8 +146,6 @@ BOOL _DESLookup3(NSString *mail, DESUserDiscoveryCallback callback) {
         callback(d, nil);
         return YES;
     }
-
-    return NO;
 }
 
 BOOL _DESLookup2_1(NSString *mail, DESUserDiscoveryCallback callback) {
@@ -200,16 +198,11 @@ BOOL _DESLookup2_1(NSString *mail, DESUserDiscoveryCallback callback) {
                                           callback);
                 return NO;
             }
-        }
-
-        if ([params[@"v"] isEqualToString:DESUserDiscoveryRecVersion2]) {
-            if (((NSString *)params[@"pub"]).length != DESPublicKeySize * 2
-                || ((NSString *)params[@"check"]).length != 4) {
-                _DESDiscoverUser_ErrorOut(DESUserDiscoveryCallbackDomain,
-                                          DESUserDiscoveryErrorBadReply,
-                                          callback);
-                return NO;
-            }
+        } else {
+            _DESDiscoverUser_ErrorOut(DESUserDiscoveryCallbackDomain,
+                                      DESUserDiscoveryErrorBadReply,
+                                      callback);
+            return NO;
         }
 
         dispatch_sync(dispatch_get_main_queue(), ^{

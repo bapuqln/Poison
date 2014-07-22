@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D45a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
@@ -31,7 +31,17 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129">
+                                <connections>
+                                    <action selector="showPreferencesWindow:" target="494" id="NSb-62-HYf"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Send Feedback..." id="HWE-va-Fb3">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="sendFeedback:" target="494" id="YhP-7l-iIW"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Export Tox Data..." id="Mc1-2d-MXi">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -134,6 +144,7 @@
                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
                                     <action selector="menuRemoveFriend:" target="494" id="BIA-RM-n12"/>
                                 </connections>
@@ -180,6 +191,9 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem title="Delete" id="202">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                                 <connections>
                                     <action selector="delete:" target="-1" id="235"/>
                                 </connections>
@@ -431,7 +445,7 @@ CA
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Mac OS X User" id="KdG-5B-GGr">
                         <font key="font" metaFont="systemBold" size="14"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.14000325620000001" green="0.85144292089999996" blue="0.34195958230000001" alpha="1" colorSpace="calibratedRGB"/>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="xLU-mx-v44">
@@ -440,7 +454,7 @@ CA
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Toxing on Poison 2.0-pre" usesSingleLineMode="YES" id="12s-ot-pOl">
                         <font key="font" metaFont="menuBar"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.14000325620000001" green="0.85144292089999996" blue="0.34195958230000001" alpha="1" colorSpace="calibratedRGB"/>
                     </textFieldCell>
                 </textField>
             </subviews>
@@ -451,38 +465,40 @@ CA
         </customView>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="" id="P58-bk-Eul">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="283" y="305" width="284" height="460"/>
+            <rect key="contentRect" x="283" y="305" width="284" height="431"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <value key="minSize" type="size" width="284" height="460"/>
             <value key="maxSize" type="size" width="284" height="492"/>
             <view key="contentView" id="Pkx-5g-uZT">
-                <rect key="frame" x="0.0" y="0.0" width="284" height="460"/>
+                <rect key="frame" x="0.0" y="0.0" width="284" height="431"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView id="DUh-ER-BrA" customClass="SCGradientView">
-                        <rect key="frame" x="0.0" y="345" width="284" height="115"/>
+                        <rect key="frame" x="0.0" y="316" width="284" height="115"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView id="YQn-Cf-Vdz" customClass="SCShadowedView">
-                        <rect key="frame" x="0.0" y="-1" width="284" height="349"/>
+                        <rect key="frame" x="0.0" y="0.0" width="284" height="319"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="eN9-m5-cde">
-                                <rect key="frame" x="18" y="284" width="248" height="34"/>
+                                <rect key="frame" x="18" y="254" width="248" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Brought to you by stal and the rest of the Tox development team." id="9d6-tx-cjA">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="9d6-tx-cjA">
                                     <font key="font" metaFont="system"/>
+                                    <string key="title">Poison is made in Canada.
+© 2013 - 2014 Zodiac Labs.</string>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="E19-UX-B6r">
-                                <rect key="frame" x="57" y="76" width="170" height="164"/>
+                                <rect key="frame" x="57" y="46" width="170" height="164"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="oi" id="Esl-6j-Mmc"/>
                             </imageView>
                             <button verticalHuggingPriority="750" id="7ab-pv-Uhg">
-                                <rect key="frame" x="14" y="43" width="139" height="32"/>
+                                <rect key="frame" x="14" y="13" width="139" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Poison on GitHub" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EYU-Ik-zz5">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -493,7 +509,7 @@ CA
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" id="6W2-hC-nyk">
-                                <rect key="frame" x="160" y="43" width="110" height="32"/>
+                                <rect key="frame" x="160" y="13" width="110" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Tox web site" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Azy-SQ-brZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -503,21 +519,10 @@ CA
                                     <action selector="aboutWindowDidOpenToxURL:" target="494" id="Nnj-JI-cLH"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" id="3vv-8E-r76">
-                                <rect key="frame" x="61" y="13" width="163" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Acknowledgements" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gWb-N8-Cam">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="aboutWindowDidOpenAcknowledgements:" target="494" id="7lQ-28-Ska"/>
-                                </connections>
-                            </button>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="336-So-jfV">
-                                <rect key="frame" x="18" y="248" width="248" height="28"/>
+                                <rect key="frame" x="18" y="218" width="248" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="This release of Poison is dedicated to Thaddeus &quot;Thad&quot; McMichael (03/04/2014)." id="Rtw-2P-gN9">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="This release of Poison is dedicated to ClariS (2010 - 2014)." id="Rtw-2P-gN9">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" white="0.70172787408759119" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -526,12 +531,12 @@ CA
                         </subviews>
                     </customView>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="xV1-TH-wuZ">
-                        <rect key="frame" x="0.0" y="326" width="128" height="128"/>
+                        <rect key="frame" x="0.0" y="297" width="128" height="128"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="Poison" id="ZNj-Ig-L1Q"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="PoisonFlat" id="ZNj-Ig-L1Q"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="P6u-qN-bHR">
-                        <rect key="frame" x="123" y="376" width="143" height="29"/>
+                        <rect key="frame" x="123" y="347" width="143" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Poison" id="bQc-vE-cNy">
                             <font key="font" metaFont="system" size="24"/>
@@ -540,7 +545,7 @@ CA
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3Oi-N1-sJL">
-                        <rect key="frame" x="123" y="362" width="143" height="17"/>
+                        <rect key="frame" x="123" y="333" width="143" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Version 2.0-pre" id="M3r-LN-fBW">
                             <font key="font" metaFont="system"/>
@@ -627,7 +632,7 @@ CA
         </menu>
     </objects>
     <resources>
-        <image name="Poison" width="512" height="512"/>
+        <image name="PoisonFlat" width="512" height="512"/>
         <image name="oi" width="170" height="164"/>
     </resources>
 </document>
