@@ -135,7 +135,7 @@
                         </segments>
                     </segmentedCell>
                 </segmentedControl>
-                <textField appearanceType="lightContent" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Jfr-Ow-Yoe">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Jfr-Ow-Yoe">
                     <rect key="frame" x="6" y="6" width="332" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Send files by dropping them over the text field." id="i9U-x9-pgM">
