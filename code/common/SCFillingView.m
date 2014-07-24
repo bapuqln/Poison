@@ -12,4 +12,8 @@
     }
 }
 
+- (BOOL)isOpaque {
+    return (self.drawColor.alphaComponent >= 1.0) ? YES : NO;
+}
+
 @end

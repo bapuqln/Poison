@@ -20,7 +20,7 @@
 - (instancetype)initWithDESConnection:(DESToxConnection *)tox {
     self = [super initWithDESConnection:tox];
     if (self) {
-        SCWidgetedWindow *window = [[SCWidgetedWindow alloc] initWithContentRect:CGRectCentreInRect(SCBuddyListDefaultWindowFrame, [NSScreen mainScreen].visibleFrame) styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
+        SCWidgetedWindow *window = [[SCWidgetedWindow alloc] initWithContentRect:CGRectCentreInRect(SCBuddyListDefaultWindowFrame, [NSScreen mainScreen].visibleFrame) styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask backing:NSBackingStoreBuffered defer:YES];
         window.restorable = NO;
         window.minSize = SCBuddyListMinimumSize;
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100

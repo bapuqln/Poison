@@ -115,36 +115,36 @@
     [super loadView];
     NSView *backing;
 
-    SCFillingView *b = [[SCFillingView alloc] initWithFrame:self.view.bounds];
-    b.wantsLayer = YES;
-    b.drawColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
-    b.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-    backing = b;
-    [backing addSubview:self.view];
-    self.view = backing;
-
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
     if ([NSVisualEffectView class]) {
-        NSView *realView = b.subviews[0];
-        [realView removeFromSuperviewWithoutNeedingDisplay];
-        realView.autoresizesSubviews = NO;
-        CGSize newSize = (CGSize){realView.frame.size.width, realView.frame.size.height + 22};
-        realView.frameSize = newSize;
-        b.frameSize = newSize;
+        CGRect extended = (CGRect){{0, 0}, {self.view.bounds.size.width, self.view.bounds.size.height + 22}};
+        NSVisualEffectView *vs = [[NSVisualEffectView alloc] initWithFrame:extended];
+        vs.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
+        vs.state = NSVisualEffectStateActive;
+        vs.autoresizesSubviews = YES;
+        vs.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+
+        self.view.autoresizesSubviews = NO;
+        self.view.frame = extended;
         self.userInfo.isFlushWithTitlebar = YES;
         self.userInfo.frameSize = (CGSize){self.userInfo.frame.size.width, self.userInfo.frame.size.height + 22};
-        [b addSubview:realView];
-        realView.autoresizesSubviews = YES;
+        [vs addSubview:self.view];
+        self.view.autoresizesSubviews = YES;
+        backing = vs;
+    } else {
+#endif
+        SCFillingView *b = [[SCFillingView alloc] initWithFrame:self.view.bounds];
+        b.wantsLayer = YES;
+        b.drawColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+        b.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+        [b addSubview:self.view];
 
-        NSVisualEffectView *blurView = [[NSVisualEffectView alloc] initWithFrame:b.bounds];
-        blurView.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
-        blurView.state = NSVisualEffectStateActive;
-        
-        [blurView addSubview:b];
-        b.drawColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.2];
-        self.view = blurView;
+        backing = b;
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
     }
 #endif
+
+    self.view = backing;
 }
 
 - (void)applyColoursBelowYosemite {
@@ -164,11 +164,11 @@
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 10100
 - (void)applyColoursAboveYosemite {
-    self.userInfo.topColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.7];
-    self.userInfo.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.4];
+    self.userInfo.topColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.5];
+    self.userInfo.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
 
     self.toolbar.topColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.0];
-    self.toolbar.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
+    self.toolbar.bottomColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.2];
 
     self.auxiliaryView.topColor = nil;
     self.auxiliaryView.bottomColor = nil;
