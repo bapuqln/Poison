@@ -249,8 +249,9 @@
 #pragma mark - Window delegate
 
 - (void)invalidateDivider {
-
-    [self.rootView setNeedsDisplay:YES];
+    CGRect div = CGRectMake(((NSView *)self.rootView.subviews[0]).frame.size.width,
+                            0, 1, self.rootView.frame.size.height);
+    [self.rootView setNeedsDisplayInRect:div];
 }
 
 - (void)dealloc {
