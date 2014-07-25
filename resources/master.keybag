@@ -1,0 +1,18 @@
+{"comment": "Seal this and put it in maindist. Arisa signing is redundant because the master key is in here anyway.",
+ "keys": [
+     {"role": "arisa",
+      "key": "40B990E438080E8CF75077FC1BE9BFE40E5AE9E3158F2E41AC3A7502C613A7A6",
+      "domain": ["update.", "dht-list.", "dynamic-keybag."]},
+     {"role": "arisa",
+      "key": "78265318CB1A7AC08697B2ECAEA36936EC6EA7AECC4B3936A1F6BB7F221EF255",
+      "domain": ["dht-list."]},
+     {"role": "dns3",
+      "key": "D3154F65D28A5B41A05D4AC7E4B39C6B1C233CC857FB365C56E8392737462A12",
+      "domain": ["utox.org"]},
+     {"role": "dns3",
+      "key": "5D72C517DF6AEC54F1E977A6B6F25914EA4CF7277A85027CD9F5196DF17E0B13",
+      "domain": ["toxme.se"]}
+ ],
+ "nodefile_address": "http://cdn.libtoxcore.so/elizabeth_remote/config/Nodefile.json.risa",
+ "dynamickb_address": "https://elizabeth.zodiaclabs.org/configuration/dynamic.keybag",
+ "update_catalog": "https://domain.invalid/soon.png"}

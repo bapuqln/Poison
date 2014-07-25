@@ -15,23 +15,6 @@ NSString *const DESUserDiscoveryVersionKey = @"v";
 NSString *const DESUserDiscoveryRecVersion1 = @"tox1";
 NSString *const DESUserDiscoveryRecVersion2 = @"tox2";
 
-NSDictionary *_DESGetKeybag(void) {
-    static NSDictionary *keybag;
-    static uint64_t modtime = 0;
-    /* TODO: add custom keybag location */
-    NSURL *keybagURL = [[NSBundle mainBundle] URLForResource:@"DESSignKeybag" withExtension:@"plist"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSDictionary *attrs = [fileManager attributesOfItemAtPath:keybagURL.path error:nil];
-    if (!attrs || (uint64_t)attrs.fileModificationDate.timeIntervalSince1970 != modtime) {
-        keybag = [NSDictionary dictionaryWithContentsOfURL:keybagURL];
-        modtime = [attrs.fileModificationDate timeIntervalSince1970];
-        NSLog(@"note: had to re-read the manifest due to first access; or the modification time changed");
-    }
-    if (!keybag)
-        keybag = @{};
-    return keybag;
-}
-
 void _DESDecodeKeyValuePair(NSString *kv, NSString **kout, id *vout) {
     NSRange equals = [kv rangeOfString:@"="];
     if (equals.location == NSNotFound || equals.location + 1 == [kv length]) {
@@ -74,12 +57,12 @@ void _DESDiscoverUser_ErrorOut(NSString *domain, NSInteger code,
     });
 }
 
-BOOL _DESLookup3(NSString *mail, DESUserDiscoveryCallback callback) {
+BOOL _DESLookup3(NSString *mail, DESUserDiscoveryCallback callback, NSDictionary *keys) {
     NSRange position = [mail rangeOfString:@"@"];
     NSString *normalDomain = [mail substringFromIndex:position.location + 1].lowercaseString;
     NSString *name = [mail substringToIndex:position.location];
 
-    NSString *key = _DESGetKeybag()[normalDomain];
+    NSString *key = keys[normalDomain];
     if (!key)
         return NO;
 
@@ -213,7 +196,8 @@ BOOL _DESLookup2_1(NSString *mail, DESUserDiscoveryCallback callback) {
 }
 
 void DESDiscoverUser(NSString *shouldBeAnEmailAddress,
-                     DESUserDiscoveryCallback callback) {
+                     DESUserDiscoveryCallback callback,
+                     NSDictionary *keys) {
     const char *buf = shouldBeAnEmailAddress.UTF8String;
     NSUInteger len = [shouldBeAnEmailAddress lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     int at_count = 0;
@@ -233,7 +217,7 @@ void DESDiscoverUser(NSString *shouldBeAnEmailAddress,
     }
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        if (_DESLookup3(shouldBeAnEmailAddress, callback)) {
+        if (_DESLookup3(shouldBeAnEmailAddress, callback, keys)) {
             return;
         } else {
             _DESLookup2_1(shouldBeAnEmailAddress, callback);

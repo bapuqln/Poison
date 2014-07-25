@@ -51,7 +51,6 @@
 		F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A518DF823400B7E663 /* MainMenu.xib */; };
 		F52714AD18DF823400B7E663 /* NewUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A618DF823400B7E663 /* NewUser.xib */; };
 		F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52714A718DF823400B7E663 /* QRSheet.xib */; };
-		F527A91A195008A5000C4A7F /* DESSignKeybag.plist in Resources */ = {isa = PBXBuildFile; fileRef = F527A919195008A5000C4A7F /* DESSignKeybag.plist */; };
 		F52D013618B7CFB70033680F /* icon_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011B18B7CFB70033680F /* icon_minus.png */; };
 		F52D013718B7CFB70033680F /* icon_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011C18B7CFB70033680F /* icon_minus@2x.png */; };
 		F52D013818B7CFB70033680F /* icon_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D011D18B7CFB70033680F /* icon_plus.png */; };
@@ -146,6 +145,10 @@
 		F5E1A2C919170EFC00D0037A /* vp_layout_test_sample_1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */; };
 		F5E50C421913586200C3BE48 /* SCMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E50C411913586200C3BE48 /* SCMessages.m */; };
 		F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */; };
+		F5E97DB819820A510021E9AA /* SCKeybag.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E97DB719820A510021E9AA /* SCKeybag.m */; };
+		F5E97DBD198214570021E9AA /* libarisa.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E97DB9198214570021E9AA /* libarisa.c */; };
+		F5E97DBE198214570021E9AA /* NSData+ArisaOpening.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E97DBC198214570021E9AA /* NSData+ArisaOpening.m */; };
+		F5E97DC0198226350021E9AA /* master.keybag in Resources */ = {isa = PBXBuildFile; fileRef = F5E97DBF198226350021E9AA /* master.keybag */; };
 		F5EA627C19563327002479EE /* SCFeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA627B19563327002479EE /* SCFeedbackController.m */; };
 		F5EA627E1956334C002479EE /* Feedback.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5EA627D1956334C002479EE /* Feedback.xib */; };
 		F5F0EF0B1901D5C300A292F9 /* SCFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0EF0A1901D5C300A292F9 /* SCFriendRequest.m */; };
@@ -267,7 +270,6 @@
 		F52714A518DF823400B7E663 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		F52714A618DF823400B7E663 /* NewUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewUser.xib; sourceTree = "<group>"; };
 		F52714A718DF823400B7E663 /* QRSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRSheet.xib; sourceTree = "<group>"; };
-		F527A919195008A5000C4A7F /* DESSignKeybag.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DESSignKeybag.plist; sourceTree = "<group>"; };
 		F52D011B18B7CFB70033680F /* icon_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_minus.png; sourceTree = "<group>"; };
 		F52D011C18B7CFB70033680F /* icon_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_minus@2x.png"; sourceTree = "<group>"; };
 		F52D011D18B7CFB70033680F /* icon_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_plus.png; sourceTree = "<group>"; };
@@ -404,6 +406,13 @@
 		F5E50C411913586200C3BE48 /* SCMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMessages.m; sourceTree = "<group>"; };
 		F5E84CDD18DE2C8F00B93FE7 /* SCMenuStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMenuStatusView.h; sourceTree = "<group>"; };
 		F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMenuStatusView.m; sourceTree = "<group>"; };
+		F5E97DB619820A510021E9AA /* SCKeybag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCKeybag.h; sourceTree = "<group>"; };
+		F5E97DB719820A510021E9AA /* SCKeybag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCKeybag.m; sourceTree = "<group>"; };
+		F5E97DB9198214570021E9AA /* libarisa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libarisa.c; sourceTree = "<group>"; };
+		F5E97DBA198214570021E9AA /* libarisa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libarisa.h; sourceTree = "<group>"; };
+		F5E97DBB198214570021E9AA /* NSData+ArisaOpening.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ArisaOpening.h"; sourceTree = "<group>"; };
+		F5E97DBC198214570021E9AA /* NSData+ArisaOpening.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ArisaOpening.m"; sourceTree = "<group>"; };
+		F5E97DBF198226350021E9AA /* master.keybag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master.keybag; sourceTree = "<group>"; };
 		F5EA627A19563327002479EE /* SCFeedbackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFeedbackController.h; sourceTree = "<group>"; };
 		F5EA627B19563327002479EE /* SCFeedbackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFeedbackController.m; sourceTree = "<group>"; };
 		F5EA627D1956334C002479EE /* Feedback.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Feedback.xib; sourceTree = "<group>"; };
@@ -743,6 +752,7 @@
 				F53DB88E18B6DD37008D7ED5 /* common */,
 				F5B5425818B6D81F00226CA8 /* main */,
 				F5B5425918B6D81F00226CA8 /* misc */,
+				F5E97DB219820A260021E9AA /* services */,
 				F5084B08195E5B03008957C3 /* preferences */,
 			);
 			path = code;
@@ -754,7 +764,7 @@
 				F5CC709B18C2BA1600C41EBF /* friends.rtf */,
 				F5B5422618B6D23C00226CA8 /* Poison-Info.plist */,
 				F58EE9A818C57A760033F2D4 /* DefaultDefaults.plist */,
-				F527A919195008A5000C4A7F /* DESSignKeybag.plist */,
+				F5E97DBF198226350021E9AA /* master.keybag */,
 				F56CC5F71957F2FF009722E9 /* Default.psnChatStyle */,
 				F5C16E4819439517005E67A9 /* themelib.js */,
 				F52714AF18DF9D9E00B7E663 /* strings */,
@@ -824,6 +834,19 @@
 				F5CAA422196B761F00828CA5 /* SCDiary.m */,
 			);
 			path = diary;
+			sourceTree = "<group>";
+		};
+		F5E97DB219820A260021E9AA /* services */ = {
+			isa = PBXGroup;
+			children = (
+				F5E97DB619820A510021E9AA /* SCKeybag.h */,
+				F5E97DB719820A510021E9AA /* SCKeybag.m */,
+				F5E97DB9198214570021E9AA /* libarisa.c */,
+				F5E97DBA198214570021E9AA /* libarisa.h */,
+				F5E97DBB198214570021E9AA /* NSData+ArisaOpening.h */,
+				F5E97DBC198214570021E9AA /* NSData+ArisaOpening.m */,
+			);
+			path = services;
 			sourceTree = "<group>";
 		};
 		F5EA6276195632FC002479EE /* feedback_controller */ = {
@@ -988,10 +1011,10 @@
 				F5084B1F195E5C39008957C3 /* Preferences.xib in Resources */,
 				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */,
 				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
+				F5E97DC0198226350021E9AA /* master.keybag in Resources */,
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
 				F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */,
 				F5DCF846195D041B000E067F /* icon_share_more_Template.png in Resources */,
-				F527A91A195008A5000C4A7F /* DESSignKeybag.plist in Resources */,
 				F572E9EA19157423009FE61B /* Localizable.strings in Resources */,
 				F5FFF46618B8283300CD1E43 /* oi@2x.png in Resources */,
 				F5AC0D8A190C69BC0020644C /* request-pill-accept-down@2x.png in Resources */,
@@ -1085,6 +1108,7 @@
 				F5F0EF1119023AF000A292F9 /* SCNotificationManager.m in Sources */,
 				F59C0F4418D3E6F300BB437C /* SCResourceBundle.m in Sources */,
 				F577A5421905E1BC002AF82F /* SCRequestDialogController.m in Sources */,
+				F5E97DBD198214570021E9AA /* libarisa.c in Sources */,
 				F53DB89C18B6DD37008D7ED5 /* SCShadowedView.m in Sources */,
 				F5F6DD3E190587CF00112A64 /* SCStandaloneWindowController.m in Sources */,
 				F541811518C412EC00AB220E /* SCThemeManager.m in Sources */,
@@ -1100,8 +1124,10 @@
 				F517D85C19156EF100B236FE /* SCVideoPaneView.m in Sources */,
 				F53DB8A118B6DDDE008D7ED5 /* SCBuddyListController.m in Sources */,
 				F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */,
+				F5E97DB819820A510021E9AA /* SCKeybag.m in Sources */,
 				F5084B2C195E67C5008957C3 /* SCGeneralPaneController.m in Sources */,
 				F56B873818EE42E1008B5829 /* SCBase64.m in Sources */,
+				F5E97DBE198214570021E9AA /* NSData+ArisaOpening.m in Sources */,
 				F567A4E018C5530300E04F3A /* SCDraggingView.m in Sources */,
 				F517FCA918B91CDA0060D575 /* SCProfileManager.m in Sources */,
 				F58EE9AD18C595530033F2D4 /* SCChatView.m in Sources */,

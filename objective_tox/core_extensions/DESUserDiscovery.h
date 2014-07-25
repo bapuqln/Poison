@@ -32,7 +32,9 @@ typedef void(^DESUserDiscoveryCallback)(NSDictionary *result, NSError *error);
  * @param callback func(NSString *result, NSError *error).
  *                 One of the parameters will be valid depending on how
  *                 the resolution turned out.
+ * @param keys A dictionary of keys to use for encrypted lookup.
  */
 void DESDiscoverUser(NSString *shouldBeAnEmailAddress,
-                     DESUserDiscoveryCallback callback);
+                     DESUserDiscoveryCallback callback,
+                     NSDictionary *keys);
 #endif

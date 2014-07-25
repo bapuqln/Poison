@@ -7,6 +7,7 @@
 #import "SCBase64.h"
 #import "SCValidationHelpers.h"
 #import "NSWindow+Shake.h"
+#import "SCKeybag.h"
 
 #define SCFailureUIColour ([NSColor colorWithCalibratedRed:0.6 green:0.0 blue:0.0 alpha:1.0])
 #define SCSuccessUIColour ([NSColor colorWithCalibratedRed:0.0 green:0.8 blue:0.0 alpha:1.0])
@@ -291,6 +292,14 @@
     self.mailAddressField.stringValue = addr;
     self.mailAddressField.enabled = NO;
     self.findButton.enabled = NO;
+
+    NSArray *keys = [[SCKeybag keybag] keysForRole:@"dns3"];
+    NSLog(@"%@", keys);
+    NSMutableDictionary *domainKeys = [NSMutableDictionary dictionaryWithCapacity:[keys count]];
+    for (SCKey *key in keys) {
+        domainKeys[key.domains[0]] = key.hex;
+    }
+
     DESDiscoverUser(addr, ^(NSDictionary *result, NSError *error) {
         self.mailAddressField.enabled = YES;
         self.findButton.enabled = YES;
@@ -316,7 +325,7 @@
         _dnsDiscoveryVersion = 1;
         [self resizeWindowForPreview];
         NSLog(@"%@ %@", result, error);
-    });
+    }, domainKeys);
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj {
