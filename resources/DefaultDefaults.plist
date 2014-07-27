@@ -21,5 +21,7 @@
 	<false/>
 	<key>nameCompletionDelimiter</key>
 	<string>,</string>
+	<key>showsMenubarIcon</key>
+	<false/>
 </dict>
 </plist>

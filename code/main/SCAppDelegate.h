@@ -32,6 +32,7 @@
 - (void)sendAvatarPacket:(DESFriend *)friend;
 
 - (void)reopenMainWindow;
+- (void)reopenMenubarIcon;
 
 /* by popular demand */
 - (NSString *)profileName;

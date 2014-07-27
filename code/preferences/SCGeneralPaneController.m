@@ -33,7 +33,7 @@
     [self updateAvatarSelection];
 
     self.checkBoxPublicSights.state = SCBoolPreference(@"publicSights")? NSOnState : NSOffState;
-    self.checkBoxMenubar.state = SCBoolPreference(@"menuIcon")? NSOnState : NSOffState;
+    self.checkBoxMenubar.state = SCBoolPreference(@"showsMenubarIcon")? NSOnState : NSOffState;
 }
 
 #pragma mark - window style
@@ -89,7 +89,8 @@
 #pragma mark - menu bar icon
 
 - (IBAction)changeMBState:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:([sender state] == NSOnState)? YES : NO forKey:@"menubarIcon"];
+    [[NSUserDefaults standardUserDefaults] setBool:([sender state] == NSOnState)? YES : NO forKey:@"showsMenubarIcon"];
+    [(SCAppDelegate *)[NSApp delegate] reopenMenubarIcon];
 }
 
 

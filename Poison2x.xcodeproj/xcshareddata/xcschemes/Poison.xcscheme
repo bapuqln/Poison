@@ -57,19 +57,6 @@
             ReferencedContainer = "container:Poison2x.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-AppleLanguages (de)"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "CA_DEBUG_TRANSACTIONS"
-            value = "1"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

@@ -66,6 +66,10 @@
 		F52D014918B7CFB70033680F /* user-icon-default.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D012E18B7CFB70033680F /* user-icon-default.png */; };
 		F52D014A18B7CFB70033680F /* user-icon-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F52D012F18B7CFB70033680F /* user-icon-default@2x.png */; };
 		F52D014E18B7D44F0033680F /* SCBigGreenButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F52D014D18B7D44F0033680F /* SCBigGreenButton.m */; };
+		F52FB46319849D80000EAEF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52FB46219849D80000EAEF9 /* Foundation.framework */; };
+		F52FB47319849FFA000EAEF9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F55BAE9119847BB300572924 /* main.m */; };
+		F52FB4741984A001000EAEF9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A2978118D4CB3600595FDF /* Security.framework */; };
+		F52FB4771984A0E0000EAEF9 /* org.zodiaclabs.updategremlin.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = F52FB46119849D80000EAEF9 /* org.zodiaclabs.updategremlin.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F538754218C25DB500AED945 /* SCNewUserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F538754118C25DB500AED945 /* SCNewUserWindowController.m */; };
 		F538754518C2656000AED945 /* SCWidgetedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F538754418C2656000AED945 /* SCWidgetedWindow.m */; };
 		F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = F53D4DB918FA243D0051E2E7 /* ellipsis-overlay.png */; };
@@ -87,6 +91,8 @@
 		F543BE3418E126CC004C70D3 /* NSString+CanonicalID.m in Sources */ = {isa = PBXBuildFile; fileRef = F543BE3318E126CC004C70D3 /* NSString+CanonicalID.m */; };
 		F543BE3718E12994004C70D3 /* SCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F543BE3618E12994004C70D3 /* SCMainWindowController.m */; };
 		F55857A618D649820053DD52 /* libqrencode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F55857A518D649820053DD52 /* libqrencode.a */; };
+		F55BAE7D19846DDE00572924 /* AdvancedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = F55BAE7C19846DDE00572924 /* AdvancedPane.xib */; };
+		F55BAE831984731800572924 /* SCAdvancedPaneController.m in Sources */ = {isa = PBXBuildFile; fileRef = F55BAE821984731800572924 /* SCAdvancedPaneController.m */; };
 		F567A4E018C5530300E04F3A /* SCDraggingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F567A4DF18C5530300E04F3A /* SCDraggingView.m */; };
 		F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CA18E884AE00E1EB0D /* avatar-mask-circle@2x.png */; };
 		F56956CD18E884AE00E1EB0D /* avatar-mask-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = F56956CB18E884AE00E1EB0D /* avatar-mask-circle.png */; };
@@ -172,6 +178,13 @@
 			remoteGlobalIDString = F50F9C0618C3AAD800D06A0F;
 			remoteInfo = ObjectiveTox;
 		};
+		F52FB4751984A00F000EAEF9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5B5421318B6D23C00226CA8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F52FB46019849D80000EAEF9;
+			remoteInfo = DeltaService2;
+		};
 		F553FAF818DCE5E000CBA532 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F50F9C0D18C3AB3600D06A0F /* ObjectiveTox.xcodeproj */;
@@ -225,6 +238,17 @@
 			files = (
 				F56CC5F91957F491009722E9 /* Default.psnChatStyle in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F55BAE9E19847BB300572924 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				F52FB4771984A0E0000EAEF9 /* org.zodiaclabs.updategremlin.xpc in Embed XPC Services */,
+			);
+			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -287,6 +311,8 @@
 		F52D014C18B7D44F0033680F /* SCBigGreenButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBigGreenButton.h; sourceTree = "<group>"; };
 		F52D014D18B7D44F0033680F /* SCBigGreenButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBigGreenButton.m; sourceTree = "<group>"; };
 		F52D7DB818B932A400639182 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		F52FB46119849D80000EAEF9 /* org.zodiaclabs.updategremlin.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = org.zodiaclabs.updategremlin.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		F52FB46219849D80000EAEF9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F538754018C25DB500AED945 /* SCNewUserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNewUserWindowController.h; sourceTree = "<group>"; };
 		F538754118C25DB500AED945 /* SCNewUserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNewUserWindowController.m; sourceTree = "<group>"; };
 		F538754318C2656000AED945 /* SCWidgetedWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWidgetedWindow.h; sourceTree = "<group>"; };
@@ -324,6 +350,13 @@
 		F543BE3518E12994004C70D3 /* SCMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMainWindowController.h; sourceTree = "<group>"; };
 		F543BE3618E12994004C70D3 /* SCMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMainWindowController.m; sourceTree = "<group>"; };
 		F55857A518D649820053DD52 /* libqrencode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrencode.a; path = _support/lib/libqrencode.a; sourceTree = "<group>"; };
+		F55BAE7C19846DDE00572924 /* AdvancedPane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedPane.xib; sourceTree = "<group>"; };
+		F55BAE811984731800572924 /* SCAdvancedPaneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAdvancedPaneController.h; sourceTree = "<group>"; };
+		F55BAE821984731800572924 /* SCAdvancedPaneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAdvancedPaneController.m; sourceTree = "<group>"; };
+		F55BAE8C19847BB300572924 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F55BAE9119847BB300572924 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F55BAE9F19847BFE00572924 /* code_signing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = code_signing.h; sourceTree = "<group>"; };
+		F55BAEA1198480E700572924 /* DeltaService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DeltaService.entitlements; sourceTree = "<group>"; };
 		F567A4DE18C5530300E04F3A /* SCDraggingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDraggingView.h; sourceTree = "<group>"; };
 		F567A4DF18C5530300E04F3A /* SCDraggingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDraggingView.m; sourceTree = "<group>"; };
 		F567A4E218C5745C00E04F3A /* to-do */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "to-do"; sourceTree = "<group>"; };
@@ -440,6 +473,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F52FB45E19849D80000EAEF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F52FB4741984A001000EAEF9 /* Security.framework in Frameworks */,
+				F52FB46319849D80000EAEF9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5B5421818B6D23C00226CA8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -469,6 +511,8 @@
 				F5084B2B195E67C5008957C3 /* SCGeneralPaneController.m */,
 				F521C0841960E07600D75598 /* SCAudioVideoPaneController.h */,
 				F521C0851960E07600D75598 /* SCAudioVideoPaneController.m */,
+				F55BAE811984731800572924 /* SCAdvancedPaneController.h */,
+				F55BAE821984731800572924 /* SCAdvancedPaneController.m */,
 			);
 			path = preferences;
 			sourceTree = "<group>";
@@ -686,9 +730,28 @@
 			path = chat_view;
 			sourceTree = "<group>";
 		};
+		F55BAE8A19847BB300572924 /* self_updater */ = {
+			isa = PBXGroup;
+			children = (
+				F55BAE9119847BB300572924 /* main.m */,
+				F55BAE9F19847BFE00572924 /* code_signing.h */,
+				F55BAE8B19847BB300572924 /* Supporting Files */,
+			);
+			path = self_updater;
+			sourceTree = "<group>";
+		};
+		F55BAE8B19847BB300572924 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F55BAE8C19847BB300572924 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F5B5421218B6D23C00226CA8 = {
 			isa = PBXGroup;
 			children = (
+				F55BAEA1198480E700572924 /* DeltaService.entitlements */,
 				F5168E5F19452CC7000D7557 /* Tox.entitlements */,
 				F567A4E218C5745C00E04F3A /* to-do */,
 				F5F6D5ED18DE4A0200A14557 /* README.md */,
@@ -696,6 +759,7 @@
 				F50F9C0D18C3AB3600D06A0F /* ObjectiveTox.xcodeproj */,
 				F5B5422418B6D23C00226CA8 /* code */,
 				F5B5425418B6D77400226CA8 /* resources */,
+				F55BAE8A19847BB300572924 /* self_updater */,
 				F5B5421D18B6D23C00226CA8 /* Frameworks */,
 				F5B5421C18B6D23C00226CA8 /* Products */,
 			);
@@ -705,6 +769,7 @@
 			isa = PBXGroup;
 			children = (
 				F5B5421B18B6D23C00226CA8 /* Tox.app */,
+				F52FB46119849D80000EAEF9 /* org.zodiaclabs.updategremlin.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -722,6 +787,7 @@
 				F52D7DB818B932A400639182 /* OpenAL.framework */,
 				F53DB8A218B6DE74008D7ED5 /* QuartzCore.framework */,
 				F5B5421E18B6D23C00226CA8 /* Cocoa.framework */,
+				F52FB46219849D80000EAEF9 /* Foundation.framework */,
 				F5B5422018B6D23C00226CA8 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -823,6 +889,7 @@
 				F5084B20195E5D9C008957C3 /* GeneralPane.xib */,
 				F5084B2D195E8389008957C3 /* AudioVideoPane.xib */,
 				F5DBDC681960B1AE007426B0 /* IdentityPane.xib */,
+				F55BAE7C19846DDE00572924 /* AdvancedPane.xib */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
@@ -870,6 +937,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F52FB46019849D80000EAEF9 /* DeltaService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F52FB47219849D80000EAEF9 /* Build configuration list for PBXNativeTarget "DeltaService" */;
+			buildPhases = (
+				F52FB45D19849D80000EAEF9 /* Sources */,
+				F52FB45E19849D80000EAEF9 /* Frameworks */,
+				F52FB45F19849D80000EAEF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaService;
+			productName = DeltaService2;
+			productReference = F52FB46119849D80000EAEF9 /* org.zodiaclabs.updategremlin.xpc */;
+			productType = "com.apple.product-type.bundle";
+		};
 		F5B5421A18B6D23C00226CA8 /* Poison */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5B5424C18B6D23C00226CA8 /* Build configuration list for PBXNativeTarget "Poison" */;
@@ -878,6 +962,7 @@
 				F5B5421718B6D23C00226CA8 /* Sources */,
 				F5B5421818B6D23C00226CA8 /* Frameworks */,
 				F5B5421918B6D23C00226CA8 /* Resources */,
+				F55BAE9E19847BB300572924 /* Embed XPC Services */,
 				F541811818C4139200AB220E /* CopyFiles */,
 				F553FAFB18DCF3AF00CBA532 /* ShellScript */,
 			);
@@ -885,6 +970,7 @@
 			);
 			dependencies = (
 				F5A2978018D4CB2A00595FDF /* PBXTargetDependency */,
+				F52FB4761984A00F000EAEF9 /* PBXTargetDependency */,
 			);
 			name = Poison;
 			productName = Atroquinine;
@@ -935,6 +1021,7 @@
 			targets = (
 				F5B5421A18B6D23C00226CA8 /* Poison */,
 				F531760B18CB8FCC00F802B9 /* Everything */,
+				F52FB46019849D80000EAEF9 /* DeltaService */,
 			);
 		};
 /* End PBXProject section */
@@ -971,6 +1058,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F52FB45F19849D80000EAEF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5B5421918B6D23C00226CA8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1008,6 +1102,7 @@
 				F5EA627E1956334C002479EE /* Feedback.xib in Resources */,
 				F5084B29195E6245008957C3 /* graph_unified.png in Resources */,
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
+				F55BAE7D19846DDE00572924 /* AdvancedPane.xib in Resources */,
 				F5084B1F195E5C39008957C3 /* Preferences.xib in Resources */,
 				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */,
 				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
@@ -1088,6 +1183,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F52FB45D19849D80000EAEF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F52FB47319849FFA000EAEF9 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5B5421718B6D23C00226CA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1101,6 +1204,7 @@
 				F543BE3418E126CC004C70D3 /* NSString+CanonicalID.m in Sources */,
 				F53DB89918B6DD37008D7ED5 /* NSWindow+Shake.m in Sources */,
 				F5E50C421913586200C3BE48 /* SCMessages.m in Sources */,
+				F55BAE831984731800572924 /* SCAdvancedPaneController.m in Sources */,
 				F541810A18C3FABD00AB220E /* SCNonGarbageSplitView.m in Sources */,
 				F5917DF419638FCB009457DB /* SCAvatar.m in Sources */,
 				F5CAA423196B761F00828CA5 /* SCDiary.m in Sources */,
@@ -1149,6 +1253,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F52FB4761984A00F000EAEF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F52FB46019849D80000EAEF9 /* DeltaService */;
+			targetProxy = F52FB4751984A00F000EAEF9 /* PBXContainerItemProxy */;
+		};
 		F553FAF918DCE5E000CBA532 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Everything;
@@ -1179,6 +1288,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F52FB46D19849D80000EAEF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/self_updater/Info.plist";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CODE_SIGN_FLAGS = "-o kill,hard";
+				PRODUCT_NAME = org.zodiaclabs.updategremlin;
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Debug;
+		};
+		F52FB46E19849D80000EAEF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/self_updater/Info.plist";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CODE_SIGN_FLAGS = "-o kill,hard";
+				PRODUCT_NAME = org.zodiaclabs.updategremlin;
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Release;
+		};
 		F531760C18CB8FCC00F802B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1306,9 +1453,8 @@
 					"${PROJECT_DIR}/_support/lib",
 					"$(PROJECT_DIR)/_support/lib",
 				);
-				LLVM_LTO = YES;
 				OTHER_CFLAGS = "-Wno-attributes";
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1350,9 +1496,8 @@
 					"${PROJECT_DIR}/_support/lib",
 					"$(PROJECT_DIR)/_support/lib",
 				);
-				LLVM_LTO = YES;
 				OTHER_CFLAGS = "-Wno-attributes";
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1372,6 +1517,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F52FB47219849D80000EAEF9 /* Build configuration list for PBXNativeTarget "DeltaService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F52FB46D19849D80000EAEF9 /* Debug */,
+				F52FB46E19849D80000EAEF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F531761018CB8FCC00F802B9 /* Build configuration list for PBXAggregateTarget "Everything" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

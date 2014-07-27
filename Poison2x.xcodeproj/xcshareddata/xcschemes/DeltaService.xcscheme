@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F50F9C0518C3AAD800D06A0F"
-               BuildableName = "libObjectiveTox.a"
-               BlueprintName = "ObjectiveTox"
-               ReferencedContainer = "container:ObjectiveTox.xcodeproj">
+               BlueprintIdentifier = "F52FB46019849D80000EAEF9"
+               BuildableName = "org.zodiaclabs.updategremlin.xpc"
+               BlueprintName = "DeltaService"
+               ReferencedContainer = "container:Poison2x.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -42,10 +42,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F50F9C0518C3AAD800D06A0F"
-            BuildableName = "libObjectiveTox.a"
-            BlueprintName = "ObjectiveTox"
-            ReferencedContainer = "container:ObjectiveTox.xcodeproj">
+            BlueprintIdentifier = "F52FB46019849D80000EAEF9"
+            BuildableName = "org.zodiaclabs.updategremlin.xpc"
+            BlueprintName = "DeltaService"
+            ReferencedContainer = "container:Poison2x.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,10 +60,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F50F9C0518C3AAD800D06A0F"
-            BuildableName = "libObjectiveTox.a"
-            BlueprintName = "ObjectiveTox"
-            ReferencedContainer = "container:ObjectiveTox.xcodeproj">
+            BlueprintIdentifier = "F52FB46019849D80000EAEF9"
+            BuildableName = "org.zodiaclabs.updategremlin.xpc"
+            BlueprintName = "DeltaService"
+            ReferencedContainer = "container:Poison2x.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

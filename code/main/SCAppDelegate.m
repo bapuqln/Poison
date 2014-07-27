@@ -21,7 +21,7 @@
 #import "SCAudioVideoRecorder.h"
 
 /* note: this is hard-coded to make tampering harder. */
-#define SCApplicationDownloadPage (@"http://download.tox.im/")
+#define SCApplicationDownloadPage (@"https://kirara.ca/poison/dl")
 
 @interface SCAppDelegate ()
 @property (strong) DESToxConnection *toxConnection;
@@ -45,12 +45,13 @@
 @property (weak) IBOutlet SCGradientView *aboutHeader;
 @property (weak) IBOutlet SCShadowedView *aboutFooter;
 @property (unsafe_unretained) IBOutlet NSWindow *aboutWindow;
-@property (weak) IBOutlet NSTextField *aboutWindowApplicationNameLabel;
 @property (weak) IBOutlet NSTextField *aboutWindowVersionLabel;
 @property (unsafe_unretained) IBOutlet NSWindow *ackWindow;
 @property (unsafe_unretained) IBOutlet NSTextView *ackTextView;
 #pragma mark - Preferences
 @property (strong) SCPreferencesWindowController *preferencesController;
+#pragma mark - Menubar icon
+@property (strong) NSStatusItem *menubarIcon;
 #pragma mark - Misc. state
 @property (strong) id activityToken;
 @property BOOL userIsWaitingOnApplicationExit;
@@ -96,6 +97,8 @@
             [NSApp terminate:self];
         }
     }
+
+    [self reopenMenubarIcon];
 
     NSString *autologinUsername = [[NSUserDefaults standardUserDefaults] stringForKey:@"autologinUsername"];
     SCNewUserWindowController *login = [[SCNewUserWindowController alloc] initWithWindowNibName:@"NewUser"];
@@ -176,6 +179,22 @@
     [SCBuddyListWindowController class] : [SCUnifiedWindowController class];
     self.mainWindowController = [[preferredWindowClass alloc] initWithDESConnection:self.toxConnection];
     [self.mainWindowController showWindow:self];
+}
+
+- (void)reopenMenubarIcon {
+    if (self.menubarIcon)
+        [self.menubarIcon.statusBar removeStatusItem:self.menubarIcon];
+    self.menubarIcon = nil;
+
+    if (SCBoolPreference(@"showsMenubarIcon")) {
+        NSImage *icon = [NSImage imageNamed:@"menu_normal"];
+        self.menubarIcon = [[NSStatusBar systemStatusBar] statusItemWithLength:icon.size.width + 4];
+        self.menubarIcon.image = icon;
+        self.menubarIcon.alternateImage = [NSImage imageNamed:@"menu_sel"];
+        self.menubarIcon.highlightMode = YES;
+        self.menubarIcon.target = self;
+        self.menubarIcon.action = @selector(showMainWindow:);
+    }
 }
 
 - (void)removeFriend:(DESFriend *)f {
@@ -565,8 +584,8 @@
     self.aboutHeader.dragsWindow = YES;
     self.aboutFooter.backgroundColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
     self.aboutFooter.shadowColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
-    self.aboutWindowApplicationNameLabel.stringValue = SCApplicationInfoDictKey(@"SCDevelopmentName");
-    self.aboutWindowVersionLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Version %@", nil),
+    self.aboutWindowVersionLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"%@ build %@", nil),
+                                                SCApplicationInfoDictKey(@"SCDevelopmentName"),
                                                 SCApplicationInfoDictKey(@"CFBundleShortVersionString")];
     [self.aboutWindow makeKeyAndOrderFront:self];
 }
@@ -672,6 +691,10 @@
         }
     }
     NSBeep();
+}
+
+- (IBAction)showMainWindow:(id)sender {
+    [self.mainWindowController.window makeKeyAndOrderFront:self];
 }
 
 #pragma mark - Data Export

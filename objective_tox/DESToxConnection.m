@@ -1,8 +1,11 @@
 #import "DESMacros.h"
 #import "ObjectiveTox-Private.h"
 #import "tox.h"
-#import "toxav.h"
 #import "Messenger.h"
+
+#ifndef DES_NO_TOXAV
+#import "toxav.h"
+#endif
 
 NSString *const DESDefaultNickname = @"Toxicle";
 NSString *const DESDefaultStatusMessage = @"Toxing on Tox";
@@ -10,6 +13,8 @@ const uint32_t DESMaximumNameLength = TOX_MAX_NAME_LENGTH;
 const uint32_t DESMaximumStatusMessageLength = TOX_MAX_STATUSMESSAGE_LENGTH;
 
 NSString *const DESFriendAddingErrorDomain = @"DESFriendAddingErrorDomain";
+
+#if !TARGET_OS_IPHONE
 
 NSString *DESCreateBase64String(NSData *bytes) {
     CFDataRef input = (__bridge CFDataRef)bytes;
@@ -36,12 +41,21 @@ NSData *DESDecodeBase64String(NSString *enc) {
     return (__bridge NSData *)encoded;
 }
 
+#else
+
+#define DESCreateBase64String(enc) ([enc base64EncodedStringWithOptions:0])
+#define DESDecodeBase64String(enc) ([[NSData alloc] initWithBase64EncodedString:enc options:0])
+
+#endif
+
 @interface DESToxConnection ()
 @property dispatch_queue_t messengerQueue;
 @property BOOL isMessengerLoopStopping;
 
 @property Tox *tox;
+#ifndef DES_NO_TOXAV
 @property ToxAv *toxav;
+#endif
 @end
 
 @implementation DESToxConnection {
@@ -79,8 +93,10 @@ NSData *DESDecodeBase64String(NSString *enc) {
         tox_callback_file_data(self.tox, _DESCallbackFileData, (__bridge void*)self);
         tox_callback_file_send_request(self.tox, _DESCallbackFileRequest, (__bridge void*)self);
 
+#ifndef DES_NO_TOXAV
         self.toxav = toxav_new(self.tox, 16);
         toxav_register_callstate_callback(self.toxav, DESOrangeDidRequestCall, av_OnInvite, (__bridge void*)self);
+#endif
     }
     return self;
 }
@@ -549,7 +565,9 @@ NSData *DESDecodeBase64String(NSString *enc) {
 - (void)dealloc {
     if (self.tox)
         tox_kill(self.tox);
+#if !OS_OBJECT_USE_OBJC_RETAIN_RELEASE
     dispatch_release(self.messengerQueue);
+#endif
     DESInfo(@"deallocated!");
 }
 
