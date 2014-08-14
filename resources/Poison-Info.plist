@@ -52,7 +52,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>114</string>
+	<string>115</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -80,7 +80,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>114</string>
+	<string>115</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
@@ -100,7 +100,7 @@
 	<key>SCFeedbackURL</key>
 	<string>https://elizabeth.zodiaclabs.org/sys/feedback</string>
 	<key>SCGitRef</key>
-	<string>4d86f68</string>
+	<string>ba3b65d</string>
 	<key>SCReleaseGroupIdentity</key>
 	<string>Finally A/V!</string>
 	<key>ToxHomepage</key>

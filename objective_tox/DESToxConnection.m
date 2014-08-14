@@ -72,7 +72,7 @@ NSData *DESDecodeBase64String(NSString *enc) {
 - (instancetype)init {
     if ((self = [super init])) {
         self.messengerQueue = dispatch_queue_create("ca.kirara.DES2RunLoop", DISPATCH_QUEUE_SERIAL);
-        self.tox = tox_new(1);
+        self.tox = tox_new(NULL);
         _friendMapping = [[NSMutableDictionary alloc] init];
         _groupMapping = [[NSMutableDictionary alloc] init];
         _fileSenders = [[NSMutableSet alloc] init];

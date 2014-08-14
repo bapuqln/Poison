@@ -356,7 +356,6 @@
 		F55BAE8C19847BB300572924 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F55BAE9119847BB300572924 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F55BAE9F19847BFE00572924 /* code_signing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = code_signing.h; sourceTree = "<group>"; };
-		F55BAEA1198480E700572924 /* DeltaService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DeltaService.entitlements; sourceTree = "<group>"; };
 		F567A4DE18C5530300E04F3A /* SCDraggingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDraggingView.h; sourceTree = "<group>"; };
 		F567A4DF18C5530300E04F3A /* SCDraggingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDraggingView.m; sourceTree = "<group>"; };
 		F567A4E218C5745C00E04F3A /* to-do */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "to-do"; sourceTree = "<group>"; };
@@ -751,7 +750,6 @@
 		F5B5421218B6D23C00226CA8 = {
 			isa = PBXGroup;
 			children = (
-				F55BAEA1198480E700572924 /* DeltaService.entitlements */,
 				F5168E5F19452CC7000D7557 /* Tox.entitlements */,
 				F567A4E218C5745C00E04F3A /* to-do */,
 				F5F6D5ED18DE4A0200A14557 /* README.md */,
