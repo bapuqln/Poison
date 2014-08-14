@@ -185,7 +185,7 @@ NSData *DESDecodeBase64String(NSString *enc) {
     dispatch_async(self.messengerQueue, ^{
         uint8_t *keyBytes = malloc(DESPublicKeySize);
         DESConvertPublicKeyToData(pubKey, keyBytes);
-        tox_bootstrap_from_address(self.tox, [addr UTF8String], YES, port, keyBytes);
+        tox_bootstrap_from_address(self.tox, [addr UTF8String], port, keyBytes);
         free(keyBytes);
     });
 }
