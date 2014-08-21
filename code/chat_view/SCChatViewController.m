@@ -8,7 +8,7 @@
 #import "SCConversationManager.h"
 #import "SCTextField.h"
 #import "SCFileListController.h"
-#import <WebKit/WebKit.h>
+#import "SCHTMLTranscriptController.h"
 
 NS_INLINE NSColor *SCCreateDarkenedColor(NSColor *color, CGFloat factor) {
     CGFloat compo[3];
@@ -41,43 +41,27 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 - (NSRect)rectForSegment:(NSInteger)arg1 inFrame:(NSRect)arg2;
 @end
 
-@interface SCResponderProxyView : SCFillingView
-@property (weak) SCTextField *responder;
-@end
-
-@implementation SCResponderProxyView
-
-- (void)keyDown:(NSEvent *)theEvent {
-    if (!self.responder) {
-        [super keyDown:theEvent];
-    } else {
-        [self.responder becomeFirstResponder];
-        [self.responder restoreSelection];
-        [[NSApplication sharedApplication] postEvent:theEvent atStart:YES];
-    }
-}
-
-@end
-
 @interface SCChatViewController ()
+@property (strong) IBOutlet SCGradientView *convInfoBG;
+@property (strong) IBOutlet NSTextField *convInfoName;
+@property (strong) IBOutlet NSTextField *convInfoStatus;
+
 @property (strong) IBOutlet NSSplitView *transcriptSplitView;
 @property (strong) IBOutlet NSSplitView *splitView;
-@property (strong) IBOutlet WebView *webView;
-@property (strong) IBOutlet NSView *transcriptView;
 @property (strong) IBOutlet SCDraggingView *chatEntryView;
 @property (strong) IBOutlet SCGradientView *videoBackground;
 @property (strong) IBOutlet NSScrollView *userListContainer;
 @property (strong) IBOutlet NSTableView *userList;
 @property (strong) IBOutlet SCTextField *textField;
-@property (strong) IBOutlet SCResponderProxyView *webSuperview;
+
+@property (strong) SCHTMLTranscriptController *webController;
 
 @property (strong) NSCache *nameCompletionCache;
 @property NSInteger userListRememberedSplitPosition; /* from the right */
 @property NSInteger videoPaneRememberedSplitPosition; /* from the top */
 
-@property (strong) IBOutlet NSPopover *fileListWindow;
-@property (strong) IBOutlet SCFileListController *fileList;
-
+@property (strong) NSPopover *fileListWindow;
+@property (strong) SCFileListController *fileList;
 @end
 
 @implementation SCChatViewController {
@@ -91,22 +75,23 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.nameCompletionCache = [[NSCache alloc] init];
-        _showsUserList = YES;
-        _showsVideoPane = YES;
+        _showsUserList = NO;
+        _showsVideoPane = NO;
     }
     return self;
 }
 
 - (void)awakeFromNib {
+    self.webController = [[SCHTMLTranscriptController alloc] init];
+    [self.transcriptSplitView addSubview:self.webController.view positioned:NSWindowBelow relativeTo:nil];
     self.nextResponder = self.textField;
-    self.webSuperview.responder = self.textField;
+    ((SCResponderProxyView *)self.webController.view).responder = self.textField;
     self.splitView.delegate = self;
     [self.view setFrameSize:(NSSize){
         MAX(self.splitView.frame.size.width, self.chatEntryView.frame.size.width),
         self.splitView.frame.size.height + self.chatEntryView.frame.size.height
     }];
-    self.webView.drawsBackground = NO;
-    self.webView.frameLoadDelegate = self;
+
     [self reloadTheme];
     SCThemeManager *tm = [SCThemeManager sharedManager];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -133,15 +118,24 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (void)reloadTheme {
     SCThemeManager *tm = [SCThemeManager sharedManager];
-    ((SCFillingView*)self.webView.superview).drawColor = [tm backgroundColorOfCurrentTheme];
     self.userList.backgroundColor = [tm backgroundColorOfCurrentTheme];
     self.videoBackground.topColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.10);
     self.videoBackground.bottomColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.15);
     self.videoBackground.borderColor = nil;
     self.videoBackground.shadowColor = SCCreateDarkenedColor([tm barTopColorOfCurrentTheme], 0.3);
     self.videoBackground.dragsWindow = YES;
+
+    self.convInfoBG.topColor = [tm barTopColorOfCurrentTheme];
+    self.convInfoBG.bottomColor = [tm barBottomColorOfCurrentTheme];
+    self.convInfoBG.borderColor = [tm barBorderColorOfCurrentTheme];
+    self.convInfoName.textColor = [tm barTextColorOfCurrentTheme];
+    self.convInfoStatus.textColor = [tm barTextColorOfCurrentTheme];
+    self.convInfoBG.needsDisplay = YES;
+    self.convInfoBG.dragsWindow = YES;
+    self.convInfoBG.isFlushWithTitlebar = YES;
+
+    [self.webController reloadTheme];
     
-    [self.webView.mainFrame loadRequest:[NSURLRequest requestWithURL:[tm baseTemplateURLOfCurrentTheme]]];
     _currentTheme = [tm pathOfCurrentThemeDirectory];
 }
 
@@ -194,7 +188,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex {
     if (splitView == self.splitView)
-        return self.splitView.frame.size.height - 32;
+        return self.splitView.frame.size.height - 150;
     else
         return splitView.frame.size.width - 100;
 }
@@ -210,65 +204,28 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     }
 }
 
-- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
-    [splitView adjustSubviews];
-    if (splitView.subviews.count < 2)
-        return;
-
-    CGFloat incorrectPos = ((NSView *)splitView.subviews[0]).frame.size.height;
-    CGFloat correctPos = [self splitView:splitView constrainSplitPosition:incorrectPos ofSubviewAt:0];
-    [splitView setPosition:correctPos ofDividerAtIndex:0];
-}
-
 //- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
-//    CGSize deltas = (CGSize){splitView.frame.size.width - oldSize.width, splitView.frame.size.height - oldSize.height};
-//    if (splitView == self.splitView) {
-//        [self.splitView adjustSubviews];
-//    } else if (self.showsUserList) {
-//        NSView *expands = (NSView*)splitView.subviews[0];
-//        NSView *doesntExpand = (NSView*)splitView.subviews[1];
-//        expands.frameSize = (CGSize){expands.frame.size.width + deltas.width, expands.frame.size.height + deltas.height};
-//        doesntExpand.frame = (CGRect){{expands.frame.size.width + 1, 0}, {splitView.frame.size.width - expands.frame.size.width - 1, splitView.frame.size.height}};
-//    } else {
-//        [splitView adjustSubviews];
-//    }
+//    [splitView adjustSubviews];
+//    if (splitView.subviews.count < 2)
+//        return;
+//
+//    CGFloat incorrectPos = ((NSView *)splitView.subviews[0]).frame.size.height;
+//    CGFloat correctPos = [self splitView:splitView constrainSplitPosition:incorrectPos ofSubviewAt:0];
+//    [splitView setPosition:correctPos ofDividerAtIndex:0];
 //}
 
 - (NSColor *)dividerColourForSplitView:(SCNonGarbageSplitView *)splitView {
     if (splitView == self.splitView)
-        return [NSColor controlDarkShadowColor];
+        return SCCreateDarkenedColor([[SCThemeManager sharedManager] barTopColorOfCurrentTheme], 0.15);
     else
         return [[SCThemeManager sharedManager] barBorderColorOfCurrentTheme];
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)view {
-    if (view == self.videoBackground || view == self.userList)
+    if (view == self.videoBackground || view == self.userList.superview.superview)
         return NO;
     else
         return YES;
-}
-
-#pragma mark - webview stuff
-
-- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
-    NSScrollView *mainScrollView = sender.mainFrame.frameView.documentView.enclosingScrollView;
-    mainScrollView.verticalScrollElasticity = NSScrollElasticityAllowed;
-    mainScrollView.horizontalScrollElasticity = NSScrollElasticityNone;
-    [self injectThemeLib];
-    [self.webView.mainFrame.windowObject setValue:_conversation forKey:@"Conversation"];
-    [_conversation replayHistoryIntoContainer:self];
-}
-
-- (void)injectThemeLib {
-    NSString *base = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"themelib" ofType:@"js"]
-                                               encoding:NSUTF8StringEncoding error:nil];
-    if (base) {
-        [self.webView.mainFrame.windowObject evaluateWebScript:base];
-    }
-}
-
-- (void)throwEvent:(NSString *)eventName withObject:(id)object {
-    [self.webView.mainFrame.windowObject callWebScriptMethod:@"__SCPostEvent" withArguments:@[eventName, object]];
 }
 
 #pragma mark - textfield delegate
@@ -447,10 +404,11 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 #pragma mark - chat stuff
 
 - (void)setConversation:(SCConversation *)conversation {
-    [_conversation removeContainer:self];
+    [_conversation removeContainer:self.webController];
     _conversation = conversation;
-    [conversation addContainer:self];
-    [self.webView reload:self];
+    [conversation addContainer:self.webController];
+    self.webController.conversation = conversation;
+    [self.webController reloadConversation];
 }
 
 #pragma mark - selecting actions
@@ -458,7 +416,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 - (IBAction)doActionFromButtons:(NSSegmentedControl *)sender {
     NSLog(@"%ld", (long)sender.selectedSegment);
     switch (sender.selectedSegment) {
-        case 2:
+        case 0:
             if (!self.fileListWindow)
                 self.fileListWindow = [[NSPopover alloc] init];
             if (!self.fileList) {
@@ -470,7 +428,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
             }
             [self.fileListWindow showRelativeToRect:[sender.cell rectForSegment:2 inFrame:sender.bounds] ofView:sender preferredEdge:NSMaxYEdge];
             break;
-        case 3:
+        case 1:
             [NSMenu popUpContextMenu:self.secretActionMenu withEvent:[[NSApplication sharedApplication] currentEvent] forView:sender];
             break;
         default:

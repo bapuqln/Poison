@@ -27,8 +27,8 @@
             ]];
             [grad drawInRect:NSMakeRect(0, 0, self.bounds.size.width, self.bounds.size.height - 1) angle:90.0];
         }
-        //[[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] set];
-        //NSRectFill(NSMakeRect(0, 0, self.bounds.size.width, self.bounds.size.height - 1));
+        [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] set];
+        NSRectFill(NSMakeRect(0, self.bounds.size.height - 1, self.bounds.size.width, 1));
     }
 }
 

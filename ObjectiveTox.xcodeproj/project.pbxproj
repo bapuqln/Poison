@@ -85,7 +85,6 @@
 		F5BA234618E74C7F00C85A49 /* observer.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234318E74C6600C85A49 /* observer.m */; };
 		F5BA234718E74C8900C85A49 /* mio.c in Sources */ = {isa = PBXBuildFile; fileRef = F5BA234518E74C6600C85A49 /* mio.c */; };
 		F5BA234A18E7684D00C85A49 /* libObjectiveTox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F50F9C0618C3AAD800D06A0F /* libObjectiveTox.a */; };
-		F5C05438197A10AD003B0C93 /* iopause.o in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C05437197A10AD003B0C93 /* iopause.o */; };
 		F5CEB0161962088B00673D50 /* DESOrangeCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CEB0151962088B00673D50 /* DESOrangeCallbacks.m */; };
 		F5CEB01819620A5300673D50 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CEB01719620A5300673D50 /* libopus.a */; };
 		F5CEB01A19620A6500673D50 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CEB01919620A6500673D50 /* libvpx.a */; };
@@ -288,7 +287,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5C05438197A10AD003B0C93 /* iopause.o in Frameworks */,
 				F5CEB01A19620A6500673D50 /* libvpx.a in Frameworks */,
 				F5CEB01819620A5300673D50 /* libopus.a in Frameworks */,
 				F5A163D318EBA0D000A28D61 /* env.a in Frameworks */,
@@ -893,7 +891,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DES_DEBUG=1",
 					"$(inherited)",
@@ -930,7 +928,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/_support/include",
 					"${PROJECT_DIR}/_support/include/opus",

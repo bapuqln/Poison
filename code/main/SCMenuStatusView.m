@@ -30,11 +30,9 @@
 }
 
 - (void)adjustSize {
-    NSLog(@"%@ %@", self.nameDisplay.stringValue, self.statusDisplay.stringValue);
     [self.nameDisplay sizeToFit];
     [self.statusDisplay sizeToFit];
     CGFloat requiredWidth = MAX(self.nameDisplay.frame.size.width, self.statusDisplay.frame.size.width);
-    NSLog(@"requiredWidth: %lf", requiredWidth);
     self.frameSize = (CGSize){requiredWidth + (self.nameDisplay.frame.origin.x * 2), self.frame.size.height};
 }
 

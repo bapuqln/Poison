@@ -78,6 +78,9 @@ case $1 in
         for lang in resources/interfaces/TL/translated/*.lproj
         do
             lang_=$(basename $lang)
+            if [ $lang_ == "en.lproj" ]
+                then continue
+            fi
             if [ ! -d "$2/$lang_" ]
                 then mkdir -p  "$2/$lang_"
             fi
@@ -92,7 +95,7 @@ case $1 in
         ;;
     genstrings)
         echo "updating .strings for code..."
-        find . -name '*.m' | xargs genstrings --little-endian -o "resources/strings/en.lproj/Localizable.strings"
+        find . -name '*.m' | xargs genstrings --little-endian -o "$(pwd)/resources/strings/en.lproj"
         ;;
 esac
 

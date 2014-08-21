@@ -13,6 +13,15 @@
 
 static dt_sign_status_t dt_global_sign_status;
 
+void NS_INLINE dt_warn_permissions(void) {
+    CFDictionaryRef alert_flags = (__bridge CFDictionaryRef)@{
+        (id)kCFUserNotificationAlertHeaderKey: NSLocalizedString(@"DeltaService is not powerful enough to complete your request.", @"no tl please"),
+        (id)kCFUserNotificationAlertMessageKey: NSLocalizedString(@"Elevating to root is not supported yet. Please update manually.", @"no tl please")};
+    CFUserNotificationRef warning = NULL;
+    warning = CFUserNotificationCreate(kCFAllocatorDefault, 0, kCFUserNotificationCautionAlertLevel, NULL, alert_flags);
+    CFRelease(warning);
+}
+
 static void dt_handle_connection(xpc_connection_t new_connection) {
     int pid = xpc_connection_get_pid(new_connection);
     NSLog(@"hello, %d", pid);
@@ -33,12 +42,16 @@ static void dt_handle_connection(xpc_connection_t new_connection) {
         NSLog(@"all green");
     }
 
+    dt_warn_permissions();
+
     xpc_connection_set_event_handler(new_connection, ^(xpc_object_t object) {
         NSLog(@"Event: %@", object);
     });
 }
 
 int main(int argc, const char *argv[]) {
+    [[NSProcessInfo processInfo] disableSuddenTermination];
+    [[NSProcessInfo processInfo] disableAutomaticTermination:@"deltaservice"];
     NSLog(@"DeltaService is at yours. :^)");
     dt_global_sign_status = dt_check_sign_self();
     NSLog(@"signature status is %d.", dt_global_sign_status);

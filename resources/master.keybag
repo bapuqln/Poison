@@ -13,6 +13,6 @@
       "key": "5D72C517DF6AEC54F1E977A6B6F25914EA4CF7277A85027CD9F5196DF17E0B13",
       "domain": ["toxme.se"]}
  ],
- "nodefile_address": "http://cdn.libtoxcore.so/elizabeth_remote/config/Nodefile.json.risa",
+ "nodefile_address": "http://jfk.us.cdn.libtoxcore.so/elizabeth_remote/config/Nodefile.json.risa",
  "dynamickb_address": "https://elizabeth.zodiaclabs.org/configuration/dynamic.keybag",
  "update_catalog": "https://domain.invalid/soon.png"}

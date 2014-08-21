@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ObjectiveTox.h"
-#import "SCChatViewController.h"
+#import "SCHTMLTranscriptController.h"
 
 @interface SCConversation : NSObject <DESConversationDelegate>
 @property (strong, readonly) DESConversation *underlyingConversation;
@@ -10,13 +10,13 @@
 @property (strong) NSDate *lastAlive;
 @property (strong, nonatomic, readonly) NSOrderedSet *completionOrder;
 
-- (void)addContainer:(SCChatViewController *)container;
-- (void)removeContainer:(SCChatViewController *)container;
-- (BOOL)containsContainer:(SCChatViewController *)container;
+- (void)addContainer:(SCHTMLTranscriptController *)container;
+- (void)removeContainer:(SCHTMLTranscriptController *)container;
+- (BOOL)containsContainer:(SCHTMLTranscriptController *)container;
 
 - (void)sendMessage:(NSString *)message;
 - (void)sendAction:(NSString *)message;
-- (void)replayHistoryIntoContainer:(SCChatViewController *)container;
+- (void)replayHistoryIntoContainer:(SCHTMLTranscriptController *)container;
 
 - (void)noteNameChanged:(NSString *)newValue;
 - (void)noteStatusMessageChanged:(NSString *)newValue;

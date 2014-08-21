@@ -35,7 +35,7 @@
 }
 
 - (NSColor *)dividerColor {
-    if (DELEGATE_CAP(_delegateSupports, 1 << 1))
+    if (DELEGATE_CAP(_delegateSupports, 1))
         return [(id<SCNonGarbageSplitViewDelegate>)self.delegate dividerColourForSplitView:self];
     return [super dividerColor];
 }

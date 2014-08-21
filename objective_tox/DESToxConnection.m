@@ -175,16 +175,16 @@ NSData *DESDecodeBase64String(NSString *enc) {
         return;
     [self willChangeValueForKey:@"closeNodesCount"];
     _closeNodesCount = closeNodesCount;
-    DESInfo(@"New node count: %lu", (unsigned long)_closeNodesCount);
+    // DESInfo(@"New node count: %lu", (unsigned long)_closeNodesCount);
     [self didChangeValueForKey:@"closeNodesCount"];
 }
 
 - (void)bootstrapWithServerAddress:(NSString *)addr
                               port:(uint16_t)port
                          publicKey:(NSString *)pubKey {
+    uint8_t *keyBytes = malloc(DESPublicKeySize);
+    DESConvertPublicKeyToData(pubKey, keyBytes);
     dispatch_async(self.messengerQueue, ^{
-        uint8_t *keyBytes = malloc(DESPublicKeySize);
-        DESConvertPublicKeyToData(pubKey, keyBytes);
         tox_bootstrap_from_address(self.tox, [addr UTF8String], port, keyBytes);
         free(keyBytes);
     });
@@ -248,23 +248,17 @@ NSData *DESDecodeBase64String(NSString *enc) {
 }
 
 - (NSString *)publicKey {
-    // uint8_t *buf = malloc(DESPublicKeySize);
-    /* TODO: Fix usage of private API */
-    //tox_get_self_keys(self.tox, buf, NULL);
-    Messenger *private = (Messenger*)self.tox;
-    NSString *ret = DESConvertPublicKeyToString(private->net_crypto->self_public_key);
+    uint8_t buf[DESPublicKeySize];
+    tox_get_keys(self.tox, buf, NULL);
+    NSString *ret = DESConvertPublicKeyToString(buf);
     //free(buf);
     return ret;
 }
 
 - (NSString *)privateKey {
-    //uint8_t *buf = malloc(DESPrivateKeySize);
-    /* TODO: Fix usage of private API */
-    //tox_get_self_keys(self.tox, NULL, buf);
-    Messenger *private = (Messenger*)self.tox;
-    NSString *ret = DESConvertPrivateKeyToString(private->net_crypto->self_secret_key);
-    //NSString *ret = DESConvertPrivateKeyToString(buf);
-    //free(buf);
+    uint8_t buf[DESPrivateKeySize];
+    tox_get_keys(self.tox, NULL, buf);
+    NSString *ret = DESConvertPrivateKeyToString(buf);
     return ret;
 }
 

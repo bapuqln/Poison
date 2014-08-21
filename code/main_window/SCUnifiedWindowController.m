@@ -74,8 +74,8 @@
     self.chatViewCont = [[SCChatViewController alloc] initWithNibName:@"ChatPanel" bundle:[NSBundle mainBundle]];
     [self.chatViewCont loadView];
     self.chatViewCont.view.frameSize = (CGSize){300, root.frame.size.height};
-    self.chatViewCont.showsVideoPane = NO;
-    self.chatViewCont.showsUserList = NO;
+    self.chatViewCont.showsVideoPane = YES;
+    self.chatViewCont.showsUserList = YES;
     [root addSubview:self.chatViewCont.view];
     [root adjustSubviews];
     [root setPosition:220 ofDividerAtIndex:0];

@@ -48,6 +48,10 @@
  */
 - (void)stop;
 
+- (void)bootstrapWithServerAddress:(NSString *)addr
+                              port:(uint16_t)port
+                         publicKey:(NSString *)pubKey;
+
 - (void)setPublicKey:(NSString *)publicKey privateKey:(NSString *)privateKey;
 
 - (void)addFriendPublicKey:(NSString *)key message:(NSString *)message;

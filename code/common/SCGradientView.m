@@ -9,8 +9,8 @@
         _topColor = [NSColor blackColor];
     if (!self.bottomColor)
         _bottomColor = [NSColor blackColor];
-    if (!self.shadowColor && !SCIsYosemiteOrHigher())
-        _shadowColor = [NSColor blackColor];
+    if (!self.shadowColor)
+        _shadowColor = nil;
 }
 
 - (void)setShadowColor:(NSColor *)shadowColor {

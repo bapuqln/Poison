@@ -8,7 +8,7 @@
 @end
 
 @interface SCFriendRowView : NSTableRowView
-
+@property BOOL drawArrow;
 @end
 
 @interface SCGroupCellView : NSTableCellView

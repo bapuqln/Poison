@@ -364,6 +364,10 @@
             rowView = [[SCFriendRowView alloc] initWithFrame:CGRectZero];
             rowView.identifier = @"FriendRow";
         }
+        if (SCBoolPreference(@"forcedMultiWindowUI"))
+            ((SCFriendRowView *)rowView).drawArrow = NO;
+        else
+            ((SCFriendRowView *)rowView).drawArrow = YES;
     }
     return rowView;
 }
@@ -511,7 +515,7 @@
 }
 
 - (IBAction)removeFriendConfirm:(id)sender {
-    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).selectedRow];
+    DESFriend *f = (DESFriend *)[_dataSource objectAtRowIndex:((SCSelectiveMenuTableView *)self.friendListView).menuSelectedRow];
     if (![f conformsToProtocol:@protocol(DESFriend)])
         return;
     [(SCAppDelegate *)[NSApp delegate] deleteFriend:f confirmingInWindow:self.view.window];

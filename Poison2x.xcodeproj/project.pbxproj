@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		F505732D1953BDE700C02C07 /* vp_layout_test_sample_16_9.png in Resources */ = {isa = PBXBuildFile; fileRef = F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */; };
-		F505732E1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */; };
 		F5084B03195E5721008957C3 /* icon_plane_Template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5084B01195E5721008957C3 /* icon_plane_Template@2x.png */; };
 		F5084B04195E5721008957C3 /* icon_plane_Template.png in Resources */ = {isa = PBXBuildFile; fileRef = F5084B02195E5721008957C3 /* icon_plane_Template.png */; };
 		F5084B1C195E5B03008957C3 /* SCPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5084B14195E5B03008957C3 /* SCPreferencesWindowController.m */; };
@@ -106,10 +105,16 @@
 		F5882F5B1900AA1600CA7DC2 /* request-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5882F591900AA1600CA7DC2 /* request-icon@2x.png */; };
 		F58EE9A918C57A760033F2D4 /* DefaultDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F58EE9A818C57A760033F2D4 /* DefaultDefaults.plist */; };
 		F58EE9AD18C595530033F2D4 /* SCChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = F58EE9AC18C595530033F2D4 /* SCChatView.m */; };
+		F59027C3198FF5CA00BB25E7 /* SCHTMLTranscriptController.m in Sources */ = {isa = PBXBuildFile; fileRef = F59027C2198FF5CA00BB25E7 /* SCHTMLTranscriptController.m */; };
+		F59027CC199027C700BB25E7 /* pref_theme.png in Resources */ = {isa = PBXBuildFile; fileRef = F59027C8199027C700BB25E7 /* pref_theme.png */; };
+		F59027CD199027C700BB25E7 /* pref_sound.png in Resources */ = {isa = PBXBuildFile; fileRef = F59027C9199027C700BB25E7 /* pref_sound.png */; };
+		F59027CE199027C700BB25E7 /* pref_sound@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F59027CA199027C700BB25E7 /* pref_sound@2x.png */; };
+		F59027CF199027C700BB25E7 /* pref_theme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F59027CB199027C700BB25E7 /* pref_theme@2x.png */; };
 		F5917DF419638FCB009457DB /* SCAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = F5917DF319638FCB009457DB /* SCAvatar.m */; };
 		F59C0F4418D3E6F300BB437C /* SCResourceBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = F59C0F4318D3E6F300BB437C /* SCResourceBundle.m */; };
 		F5A2978218D4CB3600595FDF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A2978118D4CB3600595FDF /* Security.framework */; };
 		F5A2978A18D51CAA00595FDF /* SCAddFriendSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A2978918D51CAA00595FDF /* SCAddFriendSheetController.m */; };
+		F5A500C3198F5450002145A8 /* Mockup.psnChatStyle in CopyFiles */ = {isa = PBXBuildFile; fileRef = F5A500BE198F5433002145A8 /* Mockup.psnChatStyle */; };
 		F5AC0D87190C69BC0020644C /* request-pill-accept-down.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D83190C69BC0020644C /* request-pill-accept-down.png */; };
 		F5AC0D88190C69BC0020644C /* request-pill-accept@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D84190C69BC0020644C /* request-pill-accept@2x.png */; };
 		F5AC0D89190C69BC0020644C /* request-pill-accept.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AC0D85190C69BC0020644C /* request-pill-accept.png */; };
@@ -135,11 +140,13 @@
 		F5CAA423196B761F00828CA5 /* SCDiary.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CAA422196B761F00828CA5 /* SCDiary.m */; };
 		F5CAA425196B767C00828CA5 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CAA424196B767C00828CA5 /* libsqlite3.dylib */; };
 		F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F5CC709B18C2BA1600C41EBF /* friends.rtf */; };
+		F5CEB4091989709000D9D5BE /* SCDHTList.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CEB4081989709000D9D5BE /* SCDHTList.m */; };
 		F5D1223518F076910075BD10 /* SCSelectiveMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1223418F076910075BD10 /* SCSelectiveMenuTableView.m */; };
 		F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */; };
 		F5DAB46A18C970A50046ED96 /* SCQRCodeSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */; };
 		F5DBDC691960B1AE007426B0 /* IdentityPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5DBDC681960B1AE007426B0 /* IdentityPane.xib */; };
 		F5DC0CEC19592D2900560C07 /* FileTransfer.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5DC0CEB19592D2900560C07 /* FileTransfer.xib */; };
+		F5DC6B511988395500CEFDA5 /* Nodefile.json.risa in Resources */ = {isa = PBXBuildFile; fileRef = F5DC6B501988395500CEFDA5 /* Nodefile.json.risa */; };
 		F5DCF840195CF838000E067F /* SCAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DCF83F195CF838000E067F /* SCAvatarView.m */; };
 		F5DCF846195D041B000E067F /* icon_share_more_Template.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DCF844195D041B000E067F /* icon_share_more_Template.png */; };
 		F5DCF847195D041B000E067F /* icon_share_more_Template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DCF845195D041B000E067F /* icon_share_more_Template@2x.png */; };
@@ -147,7 +154,6 @@
 		F5DCF84B195D058F000E067F /* icon_record_Template.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DCF849195D058F000E067F /* icon_record_Template.png */; };
 		F5DCF84F195D0BB5000E067F /* icon_mic_Template.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DCF84D195D0BB5000E067F /* icon_mic_Template.png */; };
 		F5DCF850195D0BB5000E067F /* icon_mic_Template@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5DCF84E195D0BB5000E067F /* icon_mic_Template@2x.png */; };
-		F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */; };
 		F5E1A2C919170EFC00D0037A /* vp_layout_test_sample_1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */; };
 		F5E50C421913586200C3BE48 /* SCMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E50C411913586200C3BE48 /* SCMessages.m */; };
 		F5E84CDF18DE2C8F00B93FE7 /* SCMenuStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E84CDE18DE2C8F00B93FE7 /* SCMenuStatusView.m */; };
@@ -237,6 +243,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				F56CC5F91957F491009722E9 /* Default.psnChatStyle in CopyFiles */,
+				F5A500C3198F5450002145A8 /* Mockup.psnChatStyle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,7 +262,6 @@
 
 /* Begin PBXFileReference section */
 		F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample_16_9.png; sourceTree = "<group>"; };
-		F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample_16_9@2x.png"; sourceTree = "<group>"; };
 		F5084B01195E5721008957C3 /* icon_plane_Template@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_plane_Template@2x.png"; sourceTree = "<group>"; };
 		F5084B02195E5721008957C3 /* icon_plane_Template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_plane_Template.png; sourceTree = "<group>"; };
 		F5084B13195E5B03008957C3 /* SCPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -378,6 +384,12 @@
 		F58EE9A818C57A760033F2D4 /* DefaultDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultDefaults.plist; sourceTree = "<group>"; };
 		F58EE9AB18C595530033F2D4 /* SCChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCChatView.h; sourceTree = "<group>"; };
 		F58EE9AC18C595530033F2D4 /* SCChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCChatView.m; sourceTree = "<group>"; };
+		F59027C1198FF5CA00BB25E7 /* SCHTMLTranscriptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTMLTranscriptController.h; sourceTree = "<group>"; };
+		F59027C2198FF5CA00BB25E7 /* SCHTMLTranscriptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTMLTranscriptController.m; sourceTree = "<group>"; };
+		F59027C8199027C700BB25E7 /* pref_theme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pref_theme.png; sourceTree = "<group>"; };
+		F59027C9199027C700BB25E7 /* pref_sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pref_sound.png; sourceTree = "<group>"; };
+		F59027CA199027C700BB25E7 /* pref_sound@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pref_sound@2x.png"; sourceTree = "<group>"; };
+		F59027CB199027C700BB25E7 /* pref_theme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pref_theme@2x.png"; sourceTree = "<group>"; };
 		F5917DF219638FCB009457DB /* SCAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAvatar.h; sourceTree = "<group>"; };
 		F5917DF319638FCB009457DB /* SCAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAvatar.m; sourceTree = "<group>"; };
 		F59C0F4218D3E6F300BB437C /* SCResourceBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCResourceBundle.h; sourceTree = "<group>"; };
@@ -385,6 +397,7 @@
 		F5A2978118D4CB3600595FDF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F5A2978818D51CAA00595FDF /* SCAddFriendSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAddFriendSheetController.h; sourceTree = "<group>"; };
 		F5A2978918D51CAA00595FDF /* SCAddFriendSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAddFriendSheetController.m; sourceTree = "<group>"; };
+		F5A500BE198F5433002145A8 /* Mockup.psnChatStyle */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Mockup.psnChatStyle; sourceTree = "<group>"; };
 		F5AC0D83190C69BC0020644C /* request-pill-accept-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept-down.png"; sourceTree = "<group>"; };
 		F5AC0D84190C69BC0020644C /* request-pill-accept@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept@2x.png"; sourceTree = "<group>"; };
 		F5AC0D85190C69BC0020644C /* request-pill-accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "request-pill-accept.png"; sourceTree = "<group>"; };
@@ -417,6 +430,8 @@
 		F5CAA422196B761F00828CA5 /* SCDiary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDiary.m; sourceTree = "<group>"; };
 		F5CAA424196B767C00828CA5 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		F5CC709B18C2BA1600C41EBF /* friends.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = friends.rtf; sourceTree = "<group>"; };
+		F5CEB4071989709000D9D5BE /* SCDHTList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDHTList.h; sourceTree = "<group>"; };
+		F5CEB4081989709000D9D5BE /* SCDHTList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDHTList.m; sourceTree = "<group>"; };
 		F5D1223318F076910075BD10 /* SCSelectiveMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSelectiveMenuTableView.h; sourceTree = "<group>"; };
 		F5D1223418F076910075BD10 /* SCSelectiveMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSelectiveMenuTableView.m; sourceTree = "<group>"; };
 		F5D5B9AC18F4CEEE00707491 /* RequestDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestDialog.xib; sourceTree = "<group>"; };
@@ -424,6 +439,7 @@
 		F5DAB46918C970A50046ED96 /* SCQRCodeSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCQRCodeSheetController.m; sourceTree = "<group>"; };
 		F5DBDC681960B1AE007426B0 /* IdentityPane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdentityPane.xib; sourceTree = "<group>"; };
 		F5DC0CEB19592D2900560C07 /* FileTransfer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileTransfer.xib; sourceTree = "<group>"; };
+		F5DC6B501988395500CEFDA5 /* Nodefile.json.risa */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Nodefile.json.risa; sourceTree = "<group>"; };
 		F5DCF83E195CF838000E067F /* SCAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAvatarView.h; sourceTree = "<group>"; };
 		F5DCF83F195CF838000E067F /* SCAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAvatarView.m; sourceTree = "<group>"; };
 		F5DCF844195D041B000E067F /* icon_share_more_Template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share_more_Template.png; sourceTree = "<group>"; };
@@ -432,7 +448,6 @@
 		F5DCF849195D058F000E067F /* icon_record_Template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_record_Template.png; sourceTree = "<group>"; };
 		F5DCF84D195D0BB5000E067F /* icon_mic_Template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_mic_Template.png; sourceTree = "<group>"; };
 		F5DCF84E195D0BB5000E067F /* icon_mic_Template@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_mic_Template@2x.png"; sourceTree = "<group>"; };
-		F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vp_layout_test_sample_1_1@2x.png"; sourceTree = "<group>"; };
 		F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vp_layout_test_sample_1_1.png; sourceTree = "<group>"; };
 		F5E50C401913586200C3BE48 /* SCMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMessages.h; sourceTree = "<group>"; };
 		F5E50C411913586200C3BE48 /* SCMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMessages.m; sourceTree = "<group>"; };
@@ -635,9 +650,7 @@
 				F5AC0D90190C6BA50020644C /* request-pill-dismiss-down.png */,
 				F5AC0D8F190C6BA50020644C /* request-pill-dismiss-down@2x.png */,
 				F5E1A2C719170EFC00D0037A /* vp_layout_test_sample_1_1.png */,
-				F5E1A2C619170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png */,
 				F505732B1953BDE700C02C07 /* vp_layout_test_sample_16_9.png */,
-				F505732C1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png */,
 				F5084B22195E6245008957C3 /* graph_bl_only@2x.png */,
 				F5084B23195E6245008957C3 /* graph_bl_only.png */,
 				F5084B24195E6245008957C3 /* graph_unified@2x.png */,
@@ -646,6 +659,10 @@
 				F5C4E970196A37B6002AA521 /* menu_normal.png */,
 				F5C4E971196A37B6002AA521 /* menu_sel.png */,
 				F5C4E972196A37B6002AA521 /* menu_normal@2x.png */,
+				F59027C8199027C700BB25E7 /* pref_theme.png */,
+				F59027CB199027C700BB25E7 /* pref_theme@2x.png */,
+				F59027C9199027C700BB25E7 /* pref_sound.png */,
+				F59027CA199027C700BB25E7 /* pref_sound@2x.png */,
 				F5FFF46018B81F4E00CD1E43 /* Poison.iconset */,
 				F5F5F9CF193EBE3D00930FEC /* PoisonFlat.iconset */,
 			);
@@ -717,6 +734,8 @@
 		F541810B18C3FED700AB220E /* chat_view */ = {
 			isa = PBXGroup;
 			children = (
+				F59027C1198FF5CA00BB25E7 /* SCHTMLTranscriptController.h */,
+				F59027C2198FF5CA00BB25E7 /* SCHTMLTranscriptController.m */,
 				F541810C18C3FEF500AB220E /* SCChatViewController.h */,
 				F541810D18C3FEF500AB220E /* SCChatViewController.m */,
 				F517D85A19156EF100B236FE /* SCVideoPaneView.h */,
@@ -829,7 +848,9 @@
 				F5B5422618B6D23C00226CA8 /* Poison-Info.plist */,
 				F58EE9A818C57A760033F2D4 /* DefaultDefaults.plist */,
 				F5E97DBF198226350021E9AA /* master.keybag */,
+				F5DC6B501988395500CEFDA5 /* Nodefile.json.risa */,
 				F56CC5F71957F2FF009722E9 /* Default.psnChatStyle */,
+				F5A500BE198F5433002145A8 /* Mockup.psnChatStyle */,
 				F5C16E4819439517005E67A9 /* themelib.js */,
 				F52714AF18DF9D9E00B7E663 /* strings */,
 				F52D011418B7CF5A0033680F /* art */,
@@ -906,6 +927,8 @@
 			children = (
 				F5E97DB619820A510021E9AA /* SCKeybag.h */,
 				F5E97DB719820A510021E9AA /* SCKeybag.m */,
+				F5CEB4071989709000D9D5BE /* SCDHTList.h */,
+				F5CEB4081989709000D9D5BE /* SCDHTList.m */,
 				F5E97DB9198214570021E9AA /* libarisa.c */,
 				F5E97DBA198214570021E9AA /* libarisa.h */,
 				F5E97DBB198214570021E9AA /* NSData+ArisaOpening.h */,
@@ -1070,16 +1093,18 @@
 				F52D013918B7CFB70033680F /* icon_plus@2x.png in Resources */,
 				F56956CD18E884AE00E1EB0D /* avatar-mask-circle.png in Resources */,
 				F5DBDC691960B1AE007426B0 /* IdentityPane.xib in Resources */,
-				F505732E1953BDE700C02C07 /* vp_layout_test_sample_16_9@2x.png in Resources */,
 				F5DC0CEC19592D2900560C07 /* FileTransfer.xib in Resources */,
 				F5084B21195E5D9C008957C3 /* GeneralPane.xib in Resources */,
 				F5084B03195E5721008957C3 /* icon_plane_Template@2x.png in Resources */,
 				F52714AC18DF823400B7E663 /* MainMenu.xib in Resources */,
+				F59027CE199027C700BB25E7 /* pref_sound@2x.png in Resources */,
 				F52D013D18B7CFB70033680F /* status-light-away.png in Resources */,
 				F5F5F9D0193EBE3D00930FEC /* PoisonFlat.iconset in Resources */,
 				F52D013F18B7CFB70033680F /* status-light-offline.png in Resources */,
+				F59027CF199027C700BB25E7 /* pref_theme@2x.png in Resources */,
 				F52D014218B7CFB70033680F /* status-light-online@2x.png in Resources */,
 				F5AC0D92190C6BA50020644C /* request-pill-dismiss.png in Resources */,
+				F59027CC199027C700BB25E7 /* pref_theme.png in Resources */,
 				F5AC0D95190C6BA50020644C /* request-pill-dismiss@2x.png in Resources */,
 				F52D014418B7CFB70033680F /* tox_logo@2x.png in Resources */,
 				F5DCF84B195D058F000E067F /* icon_record_Template.png in Resources */,
@@ -1102,7 +1127,6 @@
 				F53D4DBB18FA243D0051E2E7 /* ellipsis-overlay.png in Resources */,
 				F55BAE7D19846DDE00572924 /* AdvancedPane.xib in Resources */,
 				F5084B1F195E5C39008957C3 /* Preferences.xib in Resources */,
-				F5E1A2C819170EFC00D0037A /* vp_layout_test_sample_1_1@2x.png in Resources */,
 				F5C1B306190B55EE00081FEA /* avatar-mask-roundrect@2x.png in Resources */,
 				F5E97DC0198226350021E9AA /* master.keybag in Resources */,
 				F5F6D5F218DE5AB200A14557 /* status-light-missing.png in Resources */,
@@ -1116,6 +1140,7 @@
 				F505732D1953BDE700C02C07 /* vp_layout_test_sample_16_9.png in Resources */,
 				F52714AE18DF823400B7E663 /* QRSheet.xib in Resources */,
 				F5084B28195E6245008957C3 /* graph_unified@2x.png in Resources */,
+				F5DC6B511988395500CEFDA5 /* Nodefile.json.risa in Resources */,
 				F5084B04195E5721008957C3 /* icon_plane_Template.png in Resources */,
 				F5C4E973196A37B6002AA521 /* menu_sel@2x.png in Resources */,
 				F5FFF46518B8283300CD1E43 /* oi.png in Resources */,
@@ -1137,6 +1162,7 @@
 				F56956CC18E884AE00E1EB0D /* avatar-mask-circle@2x.png in Resources */,
 				F5CC709C18C2BA1600C41EBF /* friends.rtf in Resources */,
 				F52D013818B7CFB70033680F /* icon_plus.png in Resources */,
+				F59027CD199027C700BB25E7 /* pref_sound.png in Resources */,
 				F5D5B9AD18F4CEEE00707491 /* RequestDialog.xib in Resources */,
 				F5F6D5F318DE5AB200A14557 /* status-light-missing@2x.png in Resources */,
 				F52D014018B7CFB70033680F /* status-light-offline@2x.png in Resources */,
@@ -1163,7 +1189,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=$GIT_BUILD_NO\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
+			shellScript = "echo \"Poison build: checking your dependencies!\"\nif [ -z ${XCODE_VERSION_ACTUAL+x} ]; then\n    echo \"error: Xcode not present\"\n    exit 1\nfi\nPATH=/usr/local/bin:$PATH\nNPROC=\"$(sysctl -n hw.ncpu)\"\nWORKSPACE=\"$PROJECT_DIR/_support/_work\"\n\nmake_libqrencode() {\n    echo \"Need to build libqrencode. This will take a while.\"\n    mkdir -p \"$WORKSPACE\" && cd \"$WORKSPACE\"\n    rm -rf \"qrencode-3.4.3\" \"libqrencode.tar.gz\"\n    curl -o \"libqrencode.tar.gz\" \"https://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.gz\"\n    tar -xzf \"libqrencode.tar.gz\" && cd \"qrencode-3.4.3\"\n    ./configure \"--prefix=$PROJECT_DIR/_support\" --without-tools --enable-static --disable-shared \\\n    > \"$WORKSPACE/../libqrencode.configure.log\" 2>&1\n    make -j$NPROC\n    make install\n    echo \"OK.\"\n    rm -f \"$WORKSPACE/../libqrencode.configure.log\"\n}\n\nupdate_build() {\n    if [ -n \"$JENKINS_URL\" ]; then\n        echo \"This looks like a Jenkins build... I'll use Jenkins build numbers, then.\"\n        GIT_REF=$GIT_COMMIT\n        BUILD_NO=$GIT_BUILD_NO\n    elif [ -d \"$PROJECT_DIR/.git\" ]; then\n        echo \"Git information is available.\"\n        GIT_REF=$(git log -n 1 --pretty=format:%h)\n        BUILD_NO=\"$(git rev-list HEAD --count)\"\n    else\n        echo \"No build information available.\"\n        GIT_REF=\"UNKNOWN\"\n        BUILD_NO=\"???\"\n    fi\n    echo \"Xcode is present. Writing to Info.plist: build $BUILD_NO; git commit $GIT_REF\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $BUILD_NO\" \"$INFOPLIST_FILE\"\n    /usr/libexec/PlistBuddy -c \"Add :SCGitRef string $GIT_REF\" \"$INFOPLIST_FILE\" || /usr/libexec/PlistBuddy -c \"Set :SCGitRef $GIT_REF\" \"$INFOPLIST_FILE\"\n}\n\nif [ ! -f \"$PROJECT_DIR/_support/lib/libqrencode.a\" ]; then\n    make_libqrencode; cd $PROJECT_DIR;\nfi\n\necho \"Poison build: stitching version into Info.plist!\"\nupdate_build\necho \"[[ LINKER: $(whoami)@$(hostname) $(date) ]]\" >> \"$PROJECT_DIR/_support/.build\"\ncat \"$PROJECT_DIR/_support/flavour.txt\" > \"$PROJECT_DIR/_support/.security\" 2> /dev/null || touch \"$PROJECT_DIR/_support/.security\"\n";
 		};
 		F553FAFB18DCF3AF00CBA532 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1176,7 +1202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rm -rf \"$PROJECT_DIR/_support/.security\"\n\necho \"Poison build: doing final compile of translations!\"\nbash \"$PROJECT_DIR/translation_helper.sh\" integrate\nbash \"$PROJECT_DIR/translation_helper.sh\" compile \"$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Contents/Resources\"";
+			shellScript = "rm -f \"$PROJECT_DIR/_support/.security\"\nrm -f \"$PROJECT_DIR/_support/.build\"\n\necho \"Poison build: doing final compile of translations!\"\nbash \"$PROJECT_DIR/translation_helper.sh\" integrate\nbash \"$PROJECT_DIR/translation_helper.sh\" compile \"$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Contents/Resources\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1201,6 +1227,7 @@
 				F538754218C25DB500AED945 /* SCNewUserWindowController.m in Sources */,
 				F543BE3418E126CC004C70D3 /* NSString+CanonicalID.m in Sources */,
 				F53DB89918B6DD37008D7ED5 /* NSWindow+Shake.m in Sources */,
+				F59027C3198FF5CA00BB25E7 /* SCHTMLTranscriptController.m in Sources */,
 				F5E50C421913586200C3BE48 /* SCMessages.m in Sources */,
 				F55BAE831984731800572924 /* SCAdvancedPaneController.m in Sources */,
 				F541810A18C3FABD00AB220E /* SCNonGarbageSplitView.m in Sources */,
@@ -1236,6 +1263,7 @@
 				F543BE3018E116D3004C70D3 /* NSURL+Parameters.m in Sources */,
 				F521C0861960E07600D75598 /* SCAudioVideoPaneController.m in Sources */,
 				F541811E18C425B400AB220E /* SCFillingView.m in Sources */,
+				F5CEB4091989709000D9D5BE /* SCDHTList.m in Sources */,
 				F52D014E18B7D44F0033680F /* SCBigGreenButton.m in Sources */,
 				F541810718C3F4DE00AB220E /* SCUnifiedWindowController.m in Sources */,
 				F5D1223518F076910075BD10 /* SCSelectiveMenuTableView.m in Sources */,
@@ -1292,6 +1320,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1430,7 +1459,7 @@
 				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "code/misc/Poison-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1454,10 +1483,15 @@
 				OTHER_CFLAGS = "-Wno-attributes";
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/_support/lib/iopause.o",
 					"-sectcreate",
 					__TEXT,
 					lel,
 					"${PROJECT_DIR}/_support/.security",
+					"-sectcreate",
+					__TEXT,
+					build_info,
+					"${PROJECT_DIR}/_support/.build",
 				);
 				PRODUCT_NAME = Tox;
 				SDKROOT = macosx;
@@ -1477,7 +1511,7 @@
 				CODE_SIGN_IDENTITY = "Zodiac Labs Software Distribution Authority";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "code/misc/Poison-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1497,10 +1531,15 @@
 				OTHER_CFLAGS = "-Wno-attributes";
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/_support/lib/iopause.o",
 					"-sectcreate",
 					__TEXT,
 					lel,
 					"${PROJECT_DIR}/_support/.security",
+					"-sectcreate",
+					__TEXT,
+					build_info,
+					"${PROJECT_DIR}/_support/.build",
 				);
 				PRODUCT_NAME = Tox;
 				SDKROOT = macosx;

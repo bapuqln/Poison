@@ -2,6 +2,7 @@
 
 @interface SCAdvancedPaneController ()
 @property xpc_connection_t updateConnection;
+@property (weak) IBOutlet NSTextField *selectorField;
 @end
 
 @implementation SCAdvancedPaneController
@@ -16,6 +17,18 @@
     xpc_dictionary_set_bool(msg, "hi", YES);
     xpc_connection_send_message(self.updateConnection, msg);
     xpc_release(msg);
+}
+
+- (IBAction)runCustomUISelector:(id)sender {
+    SEL selector = NSSelectorFromString(self.selectorField.stringValue);
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+    inv.selector = selector;
+    [inv setArgument:&selector atIndex:2];
+    [inv invokeWithTarget:self];
+}
+
+- (void)testSel:(SEL)aSelector {
+    NSLog(@"%@", NSStringFromSelector(aSelector));
 }
 
 @end

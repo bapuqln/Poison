@@ -101,7 +101,7 @@ static uint32_t     SCRYPT_p = 0;
             if (!self.auth)
                 return nil;
         } else {
-            NSLog(@"error opening diary: %@ (%d)", url, ok);
+            NSLog(@"error opening diary: %@ (%d), chat history will not be available", url, ok);
             sqlite3_close(self.backingStore);
             return nil;
         }

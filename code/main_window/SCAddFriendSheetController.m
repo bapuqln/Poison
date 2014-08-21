@@ -325,6 +325,9 @@
         _dnsDiscoveryVersion = 1;
         [self resizeWindowForPreview];
         NSLog(@"%@ %@", result, error);
+        if ([self validateFields_Message]) {
+            [self passedValidation];
+        }
     }, domainKeys);
 }
 

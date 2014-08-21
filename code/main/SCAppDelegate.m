@@ -19,6 +19,8 @@
 #import "SCConversationManager.h"
 #import "SCPreferencesWindowController.h"
 #import "SCAudioVideoRecorder.h"
+#import "SCDHTList.h"
+#import "SCChatViewController.h"
 
 /* note: this is hard-coded to make tampering harder. */
 #define SCApplicationDownloadPage (@"https://kirara.ca/poison/dl")
@@ -147,8 +149,11 @@
     [self.toxConnection addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionNew context:NULL];
     [self.toxConnection addObserver:self forKeyPath:@"statusMessage" options:NSKeyValueObservingOptionNew context:NULL];
 
+    BOOL needsBootstrap = YES;
     if (userProfile) {
         self.isProfileSavingDisabled = YES;
+        if (txd_get_number_of_dht_nodes(userProfile) > 4)
+            needsBootstrap = NO;
         [self.toxConnection restoreDataFromTXDIntermediate:userProfile];
         txd_intermediate_free(userProfile);
     } else {
@@ -161,6 +166,12 @@
         [self saveProfile:NO];
     }
 
+    if (needsBootstrap) {
+        SCDHTListApplyToConnection(self.toxConnection);
+    } else {
+        [self performSelector:@selector(lateBootstrap) withObject:nil afterDelay:5];
+    }
+
     [self prepareFriendRequests];
     [self.toxConnection start];
     if ([self.mainWindowController isKindOfClass:[SCNewUserWindowController class]])
@@ -169,6 +180,17 @@
     if (self.waitingToxURL && [self.mainWindowController conformsToProtocol:@protocol(SCMainWindowing)]) {
         [(id<SCMainWindowing>)self.mainWindowController displayAddFriendWithToxSchemeURL:self.waitingToxURL];
         self.waitingToxURL = nil;
+    }
+}
+
+- (void)lateBootstrap {
+    NSLog(@"lateBootstrap invoked.");
+    /* This is in case if the nodes in the data file are invalid... */
+    if (!self.toxConnection)
+        return;
+
+    if (self.toxConnection.closeNodesCount < 5) {
+        SCDHTListApplyToConnection(self.toxConnection);
     }
 }
 

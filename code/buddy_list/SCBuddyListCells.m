@@ -41,16 +41,6 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-//    if (self.isSelected) {
-//        [[NSColor colorWithCalibratedWhite:0.04 alpha:1.0] set];
-//        [[NSBezierPath bezierPathWithRect:NSMakeRect(-2, 0, self.bounds.size.width + 2, self.bounds.size.height)] stroke];
-//        [[NSColor colorWithCalibratedWhite:1.0 alpha:0.35] set];
-//        [[NSBezierPath bezierPathWithRect:NSMakeRect(0, 1, self.bounds.size.width, 1)] fill];
-//        [[NSColor colorWithCalibratedWhite:1.0 alpha:0.20] set];
-//        [[NSBezierPath bezierPathWithRect:NSMakeRect(0, self.bounds.size.height - 2, self.bounds.size.width, 1)] fill];
-//        NSGradient *bodyGrad = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:0.10] endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:0.20]];
-//        [bodyGrad drawInBezierPath:[NSBezierPath bezierPathWithRect:NSMakeRect(-2, 2, self.bounds.size.width + 2, self.bounds.size.height - 4)] angle:-90.0];
-//    }
     if (self.isSelected) {
         if (!SCIsYosemiteOrHigher()) {
             if (!_shadow)
@@ -64,14 +54,16 @@
             NSRectFill(dirtyRect);
         }
 
-        [[[SCThemeManager sharedManager] backgroundColorOfCurrentTheme] set];
-        NSBezierPath *path = [NSBezierPath bezierPath];
-        CGRect r = self.bounds;
-        [path moveToPoint:(CGPoint){r.size.width, 1.5}];
-        [path lineToPoint:(CGPoint){r.size.width - 15, r.size.height / 2}];
-        [path lineToPoint:(CGPoint){r.size.width, r.size.height - 1.5}];
-        [path closePath];
-        [path fill];
+        if (self.drawArrow) {
+            [[[SCThemeManager sharedManager] backgroundColorOfCurrentTheme] set];
+            NSBezierPath *path = [NSBezierPath bezierPath];
+            CGRect r = self.bounds;
+            [path moveToPoint:(CGPoint){r.size.width, 1.5}];
+            [path lineToPoint:(CGPoint){r.size.width - 15, r.size.height / 2}];
+            [path lineToPoint:(CGPoint){r.size.width, r.size.height - 1.5}];
+            [path closePath];
+            [path fill];
+        }
     }
 }
 

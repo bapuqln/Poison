@@ -8,8 +8,5 @@
 @property (nonatomic) BOOL showsVideoPane;
 @property (nonatomic) BOOL showsUserList;
 @property (strong) IBOutlet NSMenu *secretActionMenu;
-
 @property (nonatomic) SCConversation *conversation;
-
-- (void)throwEvent:(NSString *)eventName withObject:(id)object;
 @end

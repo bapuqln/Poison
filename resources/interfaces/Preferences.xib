@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">13D65</string>
-		<string key="IBDocument.InterfaceBuilderVersion">5053</string>
-		<string key="IBDocument.AppKitVersion">1265.20</string>
+		<string key="IBDocument.SystemVersion">13E28</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6185.11</string>
+		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">5053</string>
+			<string key="NS.object.0">6185.11</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSCustomObject</string>
@@ -52,15 +52,15 @@
 					<int key="NSToolbarDisplayMode">1</int>
 					<int key="NSToolbarSizeMode">1</int>
 					<dictionary class="NSMutableDictionary" key="NSToolbarIBIdentifiedItems">
-						<object class="NSToolbarItem" key="559F822C-15D4-427B-AF79-D7D9B2D3C1B2" id="477739075">
-							<string key="NSToolbarItemIdentifier">559F822C-15D4-427B-AF79-D7D9B2D3C1B2</string>
+						<object class="NSToolbarItem" key="31B3F22B-45B3-41CB-9C88-1A50F262D568" id="702420903">
+							<string key="NSToolbarItemIdentifier">31B3F22B-45B3-41CB-9C88-1A50F262D568</string>
 							<string key="NSToolbarItemLabel">Alerts</string>
 							<string key="NSToolbarItemPaletteLabel">Alerts</string>
 							<string key="NSToolbarItemToolTip"/>
 							<nil key="NSToolbarItemView"/>
 							<object class="NSCustomResource" key="NSToolbarItemImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">Poison</string>
+								<string key="NSResourceName">pref_sound</string>
 							</object>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
@@ -112,15 +112,15 @@
 							<bool key="NSToolbarIsUserRemovable">YES</bool>
 							<int key="NSToolbarItemVisibilityPriority">0</int>
 						</object>
-						<object class="NSToolbarItem" key="C411951D-3101-499B-9F8F-D9BE22FF88DD" id="483546569">
-							<string key="NSToolbarItemIdentifier">C411951D-3101-499B-9F8F-D9BE22FF88DD</string>
+						<object class="NSToolbarItem" key="C8ED96EA-B3BA-461A-B9ED-AE5753BDF36F" id="507218766">
+							<string key="NSToolbarItemIdentifier">C8ED96EA-B3BA-461A-B9ED-AE5753BDF36F</string>
 							<string key="NSToolbarItemLabel">Style</string>
 							<string key="NSToolbarItemPaletteLabel">Style</string>
 							<string key="NSToolbarItemToolTip"/>
 							<nil key="NSToolbarItemView"/>
 							<object class="NSCustomResource" key="NSToolbarItemImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">NSColorPanel</string>
+								<string key="NSResourceName">pref_theme</string>
 							</object>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
@@ -208,29 +208,29 @@
 					</dictionary>
 					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
 						<reference ref="999104129"/>
-						<reference ref="483546569"/>
-						<reference ref="477739075"/>
 						<reference ref="939823015"/>
 						<reference ref="106160374"/>
 						<reference ref="566892725"/>
 						<reference ref="49950962"/>
+						<reference ref="507218766"/>
+						<reference ref="702420903"/>
 					</array>
 					<array key="NSToolbarIBDefaultItems">
 						<reference ref="999104129"/>
 						<reference ref="939823015"/>
 						<reference ref="49950962"/>
+						<reference ref="507218766"/>
+						<reference ref="702420903"/>
 						<reference ref="106160374"/>
 						<reference ref="566892725"/>
 					</array>
 				</object>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="16526499">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">1792</int>
 					<object class="NSPSMatrix" key="NSFrameMatrix"/>
 					<string key="NSFrameSize">{400, 290}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
@@ -247,14 +247,6 @@
 						<reference key="destination" ref="999104129"/>
 					</object>
 					<string key="id">13</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">didChangeSettingsPane:</string>
-						<reference key="source" ref="633333112"/>
-						<reference key="destination" ref="483546569"/>
-					</object>
-					<string key="id">15</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -318,28 +310,18 @@
 						<reference key="object" ref="180339753"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="999104129"/>
-							<reference ref="483546569"/>
-							<reference ref="477739075"/>
 							<reference ref="939823015"/>
 							<reference ref="106160374"/>
 							<reference ref="566892725"/>
 							<reference ref="49950962"/>
+							<reference ref="507218766"/>
+							<reference ref="702420903"/>
 						</array>
 						<reference key="parent" ref="326335677"/>
 					</object>
 					<object class="IBObjectRecord">
 						<string key="id">9</string>
 						<reference key="object" ref="999104129"/>
-						<reference key="parent" ref="180339753"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">11</string>
-						<reference key="object" ref="483546569"/>
-						<reference key="parent" ref="180339753"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">zt2-Fm-vRG</string>
-						<reference key="object" ref="477739075"/>
 						<reference key="parent" ref="180339753"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -362,6 +344,16 @@
 						<reference key="object" ref="49950962"/>
 						<reference key="parent" ref="180339753"/>
 					</object>
+					<object class="IBObjectRecord">
+						<string key="id">POL-qa-PHR</string>
+						<reference key="object" ref="507218766"/>
+						<reference key="parent" ref="180339753"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">gud-H7-aKA</string>
+						<reference key="object" ref="702420903"/>
+						<reference key="parent" ref="180339753"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -376,10 +368,6 @@
 				<string key="1.IBPersistedLastKnownCanvasPosition">{299, 335}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="1.showNotes"/>
-				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="11.designableToolbarItemIdentifier">StylePane</string>
-				<boolean value="NO" key="11.showNotes"/>
-				<boolean value="YES" key="11.toolbarItem.selectable"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<reference key="2.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="2.showNotes"/>
@@ -398,14 +386,14 @@
 				<string key="FJj-A8-JGF.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="FJj-A8-JGF.designableToolbarItemIdentifier">AudioVideoPane</string>
 				<boolean value="YES" key="FJj-A8-JGF.toolbarItem.selectable"/>
+				<string key="POL-qa-PHR.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="POL-qa-PHR.designableToolbarItemIdentifier">ThemePane</string>
+				<string key="gud-H7-aKA.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="gud-H7-aKA.designableToolbarItemIdentifier">AlertsPane</string>
 				<string key="rkG-zU-ogP.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="rkG-zU-ogP.designableToolbarItemIdentifier">IdentityPane</string>
 				<boolean value="NO" key="rkG-zU-ogP.showNotes"/>
 				<boolean value="YES" key="rkG-zU-ogP.toolbarItem.selectable"/>
-				<string key="zt2-Fm-vRG.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="zt2-Fm-vRG.designableToolbarItemIdentifier">AlertsPane</string>
-				<boolean value="NO" key="zt2-Fm-vRG.showNotes"/>
-				<boolean value="YES" key="zt2-Fm-vRG.toolbarItem.selectable"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -415,33 +403,10 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
-					<string key="className">SCPreferencesWindowController</string>
-					<string key="superclassName">NSWindowController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">didChangeSettingsPane:</string>
-						<string key="NS.object.0">NSToolbarItem</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">didChangeSettingsPane:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">didChangeSettingsPane:</string>
-							<string key="candidateClassName">NSToolbarItem</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">toolbar</string>
-						<string key="NS.object.0">NSToolbar</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">toolbar</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">toolbar</string>
-							<string key="candidateClassName">NSToolbar</string>
-						</object>
-					</object>
+					<string key="className">FirstResponder</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCPreferencesWindowController.h</string>
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 			</array>
@@ -453,10 +418,6 @@
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<real value="1060" key="NS.object.0"/>
 		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
-		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
 			<integer value="4600" key="NS.object.0"/>
@@ -465,13 +426,13 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NSAdvanced">{32, 32}</string>
-			<string key="NSColorPanel">{32, 32}</string>
 			<string key="NSMenuCheckmark">{11, 11}</string>
 			<string key="NSMenuMixedState">{10, 3}</string>
 			<string key="NSPreferencesGeneral">{32, 32}</string>
 			<string key="NSUser">{32, 32}</string>
-			<string key="Poison">{512, 512}</string>
 			<string key="avatar-mask-circle">{32, 32}</string>
+			<string key="pref_sound">{32, 32}</string>
+			<string key="pref_theme">{32, 32}</string>
 		</dictionary>
 	</data>
 </archive>

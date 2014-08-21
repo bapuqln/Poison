@@ -70,4 +70,19 @@ NS_INLINE NSImage *SCAvatarMaskImage(void) {
     }
 }
 
+typedef NS_ENUM(NSInteger, SCUIStyle) {
+    SCUIStyleToxLike,
+    SCUIStyleOriginal,
+    SCUIStyleInvalid,
+};
+
+NS_INLINE SCUIStyle SCCurrentUIStyle(void) {
+    NSInteger val = SCIntegerPreference(@"uiStyle");
+    if (val >= SCUIStyleInvalid) {
+        [[NSUserDefaults standardUserDefaults] setInteger:SCUIStyleOriginal forKey:@"uiStyle"];
+        return SCUIStyleOriginal;
+    }
+    return val;
+}
+
 #endif

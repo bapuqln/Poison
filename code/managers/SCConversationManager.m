@@ -39,7 +39,7 @@
 #pragma mark - Other stuff
 
 - (instancetype)initWithConv:(DESConversation *)conv {
-    NSLog(@"note: SCConversation init for %@", conv.conversationIdentifier);
+    // NSLog(@"note: SCConversation init for %@", conv.conversationIdentifier);
     self = [super init];
     if (self) {
         _underlyingConversation = conv;
@@ -71,7 +71,7 @@
     self.lastAlive = [NSDate date];
 }
 
-- (void)replayHistoryIntoContainer:(SCChatViewController *)container {
+- (void)replayHistoryIntoContainer:(SCHTMLTranscriptController *)container {
     if ([self containsContainer:container] && _chatHistory.count > 0) {
         [container throwEvent:@"SCMessagePostedEvent" withObject:_chatHistory];
     }
@@ -84,7 +84,7 @@
         [_chatHistory removeObjectsInRange:NSMakeRange(0, removedCount)];
     }
     if (_containerBacking.count > 0 && removedCount > 0) {
-        for (SCChatViewController *c in _containerBacking) {
+        for (SCHTMLTranscriptController *c in _containerBacking) {
             [c throwEvent:@"SCMessagesPrunedEvent" withObject:@(removedCount)];
         }
     }
@@ -104,7 +104,7 @@
 
     [self manageChatHistory];
 
-    for (SCChatViewController *c in _containerBacking) {
+    for (SCHTMLTranscriptController *c in _containerBacking) {
         [c throwEvent:@"SCFailedMessagePostedEvent" withObject:@[msg]];
     }
 }
@@ -120,7 +120,7 @@
         if (msg.messageID == messageID) {
             self.lastAlive = [NSDate date];
             msg.successfullyDelivered = YES;
-            for (SCChatViewController *c in _containerBacking) {
+            for (SCHTMLTranscriptController *c in _containerBacking) {
                 [c throwEvent:@"SCMessageDeliveredEvent" withObject:@(messageID)];
             }
         }
@@ -133,7 +133,7 @@
 
     [self manageChatHistory];
     self.lastAlive = [NSDate date];
-    for (SCChatViewController *c in _containerBacking) {
+    for (SCHTMLTranscriptController *c in _containerBacking) {
         [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
     }
 }
@@ -152,7 +152,7 @@
     [self manageChatHistory];
     self.lastAlive = [NSDate date];
 
-    for (SCChatViewController *c in _containerBacking) {
+    for (SCHTMLTranscriptController *c in _containerBacking) {
         [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
     }
 }
@@ -176,7 +176,7 @@
     [_chatHistory addObject:msg];
     [self manageChatHistory];
     self.lastAlive = [NSDate date];
-    for (SCChatViewController *c in _containerBacking) {
+    for (SCHTMLTranscriptController *c in _containerBacking) {
         [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
     }
 }
@@ -192,7 +192,7 @@
     [_chatHistory addObject:msg];
     [self manageChatHistory];
     self.lastAlive = [NSDate date];
-    for (SCChatViewController *c in _containerBacking) {
+    for (SCHTMLTranscriptController *c in _containerBacking) {
         [c throwEvent:@"SCMessagePostedEvent" withObject:@[msg]];
     }
 }
@@ -207,15 +207,15 @@
 
 #pragma mark - Hold containers
 
-- (void)addContainer:(SCChatViewController *)container {
+- (void)addContainer:(SCHTMLTranscriptController *)container {
     [_containerBacking addObject:container];
 }
 
-- (void)removeContainer:(SCChatViewController *)container {
+- (void)removeContainer:(SCHTMLTranscriptController *)container {
     [_containerBacking removeObject:container];
 }
 
-- (BOOL)containsContainer:(SCChatViewController *)container {
+- (BOOL)containsContainer:(SCHTMLTranscriptController *)container {
     return [_containerBacking containsObject:container];
 }
 

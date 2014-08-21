@@ -260,6 +260,7 @@ static SCProfileManager *_currentProfile = nil;
         NSLog(@"err: yikes! txd_decrypt_buf failed with code %d", err);
         _privateSettings = [NSMutableDictionary dictionary];
         _settingsNeedCommit = YES;
+        [self commitPrivateSettings];
         return;
     }
 
@@ -296,7 +297,7 @@ static SCProfileManager *_currentProfile = nil;
 }
 
 - (void)commitPrivateSettings {
-    if (_settingsNeedCommit)
+    if (!_settingsNeedCommit)
         return;
     NSLog(@"notice: commitPrivateSettings");
 
