@@ -15,6 +15,7 @@
 @property (strong) IBOutlet NSTextField *postfixEntry;
 @property (strong) IBOutlet NSTextField *postfixExample;
 @property (strong) IBOutlet NSButton *checkBoxMenubar;
+@property (strong) IBOutlet NSButton *checkBoxFullClose;
 @end
 
 @implementation SCGeneralPaneController {
@@ -34,6 +35,8 @@
 
     self.checkBoxPublicSights.state = SCBoolPreference(@"publicSights")? NSOnState : NSOffState;
     self.checkBoxMenubar.state = SCBoolPreference(@"showsMenubarIcon")? NSOnState : NSOffState;
+    self.checkBoxFullClose.state = SCBoolPreference(@"fullyClose")? NSOnState : NSOffState;
+
 }
 
 #pragma mark - window style
@@ -91,6 +94,12 @@
 - (IBAction)changeMBState:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:([sender state] == NSOnState)? YES : NO forKey:@"showsMenubarIcon"];
     [(SCAppDelegate *)[NSApp delegate] reopenMenubarIcon];
+}
+
+#pragma mark - exits on close
+
+- (IBAction)changeFCState:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:([sender state] == NSOnState)? YES : NO forKey:@"fullyClose"];
 }
 
 

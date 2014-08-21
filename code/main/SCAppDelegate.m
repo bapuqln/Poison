@@ -280,7 +280,8 @@
 #pragma mark - other appdelegate stuff
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
-    if ([self.mainWindowController conformsToProtocol:@protocol(SCMainWindowing)])
+    if ([self.mainWindowController conformsToProtocol:@protocol(SCMainWindowing)]
+        && !SCBoolPreference(@"fullyClose"))
         return NO;
     else
         return YES;
