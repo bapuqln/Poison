@@ -26,7 +26,7 @@
 
 - (void)reloadTheme {
     SCThemeManager *tm = [SCThemeManager sharedManager];
-    self.view.drawColor = [tm backgroundColorOfCurrentTheme];
+    ((SCResponderProxyView *)self.view).drawColor = [tm backgroundColorOfCurrentTheme];
     [self.webView.mainFrame loadRequest:[NSURLRequest requestWithURL:[tm baseTemplateURLOfCurrentTheme]]];
 }
 

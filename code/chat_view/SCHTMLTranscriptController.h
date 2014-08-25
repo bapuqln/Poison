@@ -8,7 +8,7 @@
 @end
 
 @interface SCHTMLTranscriptController : NSViewController
-@property (strong) SCResponderProxyView *view;
+//@property (strong) SCResponderProxyView *view;
 @property (strong) SCConversation *conversation;
 - (void)reloadTheme;
 - (void)reloadConversation;
