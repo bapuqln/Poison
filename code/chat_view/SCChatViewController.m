@@ -426,7 +426,7 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
                 self.fileListWindow.contentSize = self.fileList.view.frame.size;
                 self.fileListWindow.behavior = NSPopoverBehaviorTransient;
             }
-            [self.fileListWindow showRelativeToRect:[sender.cell rectForSegment:2 inFrame:sender.bounds] ofView:sender preferredEdge:NSMaxYEdge];
+            [self.fileListWindow showRelativeToRect:[sender.cell rectForSegment:0 inFrame:sender.bounds] ofView:sender preferredEdge:NSMaxYEdge];
             break;
         case 1:
             [NSMenu popUpContextMenu:self.secretActionMenu withEvent:[[NSApplication sharedApplication] currentEvent] forView:sender];
