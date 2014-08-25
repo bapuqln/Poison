@@ -9,6 +9,7 @@
 #import "SCTextField.h"
 #import "SCFileListController.h"
 #import "SCHTMLTranscriptController.h"
+#import "DESConversation+Poison_CustomName.h"
 
 NS_INLINE NSColor *SCCreateDarkenedColor(NSColor *color, CGFloat factor) {
     CGFloat compo[3];
@@ -399,13 +400,40 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self detachKVO];
 }
 
 #pragma mark - chat stuff
 
+- (void)attachKVO {
+    [_conversation.underlyingConversation addObserver:self forKeyPath:@"presentableTitle" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
+    [_conversation.underlyingConversation addObserver:self forKeyPath:@"presentableSubtitle" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)detachKVO {
+    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableTitle"];
+    [_conversation.underlyingConversation removeObserver:self forKeyPath:@"presentableSubtitle"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    NSDictionary *change_ = [change copy];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([keyPath isEqualToString:@"presentableTitle"])
+            self.convInfoName.stringValue = [(DESConversation *)object preferredUIName];
+        if ([keyPath isEqualToString:@"presentableSubtitle"]) {
+            NSString *status = change_[NSKeyValueChangeNewKey];
+            if ([[status stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])
+                status = NSLocalizedString(@"No status", @"");
+            self.convInfoStatus.stringValue = status;
+        }
+    });
+}
+
 - (void)setConversation:(SCConversation *)conversation {
     [_conversation removeContainer:self.webController];
+    [self detachKVO];
     _conversation = conversation;
+    [self attachKVO];
     [conversation addContainer:self.webController];
     self.webController.conversation = conversation;
     [self.webController reloadConversation];

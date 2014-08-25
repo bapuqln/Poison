@@ -169,8 +169,8 @@ int txd_restore_intermediate(txd_intermediate_t interm, Tox *tox)
         if (new_friendnum < 0)
             continue; /* failure */
 
-        if (friend -> txd_flags & TXD_BIT_SENDS_RECEIPTS)
-            tox_set_sends_receipts(tox, new_friendnum, 1);
+        //if (friend -> txd_flags & TXD_BIT_SENDS_RECEIPTS)
+        //    tox_set_sends_receipts(tox, new_friendnum, 1);
         setfriendname(tox_, new_friendnum, friend -> txd_name, friend -> txd_name_length);
         tox_ -> friendlist[new_friendnum].ping_lastrecv = friend -> txd_lastseen;
     }
