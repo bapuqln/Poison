@@ -75,8 +75,8 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.nameCompletionCache = [[NSCache alloc] init];
-        _showsUserList = NO;
-        _showsVideoPane = NO;
+        _showsUserList = YES;
+        _showsVideoPane = YES;
     }
     return self;
 }
