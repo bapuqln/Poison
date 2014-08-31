@@ -135,7 +135,7 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
         NSUInteger mlen = [message lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
         uint32_t ret = 0;
         if (mlen <= DESMaximumMessageLength) {
-            ret = tox_send_message_withid(self->_connection._core, self->_peerNumber, mid, (uint8_t*)[message UTF8String], (uint32_t)mlen);
+            ret = m_sendmessage_withid((Messenger *)self->_connection._core, self->_peerNumber, mid, (uint8_t*)[message UTF8String], (uint32_t)mlen);
         }
         if (ret == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -161,7 +161,7 @@ const uint32_t DESMaximumMessageLength = TOX_MAX_MESSAGE_LENGTH;
         NSUInteger mlen = [action lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
         uint32_t ret = 0;
         if (mlen <= DESMaximumMessageLength) {
-            ret = tox_send_action_withid(self->_connection._core, self->_peerNumber, mid, (uint8_t*)[action UTF8String], (uint32_t)mlen);
+            ret = m_sendaction_withid((Messenger *)self->_connection._core, self->_peerNumber, mid, (uint8_t*)[action UTF8String], (uint32_t)mlen);
         }
         if (ret == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
