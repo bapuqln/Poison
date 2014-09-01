@@ -166,14 +166,15 @@
         [self saveProfile:NO];
     }
 
+    [self prepareFriendRequests];
+    [self.toxConnection start];
+
     if (needsBootstrap) {
         SCDHTListApplyToConnection(self.toxConnection);
     } else {
         [self performSelector:@selector(lateBootstrap) withObject:nil afterDelay:5];
     }
 
-    [self prepareFriendRequests];
-    [self.toxConnection start];
     if ([self.mainWindowController isKindOfClass:[SCNewUserWindowController class]])
         [self.mainWindowController close];
     [self reopenMainWindow];

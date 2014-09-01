@@ -2,7 +2,7 @@
 # Like Base internationalization, but works on OS X before 10.8.
 # Copyright (c) 2013 - 2014 Zodiac Labs.
 if [ "x$XCODE_VERSION_ACTUAL" != "x" ]
-    then cd $PROJECT_DIR
+    then cd "$PROJECT_DIR"
 else
     cd "$(echo $0 | sed -E s/[^/]+$//g)"
 fi

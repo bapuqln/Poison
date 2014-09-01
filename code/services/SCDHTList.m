@@ -35,13 +35,13 @@ void SCDHTListApplyToConnection(DESToxConnection *conn) {
     for (NSDictionary *serv in list) {
         if (cnt > 5)
             break;
-        for (NSString *key in serv) {
-            NSLog(@"%@ -> %@", key, NSStringFromClass([serv[key] class]));
-        }
+//        for (NSString *key in serv) {
+//            NSLog(@"%@ -> %@", key, NSStringFromClass([serv[key] class]));
+//        }
         NSLog(@"try: %@", serv);
         [conn bootstrapWithServerAddress:serv[@"ipv4"]
                                     port:[serv[@"port"] unsignedShortValue]
-                               publicKey:serv[@"public_key"]];
+                               publicKey:serv[@"pubkey"]];
         ++cnt;
     }
 }
