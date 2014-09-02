@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.7"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="6185.7"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.11"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SCChatViewController">
             <connections>
                 <outlet property="chatEntryView" destination="mgd-Fy-s8Y" id="DDO-3T-Phc"/>
+                <outlet property="convInfoBG" destination="OV2-Hw-1si" id="C8j-nX-TGl"/>
+                <outlet property="convInfoName" destination="obm-eb-06k" id="A1v-rH-EXK"/>
+                <outlet property="convInfoStatus" destination="686-rs-RH6" id="lhV-KB-tlZ"/>
                 <outlet property="secretActionMenu" destination="CQt-GJ-9h9" id="9y8-I0-HZk"/>
                 <outlet property="splitView" destination="Ibd-qz-eRd" id="uyh-P2-Kol"/>
                 <outlet property="textField" destination="NGN-nF-rU6" id="Yg2-jV-9F0"/>
                 <outlet property="transcriptSplitView" destination="CXR-gF-tth" id="N4m-eZ-q2Q"/>
-                <outlet property="transcriptView" destination="1" id="VIi-AX-jLH"/>
                 <outlet property="userList" destination="hHH-xH-tbj" id="ofu-Nn-Yzj"/>
                 <outlet property="userListContainer" destination="Lyp-OY-ROd" id="YOS-8D-0ym"/>
                 <outlet property="videoBackground" destination="lUW-Ma-cOW" id="ZGo-6k-16x"/>
                 <outlet property="view" destination="vhE-4Q-mdl" id="9GA-x1-plD"/>
-                <outlet property="webSuperview" destination="eyj-aY-PAB" id="Ig3-Wc-VgF"/>
-                <outlet property="webView" destination="Pzv-Ni-bVV" id="vGh-gg-SaB"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="mgd-Fy-s8Y" customClass="SCChatView">
             <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -41,21 +40,15 @@
                     </connections>
                 </button>
                 <segmentedControl verticalHuggingPriority="750" id="smv-Xd-ZV7">
-                    <rect key="frame" x="20" y="7" width="141" height="25"/>
+                    <rect key="frame" x="20" y="7" width="71" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="momentary" id="HhR-70-LSh">
                         <font key="font" metaFont="system"/>
                         <segments>
-                            <segment toolTip="Call" image="icon_record_Template" width="34">
+                            <segment toolTip="File Transfers" image="icon_plane_Template" width="34">
                                 <nil key="label"/>
                             </segment>
-                            <segment toolTip="Video Call" image="icon_mic_Template" width="34" tag="1">
-                                <nil key="label"/>
-                            </segment>
-                            <segment toolTip="More" image="icon_plane_Template" width="34">
-                                <nil key="label"/>
-                            </segment>
-                            <segment image="icon_share_more_Template" width="34">
+                            <segment toolTip="More" image="icon_share_more_Template" width="34" tag="1">
                                 <nil key="label"/>
                             </segment>
                         </segments>
@@ -66,7 +59,7 @@
                     </connections>
                 </segmentedControl>
                 <textField verticalHuggingPriority="750" id="NGN-nF-rU6" customClass="SCTextField">
-                    <rect key="frame" x="169" y="8" width="223" height="23"/>
+                    <rect key="frame" x="99" y="8" width="293" height="23"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" selectable="YES" editable="YES" state="on" borderStyle="bezel" id="A6z-nR-aMm" customClass="SCTextFieldCell">
                         <font key="font" metaFont="system"/>
@@ -78,6 +71,7 @@
                     </connections>
                 </textField>
             </subviews>
+            <point key="canvasLocation" x="140" y="130"/>
         </customView>
         <customView id="vhE-4Q-mdl">
             <rect key="frame" x="0.0" y="0.0" width="123" height="49"/>
@@ -131,24 +125,11 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <splitView autosaveName="" dividerStyle="thin" vertical="YES" id="CXR-gF-tth" customClass="SCNonGarbageSplitView">
-                            <rect key="frame" x="0.0" y="-1" width="480" height="298"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="298"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <customView id="eyj-aY-PAB" customClass="SCResponderProxyView">
-                                    <rect key="frame" x="0.0" y="0.0" width="330" height="298"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <webView maintainsBackForwardList="NO" id="Pzv-Ni-bVV">
-                                            <rect key="frame" x="0.0" y="0.0" width="330" height="298"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO" allowsAnimatedImages="NO" allowsAnimatedImageLooping="NO">
-                                                <nil key="identifier"/>
-                                            </webPreferences>
-                                        </webView>
-                                    </subviews>
-                                </customView>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Lyp-OY-ROd">
-                                    <rect key="frame" x="331" y="0.0" width="149" height="298"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="298"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="7Id-Ic-E5q">
                                         <rect key="frame" x="0.0" y="0.0" width="149" height="298"/>
@@ -160,7 +141,7 @@
                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn width="146" minWidth="40" maxWidth="1000" id="uxp-g3-eeK">
+                                                    <tableColumn width="477" minWidth="40" maxWidth="1000" id="uxp-g3-eeK">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -174,11 +155,11 @@
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         <prototypeCellViews>
                                                             <tableCellView id="Muf-rc-vYj">
-                                                                <rect key="frame" x="1" y="1" width="146" height="17"/>
+                                                                <rect key="frame" x="1" y="1" width="477" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1oS-CI-Cgt">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="146" height="17"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="477" height="17"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" id="3ml-UH-X0J">
                                                                             <font key="font" metaFont="system"/>
@@ -210,14 +191,13 @@
                             </subviews>
                             <holdingPriorities>
                                 <real value="250"/>
-                                <real value="250"/>
                             </holdingPriorities>
                             <connections>
                                 <outlet property="delegate" destination="-2" id="oa2-MU-qW5"/>
                             </connections>
                         </splitView>
-                        <customView id="OV2-Hw-1si">
-                            <rect key="frame" x="0.0" y="297" width="480" height="48"/>
+                        <customView id="OV2-Hw-1si" customClass="SCGradientView">
+                            <rect key="frame" x="0.0" y="298" width="480" height="47"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="obm-eb-06k">
@@ -225,24 +205,19 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="(placeholder)" id="ktX-7m-v8s">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="686-rs-RH6">
-                                    <rect key="frame" x="61" y="8" width="401" height="14"/>
+                                    <rect key="frame" x="47" y="8" width="415" height="14"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="(placeholder)" id="IDx-Uv-y6F">
                                         <font key="font" metaFont="smallSystem"/>
-                                        <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="KU0-rz-L4n">
-                                    <rect key="frame" x="49" y="9" width="11" height="11"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="status-light-online" id="hSe-47-Bew"/>
-                                </imageView>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bV7-g9-SzT" customClass="SCAvatarView">
                                     <rect key="frame" x="9" y="8" width="32" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -294,9 +269,7 @@
     <resources>
         <image name="icon_mic_Template" width="16" height="16"/>
         <image name="icon_plane_Template" width="16" height="16"/>
-        <image name="icon_record_Template" width="17" height="10"/>
         <image name="icon_share_more_Template" width="10" height="2"/>
-        <image name="status-light-online" width="11" height="11"/>
         <image name="user-icon-default" width="128" height="128"/>
         <image name="vp_layout_test_sample_16_9" width="256" height="144"/>
     </resources>
