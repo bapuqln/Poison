@@ -286,10 +286,6 @@
 
 - (IBAction)startLookup:(id)sender {
     NSString *addr = self.mailAddressField.stringValue;
-    if ([addr rangeOfString:@"@"].location == NSNotFound)
-        addr = [addr stringByAppendingString:[NSString stringWithFormat:@"@%@",
-                                              [[NSUserDefaults standardUserDefaults] stringForKey:@"defaultRegistrationDomain"]]];
-    self.mailAddressField.stringValue = addr;
     self.mailAddressField.enabled = NO;
     self.findButton.enabled = NO;
 

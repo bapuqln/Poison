@@ -31,7 +31,7 @@ NS_INLINE int SCQuickValidateDNSDiscoveryID(NSString *string) {
             ++at_count;
     }
 
-    if ((at_count > 1) /* if no @, use the default */
+    if ((at_count != 1)
         || *buf == '@' /* can't start with @ */
         || buf[len - 1] == '@' /* can't end with it either */
         || len > UINT32_MAX) /* breaks djbdns */
