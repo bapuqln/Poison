@@ -15,14 +15,7 @@ are in the works.
 
 *Please make any further pull requests to the 2.0 branch (this one).*
 
-![](http://vexx.us/Examples/Poison/lady_stoneheart.png)
-
-Poison is built to support Notification Center, so you never miss a message, 
-and with an extensive array of options, you can customize Poison to be your 
-own.
-
-![Notification](http://vexx.us/Images/notification-group.png)
-![Another notification](http://vexx.us/Images/notification-online.png)
+![](https://i.kirara.ca/kisyh.png)
 
 ## Build it
 
