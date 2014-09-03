@@ -13,8 +13,6 @@ the look and feel of OS X. While it's still in its infancy stage, most of
 Poison's features work, but support for A/V is in the works as more features 
 are in the works.
 
-*Please make any further pull requests to the 2.0 branch (this one).*
-
 ![](https://i.kirara.ca/kisyh.png)
 
 ## Build it
