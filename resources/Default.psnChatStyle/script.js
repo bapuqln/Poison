@@ -136,6 +136,8 @@ window.appendAction = function(m, ded) {
 }
 
 window.deliverMessage = function(event) {
+    window.willChangePageHeight();
+
     var cevent = event.detail[0];
     for (var i = 0; i < event.detail.length; cevent = event.detail[++i]) {
         console.log(cevent.unixTimestamp())
@@ -162,9 +164,13 @@ window.deliverMessage = function(event) {
             }
         }
     }
+
+    window.notePageHeightChanged();
 }
 
 window.appendDeadMessage = function(event) {
+    window.willChangePageHeight();
+
     var cevent = event.detail[0];
     for (var i = 0; i < event.detail.length; cevent = event.detail[++i]) {
         console.log(cevent.unixTimestamp())
@@ -188,6 +194,8 @@ window.appendDeadMessage = function(event) {
             }
         }
     }
+
+    window.notePageHeightChanged();
 }
 
 window.flairDeliveredMessage = function(event) {
@@ -200,7 +208,7 @@ window.flairDeliveredMessage = function(event) {
     }
 }
 
-window.bindEventHandlers = function() {
+document.addEventListener("SCThemeLibDidInitializeEvent", function() {
     window.last_context = null;
     window.last_timestamp = null;
     window.tracking_messages = {};
@@ -208,8 +216,4 @@ window.bindEventHandlers = function() {
     document.addEventListener("SCMessageDeliveredEvent", window.flairDeliveredMessage, true);
     document.addEventListener("SCFailedMessagePostedEvent", window.appendDeadMessage, true);
     console.log("initialized.");
-}
-
-window.onload = function() {
-    window.bindEventHandlers();
-}
+}, true);

@@ -13,4 +13,5 @@
 - (void)reloadTheme;
 - (void)reloadConversation;
 - (void)throwEvent:(NSString *)eventName withObject:(id)object;
+- (void)scrollByPoints:(CGFloat)points;
 @end

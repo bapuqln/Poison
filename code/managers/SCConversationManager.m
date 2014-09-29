@@ -77,6 +77,7 @@
     }
 }
 
+/* TODO: instead of removing messages outright, move them to the diary */
 - (void)manageChatHistory {
     NSInteger removedCount = 0;
     if (_chatHistory.count > _backlogSize) {

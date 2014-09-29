@@ -141,11 +141,17 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 }
 
 - (void)layoutSubviews_ {
+    CGFloat before = self.chatEntryView.frame.size.height;
+    [self adjustEntryBounds];
     CGFloat os = self.chatEntryView.frame.size.height;
     [self.chatEntryView.window setContentBorderThickness:os forEdge:NSMinYEdge];
     self.splitView.frame = (CGRect){{0, os},
                                     {self.splitView.frame.size.width,
                                      self.view.frame.size.height - os}};
+
+    CGFloat change;
+    if ((change = (os - before)) > 0)
+        [self.webController scrollByPoints:change];
 }
 
 #pragma mark - management of auxilary panes
@@ -335,7 +341,6 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj {
-    [self adjustEntryBounds];
     [self layoutSubviews_];
     _completeCycle = nil;
     _completeIndex = 0;
@@ -345,22 +350,19 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
     [self.textField saveSelection];
 }
 
-- (IBAction)sendMessageFromButton:(id)sender {
-    [self sendMessage:self.textField];
-}
+- (IBAction)sendMessage:(id)sender {
+    NSTextField *tf = self.textField;
 
-- (IBAction)sendMessage:(NSTextField *)sender {
-    if ([sender.stringValue isEqualToString:@""]) {
+    if ([tf.stringValue isEqualToString:@""]) {
         NSBeep();
         return;
     }
 
     if ([NSEvent modifierFlags] & NSCommandKeyMask)
-        [self.conversation sendAction:sender.stringValue];
+        [self.conversation sendAction:tf.stringValue];
     else
-        [self.conversation sendMessage:sender.stringValue];
-    sender.stringValue = @"";
-    [self adjustEntryBounds];
+        [self.conversation sendMessage:tf.stringValue];
+    tf.stringValue = @"";
     [self layoutSubviews_];
 }
 
@@ -386,16 +388,15 @@ NS_INLINE NSString *SCMakeStringCompletionAlias(NSString *input) {
                            (CGSize){self.textField.frame.size.width - 8, 9001}
                            options:scOpts
                         attributes:@{NSFontAttributeName: self.textField.font}];
+    CGFloat currentCEHeight = self.chatEntryView.frame.size.height;
     CGFloat actualHeight = fmin(requiredSize.size.height, fourLines);
-    CGFloat baseHeight = self.chatEntryView.frame.size.height - self.textField.frame.size.height;
+    CGFloat baseHeight = currentCEHeight - self.textField.frame.size.height;
     /*        h without text field + size of text + textfield padding */
     CGFloat newHeight = baseHeight + actualHeight + 6;
     self.textField.frameSize = (CGSize){self.textField.frame.size.width,
                                         actualHeight + 6};
     self.chatEntryView.frameSize = (CGSize){self.chatEntryView.frame.size.width,
         newHeight};
-
-    //[self.webView.mainFrame.frameView.documentView.enclosingScrollView scroll:self];
 }
 
 - (void)dealloc {
