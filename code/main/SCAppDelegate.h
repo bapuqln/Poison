@@ -5,13 +5,8 @@
 #import "SCMainWindowing.h"
 #include <sodium.h>
 
-/* Avatar information packet sent to friends on connection */
-#define DESControlMessageAvatarAnnounce (160)
-/* Packet to request an avatar transfer. */
-#define DESControlMessageAvatarRequest  (161)
 /* Do we allow coloured messages to be sent? (reserved) */
 #define DESControlMessageMessageColourEnabled   (162)
-#define DESAvatarAnnounceSize (2 + 4 + crypto_hash_BYTES)
 
 @class SCStandaloneWindowController, SCFriendRequest, SCConversationManager,
        SCMediaCall, SCAudioVideoRecorder;
@@ -29,7 +24,6 @@
 - (IBAction)showQRCode:(id)sender;
 - (IBAction)addFriend:(id)sender;
 - (void)removeFriend:(DESFriend *)f;
-- (void)sendAvatarPacket:(DESFriend *)friend;
 
 - (void)reopenMainWindow;
 - (void)reopenMenubarIcon;

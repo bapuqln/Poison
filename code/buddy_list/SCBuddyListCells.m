@@ -158,6 +158,7 @@
         self.mainLabel.attributedStringValue = [_watchingFriend preferredUIAttributedNameWithColour:[NSColor whiteColor]
                                                                                    backgroundColour:[NSColor disabledControlTextColor]];
         [self displayStringForStatusMessage:_watchingFriend.presentableSubtitle];
+        self.avatarView.image = [_watchingFriend userImage];
         if ([_watchingFriend conformsToProtocol:@protocol(DESFriend)]) {
             DESFriend *f = (DESFriend *)_watchingFriend;
             self.light.hidden = NO;

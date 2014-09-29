@@ -419,8 +419,6 @@
 }
 
 - (void)didAddFriend:(DESFriend *)friend onConnection:(DESToxConnection *)connection {
-    [connection registerForControlMessagesOfType:DESControlMessageAvatarAnnounce fromFriend:friend];
-    [connection registerForControlMessagesOfType:DESControlMessageAvatarRequest fromFriend:friend];
     [self.conversationManager addConversation:friend];
     if (_requests[friend.publicKey] != nil) {
         [self willChangeValueForKey:@"requests"];
@@ -457,12 +455,6 @@
     [[self.conversationManager conversationFor:friend] noteStatusMessageChanged:oldStatusMessage];
 }
 
-- (void)friend:(DESFriend *)friend connectionStatusDidChange:(BOOL)newStatus onConnection:(DESToxConnection *)connection {
-    if (newStatus == YES) {
-        [self sendAvatarPacket:friend];
-    }
-}
-
 - (void)didFailToAddFriendWithError:(NSError *)error onConnection:(DESToxConnection *)connection {
     if (!([self.mainWindowController.window isVisible] && [self.mainWindowController.window isKeyWindow]))
         [self.mainWindowController.window makeKeyAndOrderFront:self];
@@ -487,66 +479,6 @@
     a.informativeText = [NSString stringWithFormat:@"%@ (%@ %d)",
                          f, error.domain, (int)error.code];
     [a beginSheetModalForWindow:self.mainWindowController.window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
-}
-
-- (void)sendAvatarPacket:(DESFriend *)friend {
-    SCAvatar *a = [SCProfileManager currentProfile].avatar;
-
-    uint8_t *packet = calloc(DESAvatarAnnounceSize, 1); /* 70 */
-    uint16_t pixels = htons(a.size);
-    uint32_t bytes = htonl(a.byteSize);
-    memcpy(packet, &pixels, 2);
-    memcpy(packet + 2, &bytes, 4);
-
-    /* for null avatar, it's valid for the digest part to be uninitialized
-     * (as long as the size part is 0) */
-    if (a.digest)
-        memcpy(packet + 6, a.digest, crypto_hash_BYTES);
-
-    NSData *payload = [NSData dataWithBytesNoCopy:packet length:DESAvatarAnnounceSize freeWhenDone:YES];
-    if (friend) {
-        [friend sendControlMessage:payload ofType:DESControlMessageAvatarAnnounce];
-    } else {
-        for (DESFriend *f in self.toxConnection.friends) {
-            [f sendControlMessage:payload ofType:DESControlMessageAvatarAnnounce];
-        }
-    }
-}
-
-- (void)didReceiveControlMessage:(NSData *)payload ofType:(uint8_t)pkt fromFriend:(DESFriend *)friend {
-    NSLog(@"received controlmessage %d from %@ { %@ }", pkt, friend, payload);
-    switch (pkt) {
-        case DESControlMessageAvatarAnnounce:
-            /* check cache and fire request */
-            break;
-        case DESControlMessageAvatarRequest:
-            /*send avatar*/
-            break;
-        default:
-            NSLog(@"discarding unbound controlmessage -> %d from (%@)", pkt, friend);
-            break;
-    }
-}
-
-- (void)handleAvatarAnnounce:(NSData *)payload friend:(DESFriend *)friend {
-
-}
-
-- (void)handleAvatarRequest:(NSData *)payload friend:(DESFriend *)friend {
-    if (payload.length > 64) {
-        NSLog(@"handleAvatarRequest is discarding a filename that is too long.");
-        return;
-    }
-
-    SCAvatar *avatar = [SCProfileManager currentProfile].avatar;
-    if (avatar.size == 0) {
-        NSLog(@"not sending our avatar because it was the nilAvatar.");
-        return;
-    }
-
-    NSInputStream *fileData = [NSInputStream inputStreamWithURL:avatar.url];
-    if (fileData)
-        [(id<DESFileTransferring>)friend requestFileTransferWithInput:fileData filename:payload size:avatar.byteSize];
 }
 
 - (void)logOut {

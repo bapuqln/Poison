@@ -90,7 +90,7 @@
 
 - (NSImage *)userImage {
     if (self.type == DESConversationTypeFriend) {
-        return [NSImage imageNamed:@"user-icon-default"];
+        return [SCAvatar placeholderAvatar].rep;
     } else {
         return [NSImage imageNamed:@"group-icon-default"];
     }

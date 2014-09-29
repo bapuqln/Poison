@@ -613,7 +613,6 @@
         SCProfileManager *profile = [SCProfileManager currentProfile];
         profile.avatar = im;
         self.avatarView.image = profile.avatar.rep;
-        [(SCAppDelegate *)[NSApplication sharedApplication].delegate sendAvatarPacket:nil];
     }
 }
 
