@@ -72,10 +72,12 @@
 }
 
 - (void)accept {
-    int32_t groupnum = tox_join_groupchat(self.connection._core,
+    return;
+
+    /* int32_t groupnum = tox_join_groupchat(self.connection._core,
                                           self.senderNo, self.groupKey);
     DESConversation *gc = [[DESGroupChat alloc] initWithNumber:groupnum onConnection:self.connection];
-    [self.connection addGroup:gc];
+    [self.connection addGroup:gc]; */
 }
 
 - (void)decline {

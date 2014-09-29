@@ -1,6 +1,8 @@
 #include "tox.h"
 #include "Messenger.h"
 #include "util.h"
+#include "friend_connection.h"
+
 void DESSetKeys(Tox *tox, uint8_t *pk, uint8_t *sk) {
     Messenger *m = (Messenger *)tox;
     memcpy(m -> net_crypto -> self_public_key, pk, crypto_box_PUBLICKEYBYTES);
@@ -28,7 +30,12 @@ int DESCopyNetAddress(Tox *tox, int32_t peernum, char **ip_out, uint16_t *port_o
     //    return 0;
     Messenger *priv = (Messenger *)tox;
     /* CCID for net_crypto. */
-    int ccid = priv -> friendlist[peernum].crypt_connection_id;
+    int ccid = friend_connection_crypt_connection_id(priv->fr_c, priv -> friendlist[peernum].friendcon_id);
+    if (ccid == -1) {
+        return 0;
+    }
+
+    //int ccid = priv -> friendlist[peernum].crypt_connection_id;
     uint8_t is_direct = 0;
     uint32_t status = crypto_connection_status(priv -> net_crypto, ccid, &is_direct);
     if (status != CRYPTO_CONN_ESTABLISHED) {
