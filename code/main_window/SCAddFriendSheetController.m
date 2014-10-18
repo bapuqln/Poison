@@ -182,18 +182,13 @@
         [self resizeWindowForPreview];
 }
 
-- (void)fillWithURL:(NSURL *)toxURL {
-    /* DD urls are over-parsed by apple, so apply the fix */
-    NSString *id_ = toxURL.host;
-    if (toxURL.user)
-        id_ = [toxURL.user stringByAppendingString:[NSString stringWithFormat:@"@%@", id_]];
-
-    if (SCQuickValidateID(id_)) {
+- (void)fillWithURL:(NSURL *)toxURL IDString:(NSString *)theID {
+    if (SCQuickValidateID(theID)) {
         self.method = SCFriendFindMethodPlain;
-        self.toxID = id_;
-    } else if (SCQuickValidateDNSDiscoveryID(id_)) {
+        self.toxID = theID;
+    } else if (SCQuickValidateDNSDiscoveryID(theID)) {
         self.method = SCFriendFindMethodDNSDiscovery;
-        self.mailAddressField.stringValue = id_;
+        self.mailAddressField.stringValue = theID;
         [self startLookup:self];
     }
 

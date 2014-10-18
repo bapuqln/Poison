@@ -20,6 +20,6 @@ typedef NS_ENUM(NSInteger, SCFriendFindMethod) {
 - (NSString *)proposedName;
 
 - (void)setMethod:(SCFriendFindMethod)method;
-- (void)fillWithURL:(NSURL *)toxURL;
+- (void)fillWithURL:(NSURL *)toxURL IDString:(NSString *)theID;
 
 @end

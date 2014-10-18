@@ -89,7 +89,12 @@ void *const SCAddFriendSheetContext = (void *)1;
     NSString *cmp = url.host;
     if (url.user)
         cmp = [url.user stringByAppendingString:[NSString stringWithFormat:@"@%@", url.host]];
-    if (!(SCQuickValidateID(cmp) || SCQuickValidateDNSDiscoveryID(cmp))) {
+
+    /* this new url type is worse than hitler */
+    if (!cmp)
+        cmp = url.resourceSpecifier;
+
+    if (!(cmp && (SCQuickValidateID(cmp) || SCQuickValidateDNSDiscoveryID(cmp)))) {
         NSAlert *error = [[NSAlert alloc] init];
         error.alertStyle = NSInformationalAlertStyle;
         error.messageText = NSLocalizedString(@"Invalid Tox ID", nil);
@@ -98,7 +103,7 @@ void *const SCAddFriendSheetContext = (void *)1;
         [error beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
         return;
     }
-    [self.addPanel fillWithURL:url];
+    [self.addPanel fillWithURL:url IDString:cmp];
     [NSApp beginSheet:self.addPanel.window modalForWindow:self.window modalDelegate:self didEndSelector:@selector(didEndSheet:returnCode:contextInfo:) contextInfo:SCAddFriendSheetContext];
 }
 
